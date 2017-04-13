@@ -9,52 +9,31 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-THIS DOCUMENT IS IN PROGRESS
+## DOCUMENTATION IN PROGRESS (longer version of README)***
 
-Vignettes are long form documentation commonly included in packages. Because they are part of the distribution of the package, they need to be as compact as possible. The `html_vignette` output type provides a custom style sheet (and tweaks some options) to ensure that the resulting html is as small as possible. The `html_vignette` format:
+## Overview
 
-- Never uses retina figures
-- Has a smaller default figure size
-- Uses a custom CSS stylesheet instead of the default Twitter Bootstrap style
+`statr` is a personal R package that I have created for organizational/convenience purposes. A (possibly incomplete) list of functions contained in the package can be found below:
 
-## Vignette Info
+* `ridge()` calculate coefficient estimates for ridge (L2)-penalized linear regression
+* `bsearch()` is a bi-section search algorithm.
 
-Note the various macros within the `vignette` section of the metadata block above. These are required in order to instruct R how to build the vignette. Note that you should change the `title` field and the `\VignetteIndexEntry` to match the title of your vignette.
 
-## Styles
 
-The `html_vignette` template includes a basic CSS theme. To override this theme you can specify your own CSS in the document metadata as follows:
+## Installation
 
-    output: 
-      rmarkdown::html_vignette:
-        css: mystyles.css
-
-## Figures
-
-The figure sizes have been customised so that you can easily put two images side-by-side. 
-
-```{r, fig.show='hold'}
-plot(1:10)
-plot(10:1)
+```{r, eval = FALSE}
+# The easiest way to install is from the development version from GitHub:
+# install.packages("devtools")
+devtools::install_github("MGallo/statr")
 ```
 
-You can enable figure captions by `fig_caption: yes` in YAML:
+If there are any issues/bugs, please let me know: [github](https://github.com/MGallow/statr/issues). You can also contact me via my [website](http://users.stat.umn.edu/~gall0441/).
 
-    output:
-      rmarkdown::html_vignette:
-        fig_caption: yes
+## Usage
 
-Then you can use the chunk option `fig.cap = "Your figure caption."` in **knitr**.
+```{r, message = FALSE}
+library(statr)
 
-## More Examples
-
-You can write math expressions, e.g. $Y = X\beta + \epsilon$, footnotes^[A footnote here.], and tables, e.g. using `knitr::kable()`.
-
-```{r, echo=FALSE, results='asis'}
-knitr::kable(head(mtcars, 10))
+#IN PROGRESS
 ```
-
-Also a quote using `>`:
-
-> "He who gives up [code] safety for [code] speed deserves neither."
-([via](https://twitter.com/hadleywickham/status/504368538874703872))

@@ -1,22 +1,25 @@
 ## Matt Galloway
+## From STAT 8054 HW1 assignment
 
 
 #' @title Normal Data Generator
-#' @description generates random data.
+#' @description True beta values are generated from p independent draws from N(0, 1/p) distribution. X_{-1} are n independent draws from (p - 1) multivariate normal N(0, Sigma) where Sigma has (j, k) entry theta^abs(j - k).
+#'
+#' Y is then generated using the X = (1, X_{-1}) and true beta values with an iid error term that follows distribution N(0, var). We can specify the desired number of replications (reps).
 #'
 #' @param n desired sample size
 #' @param p desired dimension
-#' @param theta blah
-#' @param var blah
-#' @param reps blah
+#' @param theta parameter used to generate covariance matrix
+#' @param var variance of generated y values
+#' @param reps number of replications
+#' @return generated design matrix (X), response values (Y)(matrix if reps > 1), true beta values
 #' @export
 #' @examples
 #' data_gen(1000, 10, 0.5)
 
 
 
-# we first define a function to generate the data note that this function will be
-# used in problems 4, 5, 6
+# we define the data generation function
 data_gen = function(n, p, theta, var = 0.5, reps = 200) {
 
     # randomly generate betas
