@@ -1,0 +1,12 @@
+---
+title: "statr"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## DOCUMENTATION IN PROGRESS***
+
+See [vignette](https://htmlpreview.github.io/?https://github.com/MGallow/statr/blob/master/Vignette.html).
