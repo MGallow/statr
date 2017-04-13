@@ -9,6 +9,7 @@
 #' @param lam tuning parameter for regularization term
 #' @param K blah
 #' @return returns the coefficient estimates
+#' @export
 #' @examples
 #' library(dplyr)
 #' X = dplyr::select(iris, -c(Species, Sepal.Length))
