@@ -7,7 +7,7 @@
 tidy()
 }
 \description{
-Tidy's R code and updates package documentation. Directly uses Yihui Xie's 'formatR' package
+It tidys package R code and updates package documentation. Directly uses Yihui Xie's 'formatR' package.
 }
 \examples{
 tidy()

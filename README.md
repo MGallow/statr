@@ -20,7 +20,7 @@ Installation
 ``` r
 # The easiest way to install is from the development version from GitHub:
 # install.packages("devtools")
-devtools::install_github("MGallo/statr")
+devtools::install_github("MGallow/statr")
 ```
 
 If there are any issues/bugs, please let me know: [github](https://github.com/MGallow/statr/issues). You can also contact me via my [website](http://users.stat.umn.edu/~gall0441/).

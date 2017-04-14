@@ -2,7 +2,7 @@
 % Please edit documentation in R/data_gen.R
 \name{data_gen}
 \alias{data_gen}
-\title{Normal Data Generator}
+\title{Normal Linear Data Generator}
 \usage{
 data_gen(n, p, theta, var = 0.5, reps = 200)
 }
@@ -11,14 +11,19 @@ data_gen(n, p, theta, var = 0.5, reps = 200)
 
 \item{p}{desired dimension}
 
-\item{theta}{blah}
+\item{theta}{parameter used to generate covariance matrix}
 
-\item{var}{blah}
+\item{var}{variance of generated y values}
 
-\item{reps}{blah}
+\item{reps}{number of replications}
+}
+\value{
+generated design matrix (X), response values (Y)(matrix if reps > 1), true beta values
 }
 \description{
-generates random data.
+True beta values are generated from p independent draws from N(0, 1/p) distribution. X_{-1} are n independent draws from (p - 1) multivariate normal N(0, Sigma) where Sigma has (j, k) entry theta^abs(j - k).
+
+Y is then generated using the X = (1, X_{-1}) and true beta values with an iid error term that follows distribution N(0, var). We can specify the desired number of replications (reps).
 }
 \examples{
 data_gen(1000, 10, 0.5)

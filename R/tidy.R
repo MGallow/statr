@@ -2,16 +2,15 @@
 
 
 #' @title Tidy
-#' @description Tidy's R code and updates package documentation. Directly uses Yihui Xie's 'formatR' package
+#' @description It tidys package R code and updates package documentation. Directly uses Yihui Xie's 'formatR' package.
 #' @export
-#'
 #' @examples
 #' tidy()
 
-# no argument function to tidy code in package
+# notice that there is no argument
 tidy = function() {
-
+    
     formatR::tidy_dir("R")
     devtools::document()
-
+    
 }

@@ -13,7 +13,7 @@ ridge(X, y, lam, K = NULL)
 
 \item{lam}{tuning parameter for regularization term}
 
-\item{K}{blah}
+\item{K}{optional K-fold cross validation}
 }
 \value{
 returns the coefficient estimates

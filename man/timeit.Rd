@@ -2,7 +2,7 @@
 % Please edit documentation in R/timeit.R
 \name{timeit}
 \alias{timeit}
-\title{Time function}
+\title{Time-It}
 \usage{
 timeit(f)
 }
@@ -17,7 +17,5 @@ Simple function that prints the computation time of a function
 }
 \examples{
 timeit(lm(dist ~ speed, cars))
-
-
 }
 
