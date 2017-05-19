@@ -1,4 +1,5 @@
-## Matt Galloway From STAT 8054 HW1 assignment problem 4
+## Matt Galloway From STAT 8054 HW1 assignment
+## problem 4
 
 
 #' @title Normal Linear Data Generator
@@ -25,7 +26,8 @@ data_gen = function(n, p, theta, var = 0.5, reps = 200) {
     betas = rnorm(p, 0, sqrt(1/p))
     
     # generate sigma matrix
-    Sigma = matrix(rep(0, (p - 1)^2), ncol = p - 1)
+    Sigma = matrix(rep(0, (p - 1)^2), ncol = p - 
+        1)
     
     for (i in 1:(p - 1)) {
         for (j in 1:(p - 1)) {

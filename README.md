@@ -10,18 +10,20 @@ Overview
 
 -   `tidy()` tidy's R package code and updates documentation
 -   `timeit()` prints the computation time of a function
--   `bsearch()` is a bi-section search algorithm for minimizing a univariate function
+-   `scatter()` creates a scatterplot using ggplot
 -   `dsearch()` is a dichotomous search algorithm for minimizing a univariate function
+-   `bsearch()` is a bi-section search algorithm for minimizing a univariate function
 -   `linearr()` computes the linear regression coefficient estimates (ridge regularization and weights optional)
 -   `predict_linearr()` generates predictions and loss metric for linear regression
 -   `logisticr()` computes the coefficient estimates for logistic regression (ridge and bridge regularization optional)
--   `predict_logisticr()` generates predictions and loss metrics for logistic regression
+-   `predict_logisticr()` generates predictions and loss metrics for logistic
 
 Installation
 ------------
 
+The easiest way to install is from the development version from Github:
+
 ``` r
-# The easiest way to install is from the development version from GitHub:
 # install.packages("devtools")
 devtools::install_github("MGallow/statr")
 ```
@@ -39,6 +41,13 @@ X = dplyr::select(iris, -c(Species, Sepal.Length))
 y = dplyr::select(iris, Sepal.Length)
 y_class = ifelse(dplyr::select(iris, Species) == "setosa", 1, 0)
 
+#plot Sepal.Length v Sepal.Width
+scatter(iris, Sepal.Length, Sepal.Width)
+```
+
+![](README_files/figure-markdown_github/unnamed-chunk-2-1.png)
+
+``` r
 #ridge regression
 linearr(X, y, lam = 0.1)
 ```
@@ -148,6 +157,15 @@ fit
     ## Sepal.Width  5.268013e-06
     ## Petal.Length 9.997899e-06
     ## Petal.Width  3.518574e-06
+
+``` r
+#time bridge logistic regression
+timeit(logisticr(X, y_class, lam = 0.1, alpha = 1.2, penalty = "bridge"))
+```
+
+    ## [1] "using MM algorithm..."
+    ##    user  system elapsed 
+    ##   3.148   0.022   3.195
 
 ``` r
 #predict using bridge logistic regression estimates

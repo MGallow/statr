@@ -28,8 +28,9 @@ If there are any issues/bugs, please let me know: [github](https://github.com/MG
 
 * `tidy()` tidy's R package code and updates documentation
 * `timeit()` prints the computation time of a function
-* `bsearch()` is a bi-section search algorithm for minimizing a univariate function
+* `scatter()` creates a scatterplot using ggplot
 * `dsearch()` is a dichotomous search algorithm for minimizing a univariate function
+* `bsearch()` is a bi-section search algorithm for minimizing a univariate function
 * `linearr()` computes the linear regression coefficient estimates (ridge regularization and weights optional)
 * `predict_linearr()` generates predictions and loss metric for linear regression
 * `logisticr()` computes the coefficient estimates for logistic regression (ridge and bridge regularization optional)
@@ -37,7 +38,7 @@ If there are any issues/bugs, please let me know: [github](https://github.com/MG
 
 # Functions
 
-## timeit
+## `timeit()`
 
 As a simple example, we will time the `lm()` function with the `cars` data set:
 
@@ -49,13 +50,76 @@ timeit(lm(dist ~ speed, data = cars))
 
 ```
 
-## bsearch
+## `scatter()`
 
-## dsearch
+This function simply streamlines the process of creating a scatterplot with ggplot:
 
-## linearr
+```{r message = FALSE}
 
-For the next few examples we will use the `iris` data set:
+#create scatterplot
+scatter(cars, speed, dist)
+
+```
+
+
+## `dsearch()`
+
+`dsearch` is a dichotomous search algorithm that will minimize *univariate strictly pseudoconvex* functions. Let us consider the quadratic function centered at 0:
+
+```{r message = FALSE}
+
+#quadratic
+x = seq(-5, 5, 0.1)
+y = x^2
+data = data.frame(x, y)
+ggplot(data) + geom_line(mapping = aes(x, y, color = "red"), show.legend = FALSE) + ggtitle("y = x^2")
+
+```
+
+The minimum of this function clearly occurs at $x = 0$ but we will confirm that with the `dsearch` function.
+
+```{r message = FALSE}
+
+#first we define the quadratic function
+g = function(x){x^2}
+
+#dsearch
+dsearch(g, -10, 10)
+
+```
+We can see that `dsearch` confirms the minimum occurs at the suggested point.
+
+
+## `bsearch()`
+
+`bsearch` is a bisection search algorithm that works very similarly to `dsearch`. The difference being that `bsearch` will find the *root* of the function -- that is, when the function is equal to zero. Therefore, if we want to again minimize the quadratic function, we need to input the *derivative* of the quadratic function to find its minimum (recall that local minima and maxima occur when the derivative/gradient is equal to zero).
+
+```{r message = FALSE}
+
+#derivative of quadratic
+x = seq(-5, 5, 0.1)
+dy = 2*x
+data = data.frame(x, dy)
+ggplot(data) + geom_line(mapping = aes(x, dy, color = "red"), show.legend = FALSE) + ggtitle("dy = 2x")
+
+```
+
+
+```{r message = FALSE}
+
+#define the derivative of quadratic
+dg = function(x){2*x}
+
+#bsearch
+bsearch(dg, -10, 10)
+
+```
+We can see that `bsearch` confirms the minimum occurs at $x = 0$.
+
+
+## `linearr()`
+
+`linearr` is your classic linear regression function. To illustrate how to use it, we will use the `iris` data set:
 
 ```{r message = FALSE}
 
@@ -65,9 +129,9 @@ y = dplyr::select(iris, Sepal.Length)
 
 ```
 
-Note that the `Sepal.Length` is the response. All other variables will be used as predictors except `Species`.
+Note that for this example `Sepal.Length` is the response and all other variables except `Species` will be used as the response.
 
-Let's perform a simple linear regression:
+Let's perform a simple **linear regression**:
 
 ```{r message = FALSE}
 
@@ -76,7 +140,7 @@ linearr(X, y)
 
 ```
 
-Next, we will try ridge regression. At the moment the only regularization penalty available in the `linearr` function is the ridge penalty -- therefore we only need to specify our tuning parameter `lam`:
+Next, we will try **ridge regression**. At the moment the only regularization penalty available in the `linearr` function is the ridge penalty. Therefore, we only need to specify our tuning parameter `lam`:
 
 ```{r message = FALSE}
 
@@ -85,41 +149,87 @@ linearr(X, y, lam = 0.1)
 
 ```
 
-## predict_linearr
+## `predict_linearr()`
 
-## logisticr
+We will use our linear model fit to generate new predictions:
 
-logistic regression:
+```{r message = FALSE}
 
-ridge logistic regression using IRLS algorithm:
+#ridge regression fit
+fit = linearr(X, y, lam = 0.1)
 
-ridge logistic regression using MM algorithm:
+#predict values for first three flowers in iris data set
+predict_linearr(fit, X[1:3,], y[1:3,])
 
-bridge logistic regression (requires MM algorithm):
+```
 
-## predict_logisticr
+This function will return the fitted values as well as the residual sum squares (RSS) and mean squared error (MSE) for the predictions.
 
+## `logisticr()`
 
-```{r, message = FALSE}
-library(statr)
+`logisticr` is a logistic regression function with optional ridge and bridge regularization penalties. For a refresher on logistic regression, click [here](https://htmlpreview.github.io/?https://github.com/MGallow/logitr/blob/master/Vignette.html#logistic-regression). Also, if you are only interested in linear and logistic regression, I have built a package called [`logitr`](https://github.com/MGallow/logitr) for that reason.
 
-#we will use the iris data set
-X = dplyr::select(iris, -c(Species, Sepal.Length))
-y = dplyr::select(iris, Sepal.Length)
+We will demonstrate the `logisticr` function with various regularization penalties (ridge and bridge) and optimization algorithms (IRLS and MM). For these next few examples, we will use `Species` as the response. If `Species == "setosa"`, then we will denote this as class $1$ -- otherwise we will denote the flower as class $0$.
+
+**Logistic regression**:
+
+```{r message = FALSE}
+
+#create classes
 y_class = ifelse(dplyr::select(iris, Species) == "setosa", 1, 0)
 
-#ridge regression
-linearr(X, y, lam = 0.1)
+#logistic regression
+logisticr(X, y_class)
+
+```
+
+**Ridge logistic regression using IRLS algorithm**:
+
+```{r message = FALSE}
 
 #ridge logistic regression (IRLS)
 logisticr(X, y_class, lam = 0.1, penalty = "ridge")
 
+```
+Note that the function will default to using the IRLS algorithm.
+
+
+**Ridge logistic regression using MM algorithm**:
+
+```{r message = FALSE}
+
 #ridge logistic regression (MM)
 logisticr(X, y_class, lam = 0.1, penalty = "ridge", method = "MM")
 
+```
+
+**Bridge logistic regression (requires MM algorithm)**:
+
+```{r message = FALSE}
+
+#bridge logistic regression
+logisticr(X, y_class, lam = 0.1, alpha = 1.5, penalty = "bridge")
+
+```
+Note that when using the bridge penalty, the function requires the MM algorithm.
+
+How fast is this function?
+
+```{r message = FALSE}
+
+timeit(logisticr(X, y_class, lam = 0.1, alpha = 1.5, penalty = "bridge"))
+
+```
+
+
+## `predict_logisticr()`
+
+We will use one of our logistic regression models to generate new predictions:
+
+```{r, message = FALSE}
+
 #bridge logistic regression (MM)
-fit = logisticr(X, y_class, lam = 0.1, alpha = 1.2, penalty = "bridge")
-fit
+fit = logisticr(X, y_class, lam = 0.1, alpha = 1.5, penalty = "bridge")
 
 #predict using bridge logistic regression estimates
 predict_logisticr(fit, X[1:3,], y_class[1:3])

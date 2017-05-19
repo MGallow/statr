@@ -4,9 +4,11 @@
 \alias{bsearch}
 \title{Bisection search}
 \usage{
-bsearch(df, a, b, L = 1e-07, quiet = FALSE)
+bsearch(dg, a, b, L = 1e-07, quiet = FALSE)
 }
 \arguments{
+\item{dg}{the derivative of the function to minimize, where dg(u, ...) is the function evaluated at u.}
+
 \item{a}{left endpoint of the initial interval of uncertainty.}
 
 \item{b}{right endpoint of the initial interval of uncertainty.}
@@ -14,8 +16,6 @@ bsearch(df, a, b, L = 1e-07, quiet = FALSE)
 \item{L}{the maximum length of the final interval of uncertainty.}
 
 \item{quiet}{should the function stay quiet?}
-
-\item{dg}{the derivative of the function to minimize, where dg(u, ...) is the function evaluated at u.}
 
 \item{...}{additional argument specifications for dg}
 }

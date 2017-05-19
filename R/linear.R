@@ -18,8 +18,8 @@
 #'
 #' gradient_linear(betas, X, y, lam = 0.1)
 
-gradient_linear = function(betas, X, y, lam = 0, weights = NULL, 
-    vec) {
+gradient_linear = function(betas, X, y, lam = 0, 
+    weights = NULL, vec) {
     
     # add intercept, if needed
     if (ncol(X) != nrow(betas)) {
@@ -62,8 +62,8 @@ gradient_linear = function(betas, X, y, lam = 0, weights = NULL,
 
 
 
-linearr = function(X, y, lam = 0, weights = NULL, intercept = TRUE, 
-    kernel = FALSE) {
+linearr = function(X, y, lam = 0, weights = NULL, 
+    intercept = TRUE, kernel = FALSE) {
     
     # checks
     n = dim(X)[1]
@@ -110,7 +110,8 @@ linearr = function(X, y, lam = 0, weights = NULL, intercept = TRUE,
         # SVD
         svd = svd(X.)
         
-        # adjust d vector for regularization and diagonalize
+        # adjust d vector for regularization and
+        # diagonalize
         d_adj = diag(1/(svd$d^2 + lam))
         
         # calculate beta estimates
@@ -124,11 +125,13 @@ linearr = function(X, y, lam = 0, weights = NULL, intercept = TRUE,
         # SVD
         svd = svd(X.)
         
-        # adjust d vector for regularization and diagonalize
+        # adjust d vector for regularization and
+        # diagonalize
         d_adj = diag(svd$d/(svd$d^2 + lam))
         
         # calculate beta estimates
-        betas = svd$v %*% d_adj %*% t(svd$u) %*% y.
+        betas = svd$v %*% d_adj %*% t(svd$u) %*% 
+            y.
         rownames(betas) = NULL
         
     }

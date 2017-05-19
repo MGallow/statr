@@ -36,9 +36,9 @@
 #' logisticr(X, y, lam = 0.1, alpha = 1.5, penalty = 'bridge')
 
 
-logisticr = function(X, y, lam = 0, alpha = 1.5, penalty = "none", 
-    intercept = TRUE, method = "IRLS", tol = 10^(-5), maxit = 10^(5), 
-    vec = NULL) {
+logisticr = function(X, y, lam = 0, alpha = 1.5, 
+    penalty = "none", intercept = TRUE, method = "IRLS", 
+    tol = 10^(-5), maxit = 10^(5), vec = NULL) {
     
     # checks
     n = dim(X)[1]
@@ -61,7 +61,8 @@ logisticr = function(X, y, lam = 0, alpha = 1.5, penalty = "none",
         print("using MM algorithm...")
         method = "MM"
     }
-    if (penalty %in% c("none", "ridge", "bridge") == FALSE) 
+    if (penalty %in% c("none", "ridge", "bridge") == 
+        FALSE) 
         stop("incorrect penalty!")
     if ((penalty != "none") & (lam == 0)) 
         stop("please specify lam!")
@@ -84,8 +85,8 @@ logisticr = function(X, y, lam = 0, alpha = 1.5, penalty = "none",
     if (method == "IRLS") {
         
         # execute IRLS script
-        logistic = IRLS(X, y, lam, intercept, tol, maxit, 
-            vec)
+        logistic = IRLS(X, y, lam, intercept, tol, 
+            maxit, vec)
         if (logistic$total.iterations == maxit) 
             print("Algorithm did not converge...Try MM")
         
@@ -107,11 +108,13 @@ logisticr = function(X, y, lam = 0, alpha = 1.5, penalty = "none",
     
     
     # generate fitted values
-    fit = predict_logisticr(logistic, as.matrix(X), y)
+    fit = predict_logisticr(logistic, as.matrix(X), 
+        y)
     
     returns = list(coefficients = logistic$coefficients, 
         MSE = fit$MSE, log.loss = fit$log.loss, misclassification = fit$misclassification, 
-        total.iterations = logistic$total.iterations, gradient = logistic$gradient)
+        total.iterations = logistic$total.iterations, 
+        gradient = logistic$gradient)
     return(returns)
     
 }

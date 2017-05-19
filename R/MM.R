@@ -15,8 +15,8 @@
 #' @examples
 #' gradient_MM_logistic(betas, X, y, lam = 0.1, alpha = 1.5, penalty = 'bridge')
 
-gradient_MM_logistic = function(betas, X, y, lam = 0, alpha = 1.5, 
-    gamma = 1, vec) {
+gradient_MM_logistic = function(betas, X, y, lam = 0, 
+    alpha = 1.5, gamma = 1, vec) {
     
     # gradient for beta
     t(X) %*% (logitr(X %*% betas) - y) + lam * (gamma * 
@@ -48,10 +48,11 @@ gradient_MM_logistic = function(betas, X, y, lam = 0, alpha = 1.5,
 #' MM(X, y)
 
 
-# calculates the coefficient estimates for logistic
-# regression (MM)
-MM = function(X, y, lam = 0, alpha = 1.5, gamma = 1, intercept = TRUE, 
-    tol = 10^(-5), maxit = 1e+05, vec = NULL) {
+# calculates the coefficient estimates for
+# logistic regression (MM)
+MM = function(X, y, lam = 0, alpha = 1.5, gamma = 1, 
+    intercept = TRUE, tol = 10^(-5), maxit = 1e+05, 
+    vec = NULL) {
     
     # initialize
     n = dim(X)[1]
@@ -61,26 +62,27 @@ MM = function(X, y, lam = 0, alpha = 1.5, gamma = 1, intercept = TRUE,
     delta = 10^(-5)
     betas = as.matrix(rep(0.1, p))/n
     iteration = 1
-    grads = gradient_MM_logistic(betas, X, y, lam, alpha, 
-        gamma, vec)
+    grads = gradient_MM_logistic(betas, X, y, lam, 
+        alpha, gamma, vec)
     Z = t(X) %*% X * (0.25 + delta)
     
     # MM algorithm
-    while ((iteration < maxit) & (max(abs(grads)) > tol)) {
+    while ((iteration < maxit) & (max(abs(grads)) > 
+        tol)) {
         
         # update d vector
         d = as.numeric((betas^2)^(alpha/2 - 1))
         d[1] = 0
         
         # qrsolve
-        betas = qr.solve(Z + lam * diag(gamma * (vec - d) + 
-            d), t(X) %*% (y - logitr(X %*% betas)) + Z %*% 
-            betas)
+        betas = qr.solve(Z + lam * diag(gamma * (vec - 
+            d) + d), t(X) %*% (y - logitr(X %*% betas)) + 
+            Z %*% betas)
         rownames(betas) = NULL
         
         # calculate updated gradients
-        grads = gradient_MM_logistic(betas, X, y, lam, alpha, 
-            gamma, vec)
+        grads = gradient_MM_logistic(betas, X, y, 
+            lam, alpha, gamma, vec)
         iteration = iteration + 1
         
     }

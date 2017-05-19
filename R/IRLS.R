@@ -64,10 +64,10 @@ gradient_IRLS_logistic = function(betas, X, y, lam = 0,
 #' IRLS(X, y, n.list = c(rep(1, n)), lam = 0.1, alpha = 1.5)
 
 
-# calculates the coefficient estimates for logistic
-# regression (IRLS)
-IRLS = function(X, y, lam = 0, intercept = TRUE, tol = 10^(-5), 
-    maxit = 1e+05, vec) {
+# calculates the coefficient estimates for
+# logistic regression (IRLS)
+IRLS = function(X, y, lam = 0, intercept = TRUE, 
+    tol = 10^(-5), maxit = 1e+05, vec) {
     
     # initialize
     n = dim(X)[1]
@@ -77,10 +77,12 @@ IRLS = function(X, y, lam = 0, intercept = TRUE, tol = 10^(-5),
     betas = as.matrix(rep(0.1, p))/n
     weights = rep(1, n)
     iteration = 1
-    grads = gradient_IRLS_logistic(betas, X, y, lam, vec)
+    grads = gradient_IRLS_logistic(betas, X, y, lam, 
+        vec)
     
     # IRLS algorithm
-    while ((iteration < maxit) & (max(abs(grads)) > tol)) {
+    while ((iteration < maxit) & (max(abs(grads)) > 
+        tol)) {
         
         # update working data
         Xb = X %*% betas
@@ -89,12 +91,13 @@ IRLS = function(X, y, lam = 0, intercept = TRUE, tol = 10^(-5),
         z = (y - P)/weights + Xb
         
         # calculate new betas
-        betas = linearr(X = X, y = z, lam = 0.1, weights = weights, 
-            intercept = intercept, kernel = FALSE)$coefficients
+        betas = linearr(X = X, y = z, lam = 0.1, 
+            weights = weights, intercept = intercept, 
+            kernel = FALSE)$coefficients
         
         # calculate updated gradients
-        grads = gradient_IRLS_logistic(betas, X, y, lam, 
-            vec)
+        grads = gradient_IRLS_logistic(betas, X, 
+            y, lam, vec)
         iteration = iteration + 1
     }
     
