@@ -12,7 +12,7 @@
 
 <meta name="author" content="Matt Galloway" />
 
-<meta name="date" content="2017-04-13" />
+<meta name="date" content="2017-05-18" />
 
 <title>statr</title>
 
@@ -70,33 +70,222 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">statr</h1>
 <h4 class="author"><em>Matt Galloway</em></h4>
-<h4 class="date"><em>2017-04-13</em></h4>
+<h4 class="date"><em>2017-05-18</em></h4>
 
 
-
-<div id="documentation-in-progress-longer-version-of-readme" class="section level2">
-<h2>DOCUMENTATION IN PROGRESS (longer version of README)***</h2>
-</div>
-<div id="overview" class="section level2">
-<h2>Overview</h2>
-<p><code>statr</code> is a personal R package that I have created for organizational/convenience purposes. A (possibly incomplete) list of functions contained in the package can be found below:</p>
+<div id="TOC">
 <ul>
-<li><code>ridge()</code> calculate coefficient estimates for ridge (L2)-penalized linear regression</li>
-<li><code>bsearch()</code> is a bi-section search algorithm.</li>
+<li><a href="#installation">Installation</a></li>
+<li><a href="#overview">Overview</a></li>
+<li><a href="#functions">Functions</a><ul>
+<li><a href="#timeit">timeit</a></li>
+<li><a href="#bsearch">bsearch</a></li>
+<li><a href="#dsearch">dsearch</a></li>
+<li><a href="#linearr">linearr</a></li>
+<li><a href="#predict_linearr">predict_linearr</a></li>
+<li><a href="#logisticr">logisticr</a></li>
+<li><a href="#predict_logisticr">predict_logisticr</a></li>
+</ul></li>
 </ul>
 </div>
-<div id="installation" class="section level2">
-<h2>Installation</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># The easiest way to install is from the development version from GitHub:</span>
-<span class="co"># install.packages(&quot;devtools&quot;)</span>
+
+<div id="installation" class="section level1">
+<h1>Installation</h1>
+<p>The easiest way to install is from the development version from Github:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># install.packages(&quot;devtools&quot;)</span>
 devtools::<span class="kw">install_github</span>(<span class="st">&quot;MGallow/statr&quot;</span>)</code></pre></div>
 <p>If there are any issues/bugs, please let me know: <a href="https://github.com/MGallow/statr/issues">github</a>. You can also contact me via my <a href="http://users.stat.umn.edu/~gall0441/">website</a>.</p>
 </div>
-<div id="usage" class="section level2">
-<h2>Usage</h2>
+<div id="overview" class="section level1">
+<h1>Overview</h1>
+<p><code>statr</code> is a personal R package that I have created for organizational/convenience purposes. A (possibly incomplete) list of functions contained in the package can be found below:</p>
+<ul>
+<li><code>tidy()</code> tidy’s R package code and updates documentation</li>
+<li><code>timeit()</code> prints the computation time of a function</li>
+<li><code>bsearch()</code> is a bi-section search algorithm for minimizing a univariate function</li>
+<li><code>dsearch()</code> is a dichotomous search algorithm for minimizing a univariate function</li>
+<li><code>linearr()</code> computes the linear regression coefficient estimates (ridge regularization and weights optional)</li>
+<li><code>predict_linearr()</code> generates predictions and loss metric for linear regression</li>
+<li><code>logisticr()</code> computes the coefficient estimates for logistic regression (ridge and bridge regularization optional)</li>
+<li><code>predict_logisticr()</code> generates predictions and loss metrics for logistic regression</li>
+</ul>
+</div>
+<div id="functions" class="section level1">
+<h1>Functions</h1>
+<div id="timeit" class="section level2">
+<h2>timeit</h2>
+<p>As a simple example we will time the <code>lm()</code> with the <code>cars</code> data set:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(statr)
 
-<span class="co">#IN PROGRESS</span></code></pre></div>
+<span class="co">#time lm()</span>
+<span class="kw">timeit</span>(<span class="kw">lm</span>(dist ~<span class="st"> </span>speed, <span class="dt">data =</span> cars))</code></pre></div>
+<pre><code>##    user  system elapsed 
+##   0.004   0.001   0.006</code></pre>
+</div>
+<div id="bsearch" class="section level2">
+<h2>bsearch</h2>
+</div>
+<div id="dsearch" class="section level2">
+<h2>dsearch</h2>
+</div>
+<div id="linearr" class="section level2">
+<h2>linearr</h2>
+<p>For the next few examples we will use the <code>iris</code> data set:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#iris data set</span>
+X =<span class="st"> </span>dplyr::<span class="kw">select</span>(iris, -<span class="kw">c</span>(Species, Sepal.Length))
+y =<span class="st"> </span>dplyr::<span class="kw">select</span>(iris, Sepal.Length)</code></pre></div>
+<p>Let’s perform a simple linear regression: Note that the <code>Sepal.Length</code> is the response. All other variables will be used as predictors except <code>Species</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#linear regression</span>
+<span class="kw">linearr</span>(X, y)</code></pre></div>
+<pre><code>## $coefficients
+##           Sepal.Length
+## intercept    1.8559975
+##              0.6508372
+##              0.7091320
+##             -0.5564827</code></pre>
+<p>Next, we will try ridge regression. At the moment the only regularization penalty available in the <code>linearr</code> function is the ridge penalty – therefore we only need to specify our tuning parameter <code>lam</code>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#ridge regression (set lam = 0.1)</span>
+<span class="kw">linearr</span>(X, y, <span class="dt">lam =</span> <span class="fl">0.1</span>)</code></pre></div>
+<pre><code>## $coefficients
+##           Sepal.Length
+## intercept    1.8778524
+##              0.6462400
+##              0.7023063
+##             -0.5415988</code></pre>
+</div>
+<div id="predict_linearr" class="section level2">
+<h2>predict_linearr</h2>
+</div>
+<div id="logisticr" class="section level2">
+<h2>logisticr</h2>
+<p>logistic regression:</p>
+<p>ridge logistic regression using IRLS algorithm:</p>
+<p>ridge logistic regression using MM algorithm:</p>
+<p>bridge logistic regression (requires MM algorithm):</p>
+</div>
+<div id="predict_logisticr" class="section level2">
+<h2>predict_logisticr</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(statr)
+
+<span class="co">#we will use the iris data set</span>
+X =<span class="st"> </span>dplyr::<span class="kw">select</span>(iris, -<span class="kw">c</span>(Species, Sepal.Length))
+y =<span class="st"> </span>dplyr::<span class="kw">select</span>(iris, Sepal.Length)
+y_class =<span class="st"> </span><span class="kw">ifelse</span>(dplyr::<span class="kw">select</span>(iris, Species) ==<span class="st"> &quot;setosa&quot;</span>, <span class="dv">1</span>, <span class="dv">0</span>)
+
+<span class="co">#ridge regression</span>
+<span class="kw">linearr</span>(X, y, <span class="dt">lam =</span> <span class="fl">0.1</span>)</code></pre></div>
+<pre><code>## $coefficients
+##           Sepal.Length
+## intercept    1.8778524
+##              0.6462400
+##              0.7023063
+##             -0.5415988</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#ridge logistic regression (IRLS)</span>
+<span class="kw">logisticr</span>(X, y_class, <span class="dt">lam =</span> <span class="fl">0.1</span>, <span class="dt">penalty =</span> <span class="st">&quot;ridge&quot;</span>)</code></pre></div>
+<pre><code>## $coefficients
+##             Species
+## intercept  6.276283
+##            1.540809
+##           -3.641782
+##           -1.630507
+## 
+## $MSE
+## [1] 5.13471e-05
+## 
+## $log.loss
+## [1] 0.3956525
+## 
+## $misclassification
+## [1] 0
+## 
+## $total.iterations
+## [1] 11
+## 
+## $gradient
+##                   Species
+## 1            4.536556e-11
+## Sepal.Width  1.175443e-10
+## Petal.Length 1.671456e-10
+## Petal.Width  5.304082e-11</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#ridge logistic regression (MM)</span>
+<span class="kw">logisticr</span>(X, y_class, <span class="dt">lam =</span> <span class="fl">0.1</span>, <span class="dt">penalty =</span> <span class="st">&quot;ridge&quot;</span>, <span class="dt">method =</span> <span class="st">&quot;MM&quot;</span>)</code></pre></div>
+<pre><code>## $coefficients
+##                [,1]
+## intercept  6.276226
+##            1.540818
+##           -3.641769
+##           -1.630502
+## 
+## $MSE
+## [1] 5.134801e-05
+## 
+## $log.loss
+## [1] 0.3956563
+## 
+## $misclassification
+## [1] 0
+## 
+## $total.iterations
+## [1] 5459
+## 
+## $gradient
+##                   Species
+## 1            1.831809e-06
+## Sepal.Width  5.390560e-06
+## Petal.Length 9.993386e-06
+## Petal.Width  3.516598e-06</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#bridge logistic regression (MM)</span>
+fit =<span class="st"> </span><span class="kw">logisticr</span>(X, y_class, <span class="dt">lam =</span> <span class="fl">0.1</span>, <span class="dt">alpha =</span> <span class="fl">1.2</span>, <span class="dt">penalty =</span> <span class="st">&quot;bridge&quot;</span>)</code></pre></div>
+<pre><code>## [1] &quot;using MM algorithm...&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fit</code></pre></div>
+<pre><code>## $coefficients
+##                 [,1]
+## intercept 13.0803079
+##            0.6170122
+##           -5.7168400
+##           -0.2300421
+## 
+## $MSE
+## [1] 2.749702e-05
+## 
+## $log.loss
+## [1] 0.1878654
+## 
+## $misclassification
+## [1] 0
+## 
+## $total.iterations
+## [1] 26021
+## 
+## $gradient
+##                   Species
+## 1            1.790043e-06
+## Sepal.Width  5.268013e-06
+## Petal.Length 9.997899e-06
+## Petal.Width  3.518574e-06</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#predict using bridge logistic regression estimates</span>
+<span class="kw">predict_logisticr</span>(fit, X[<span class="dv">1</span>:<span class="dv">3</span>,], y_class[<span class="dv">1</span>:<span class="dv">3</span>])</code></pre></div>
+<pre><code>## $fitted.values
+##        [,1]
+## 1 0.9992467
+## 2 0.9989747
+## 3 0.9994881
+## 
+## $class
+##   [,1]
+## 1    1
+## 2    1
+## 3    1
+## 
+## $MSE
+## [1] 6.269174e-07
+## 
+## $log.loss
+## [1] 0.002291457
+## 
+## $misclassification
+## [1] 0</code></pre>
+</div>
 </div>
 
 

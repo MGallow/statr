@@ -4,7 +4,7 @@ Title: Matt Galloway Personal R Package
 Version: 0.1.0
 Authors@R: person("Matt", "Galloway", email = "gall0441@umn.edu",
                   role = c("aut", "cre"))
-Description: This is a personal R package. It contains a number of various R statistics functions for organization and convenience purposes.
+Description: This is a personal R package. It contains a number of various R functions for organization and convenience purposes.
 URL: https://github.com/MGallow/statr
 BugReports: https://github.com/MGallow/statr/issues
 License: MIT + file LICENSE

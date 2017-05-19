@@ -2,7 +2,7 @@
 
 
 #' @title Tidy
-#' @description It tidys package R code and updates package documentation. Directly uses Yihui Xie's 'formatR' package.
+#' @description tidys package R code and updates package documentation. Directly uses Yihui Xie's 'formatR' package.
 #' @export
 #' @examples
 #' tidy()
