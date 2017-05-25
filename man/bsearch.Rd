@@ -28,4 +28,3 @@ Minimizes a univariate strictly pseudoconvex function over the interval [a, b]. 
 \examples{
 bsearch(dg, -10, 10, quiet = T)
 }
-

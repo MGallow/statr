@@ -28,4 +28,3 @@ Y is then generated using the X = (1, X_{-1}) and true beta values with an iid e
 \examples{
 data_gen(1000, 10, 0.5)
 }
-

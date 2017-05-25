@@ -65,7 +65,7 @@ logisticr(X, y_class, lam = 0.1, penalty = "ridge")
 ```
 
     ## $coefficients
-    ##             Species
+    ##                [,1]
     ## intercept  6.276283
     ##            1.540809
     ##           -3.641782
@@ -84,11 +84,11 @@ logisticr(X, y_class, lam = 0.1, penalty = "ridge")
     ## [1] 11
     ## 
     ## $gradient
-    ##                   Species
-    ## 1            4.536556e-11
-    ## Sepal.Width  1.175443e-10
-    ## Petal.Length 1.671456e-10
-    ## Petal.Width  5.304082e-11
+    ##                   [,1]
+    ## intercept 4.536561e-11
+    ##           1.175446e-10
+    ##           1.671454e-10
+    ##           5.304043e-11
 
 ``` r
 #ridge logistic regression (MM)
@@ -115,11 +115,11 @@ logisticr(X, y_class, lam = 0.1, penalty = "ridge", method = "MM")
     ## [1] 5459
     ## 
     ## $gradient
-    ##                   Species
-    ## 1            1.831809e-06
-    ## Sepal.Width  5.390560e-06
-    ## Petal.Length 9.993386e-06
-    ## Petal.Width  3.516598e-06
+    ##                   [,1]
+    ## intercept 1.831808e-06
+    ##           5.390560e-06
+    ##           9.993386e-06
+    ##           3.516598e-06
 
 ``` r
 #bridge logistic regression (MM)
@@ -152,11 +152,11 @@ fit
     ## [1] 26021
     ## 
     ## $gradient
-    ##                   Species
-    ## 1            1.790043e-06
-    ## Sepal.Width  5.268013e-06
-    ## Petal.Length 9.997899e-06
-    ## Petal.Width  3.518574e-06
+    ##                   [,1]
+    ## intercept 1.790042e-06
+    ##           5.268013e-06
+    ##           9.997899e-06
+    ##           3.518574e-06
 
 ``` r
 #time bridge logistic regression
@@ -164,8 +164,9 @@ timeit(logisticr(X, y_class, lam = 0.1, alpha = 1.2, penalty = "bridge"))
 ```
 
     ## [1] "using MM algorithm..."
+
     ##    user  system elapsed 
-    ##   3.148   0.022   3.195
+    ##   0.251   0.001   0.254
 
 ``` r
 #predict using bridge logistic regression estimates

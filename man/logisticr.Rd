@@ -6,7 +6,7 @@
 \usage{
 logisticr(X, y, lam = 0, alpha = 1.5, penalty = "none",
   intercept = TRUE, method = "IRLS", tol = 10^(-5), maxit = 10^(5),
-  vec = NULL)
+  vec = NULL, lang = "cpp")
 }
 \arguments{
 \item{X}{matrix or data frame}
@@ -28,6 +28,8 @@ logisticr(X, y, lam = 0, alpha = 1.5, penalty = "none",
 \item{maxit}{maximum iterations. Defaults to 10^5}
 
 \item{vec}{optional vector to specify which coefficients will be penalized}
+
+\item{lang}{language - choose from c('cpp', 'r'). Defaults to 'cpp'}
 }
 \value{
 returns beta estimates (includes intercept), total iterations, and gradients.
@@ -53,4 +55,3 @@ bridge Logistic Regression
 (Defaults to MM -- IRLS will return error)
 logisticr(X, y, lam = 0.1, alpha = 1.5, penalty = 'bridge')
 }
-

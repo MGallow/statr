@@ -183,6 +183,22 @@ logisticr(X, y_class)
 
 ```
 
+This package has been updated so that the source code is written in c++ for computational gain -- which will be the default. We still have the option to use R if we like:
+
+```{r message = FALSE}
+
+#logistic regression in R
+logisticr(X, y_class, lang = "r")
+
+#time for R
+timeit(logisticr(X, y_class, lang = "r"))
+
+#time for cpp
+timeit(logisticr(X, y_class))
+
+```
+
+
 **Ridge logistic regression using IRLS algorithm**:
 
 ```{r message = FALSE}
@@ -217,7 +233,11 @@ How fast is this function?
 
 ```{r message = FALSE}
 
+#time for cpp
 timeit(logisticr(X, y_class, lam = 0.1, alpha = 1.5, penalty = "bridge"))
+
+#time for R
+timeit(logisticr(X, y_class, lam = 0.1, alpha = 1.5, penalty = "bridge", lang = "r"))
 
 ```
 

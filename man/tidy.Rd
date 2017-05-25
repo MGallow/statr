@@ -12,4 +12,3 @@ tidys package R code and updates package documentation. Directly uses Yihui Xie'
 \examples{
 tidy()
 }
-

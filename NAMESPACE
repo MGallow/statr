@@ -3,6 +3,7 @@
 export(bsearch)
 export(data_gen)
 export(dsearch)
+export(linearc)
 export(linearr)
 export(logisticr)
 export(predict_linearr)

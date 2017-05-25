@@ -22,4 +22,3 @@ This function simply streamlines the process of creating a scatterplot with ggpl
 \examples{
 scatter(iris, Sepal.Length, Sepal.Width)
 }
-

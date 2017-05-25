@@ -29,4 +29,3 @@ Computes the gradient of linear regression (optional ridge regularization term).
 
 gradient_linear(betas, X, y, lam = 0.1)
 }
-

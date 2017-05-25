@@ -18,4 +18,3 @@ Simple function that prints the computation time of a function
 \examples{
 timeit(lm(dist ~ speed, cars))
 }
-

@@ -1,5 +1,5 @@
-## Matt Galloway Augmented from Adam Rothman's
-## STAT 8054 code
+## Matt Galloway Augmented from Adam Rothman's STAT 8054
+## code
 
 
 #' @title Bisection search
@@ -32,15 +32,15 @@ bsearch = function(dg, a, b, L = 1e-07, quiet = FALSE) {
         # if gradient less than 0...
         if (dgm < 0) {
             
-            # function is decreasing at est ## new interval
-            # is [est, b]
+            # function is decreasing at est ## new interval is [est,
+            # b]
             a = est
             
             # if gradient great than 0...
         } else if (dgm > 0) {
             
-            # function is increasing at est ## new interval
-            # is [a, mm]
+            # function is increasing at est ## new interval is [a,
+            # mm]
             b = est
             
             # if gradient equal to 0...
@@ -85,8 +85,7 @@ bsearch = function(dg, a, b, L = 1e-07, quiet = FALSE) {
 
 
 
-dsearch = function(g, a, b, L = 1e-07, eps = (L/2.1), 
-    quiet = FALSE) {
+dsearch = function(g, a, b, L = 1e-07, eps = (L/2.1), quiet = FALSE) {
     
     # initial estimate
     est = mean(c(a, b))

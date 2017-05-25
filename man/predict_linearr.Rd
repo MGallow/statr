@@ -24,4 +24,3 @@ Generates prediction for linear regression. Note that one can either input a 'li
 fitted = linearr(X, y, lam = 0.1)
 predict_linearr(fitted, X)
 }
-

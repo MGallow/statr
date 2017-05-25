@@ -9,7 +9,6 @@ knitr::opts_chunk$set(echo = TRUE)
 
 Alternatively, check out the [vignette](https://htmlpreview.github.io/?https://github.com/MGallow/statr/blob/master/Vignette.html) or [manual](https://github.com/MGallow/statr/blob/master/statr.pdf).
 
-
 ## Overview
 
 `statr` is a personal R package that I have created for organizational/convenience purposes. A (possibly incomplete) list of functions contained in the package can be found below:

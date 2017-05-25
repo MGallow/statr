@@ -67,7 +67,7 @@ y_class =<span class="st"> </span><span class="kw">ifelse</span>(dplyr::<span cl
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#ridge logistic regression (IRLS)</span>
 <span class="kw">logisticr</span>(X, y_class, <span class="dt">lam =</span> <span class="fl">0.1</span>, <span class="dt">penalty =</span> <span class="st">&quot;ridge&quot;</span>)</code></pre></div>
 <pre><code>## $coefficients
-##             Species
+##                [,1]
 ## intercept  6.276283
 ##            1.540809
 ##           -3.641782
@@ -86,11 +86,11 @@ y_class =<span class="st"> </span><span class="kw">ifelse</span>(dplyr::<span cl
 ## [1] 11
 ## 
 ## $gradient
-##                   Species
-## 1            4.536556e-11
-## Sepal.Width  1.175443e-10
-## Petal.Length 1.671456e-10
-## Petal.Width  5.304082e-11</code></pre>
+##                   [,1]
+## intercept 4.536561e-11
+##           1.175446e-10
+##           1.671454e-10
+##           5.304043e-11</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#ridge logistic regression (MM)</span>
 <span class="kw">logisticr</span>(X, y_class, <span class="dt">lam =</span> <span class="fl">0.1</span>, <span class="dt">penalty =</span> <span class="st">&quot;ridge&quot;</span>, <span class="dt">method =</span> <span class="st">&quot;MM&quot;</span>)</code></pre></div>
 <pre><code>## $coefficients
@@ -113,11 +113,11 @@ y_class =<span class="st"> </span><span class="kw">ifelse</span>(dplyr::<span cl
 ## [1] 5459
 ## 
 ## $gradient
-##                   Species
-## 1            1.831809e-06
-## Sepal.Width  5.390560e-06
-## Petal.Length 9.993386e-06
-## Petal.Width  3.516598e-06</code></pre>
+##                   [,1]
+## intercept 1.831808e-06
+##           5.390560e-06
+##           9.993386e-06
+##           3.516598e-06</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#bridge logistic regression (MM)</span>
 fit =<span class="st"> </span><span class="kw">logisticr</span>(X, y_class, <span class="dt">lam =</span> <span class="fl">0.1</span>, <span class="dt">alpha =</span> <span class="fl">1.2</span>, <span class="dt">penalty =</span> <span class="st">&quot;bridge&quot;</span>)</code></pre></div>
 <pre><code>## [1] &quot;using MM algorithm...&quot;</code></pre>
@@ -142,16 +142,17 @@ fit =<span class="st"> </span><span class="kw">logisticr</span>(X, y_class, <spa
 ## [1] 26021
 ## 
 ## $gradient
-##                   Species
-## 1            1.790043e-06
-## Sepal.Width  5.268013e-06
-## Petal.Length 9.997899e-06
-## Petal.Width  3.518574e-06</code></pre>
+##                   [,1]
+## intercept 1.790042e-06
+##           5.268013e-06
+##           9.997899e-06
+##           3.518574e-06</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#time bridge logistic regression</span>
 <span class="kw">timeit</span>(<span class="kw">logisticr</span>(X, y_class, <span class="dt">lam =</span> <span class="fl">0.1</span>, <span class="dt">alpha =</span> <span class="fl">1.2</span>, <span class="dt">penalty =</span> <span class="st">&quot;bridge&quot;</span>))</code></pre></div>
 <pre><code>## [1] &quot;using MM algorithm...&quot;
+
 ##    user  system elapsed 
-##   3.148   0.022   3.195</code></pre>
+##   0.251   0.001   0.254</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#predict using bridge logistic regression estimates</span>
 <span class="kw">predict_logisticr</span>(fit, X[<span class="dv">1</span>:<span class="dv">3</span>,], y_class[<span class="dv">1</span>:<span class="dv">3</span>])</code></pre></div>
 <pre><code>## $fitted.values

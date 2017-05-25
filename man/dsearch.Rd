@@ -30,4 +30,3 @@ Minimizes a univariate strictly quasiconvex function over the interval [a, b]. T
 \examples{
 dsearch(g, -10, 10, quiet = T)
 }
-

@@ -12,13 +12,7 @@
 
 timeit = function(f) {
     
-    # set start time
-    start = proc.time()
-    
-    # function to time
-    fun = f
-    
-    # print elapsed time
-    print(proc.time() - start)
+    # time function
+    system.time(f)
     
 }

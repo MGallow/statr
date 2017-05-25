@@ -24,4 +24,3 @@ Generates prediction for logistic regression. Note that one can either input a '
 fitted = logisticr(X, y, lam = 0.1, penalty = 'ridge', method = 'MM')
 predict_logisticr(fitted, X)
 }
-

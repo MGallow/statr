@@ -12,7 +12,7 @@
 
 <meta name="author" content="Matt Galloway" />
 
-<meta name="date" content="2017-05-19" />
+<meta name="date" content="2017-05-25" />
 
 <title>statr</title>
 
@@ -70,7 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">statr</h1>
 <h4 class="author"><em>Matt Galloway</em></h4>
-<h4 class="date"><em>2017-05-19</em></h4>
+<h4 class="date"><em>2017-05-25</em></h4>
 
 
 <div id="TOC">
@@ -122,7 +122,7 @@ devtools::<span class="kw">install_github</span>(<span class="st">&quot;MGallow/
 <span class="co">#time lm()</span>
 <span class="kw">timeit</span>(<span class="kw">lm</span>(dist ~<span class="st"> </span>speed, <span class="dt">data =</span> cars))</code></pre></div>
 <pre><code>##    user  system elapsed 
-##   0.001   0.000   0.002</code></pre>
+##   0.002   0.000   0.003</code></pre>
 </div>
 <div id="scatter" class="section level2">
 <h2><code>scatter()</code></h2>
@@ -225,37 +225,72 @@ y_class =<span class="st"> </span><span class="kw">ifelse</span>(dplyr::<span cl
 
 <span class="co">#logistic regression</span>
 <span class="kw">logisticr</span>(X, y_class)</code></pre></div>
-<pre><code>## [1] &quot;Algorithm did not converge...Try MM&quot;</code></pre>
 <pre><code>## $coefficients
-##             Species
-## intercept  6.276283
-##            1.540809
-##           -3.641782
-##           -1.630507
+##                 [,1]
+## intercept   7.885352
+##             8.894847
+##            -7.548629
+##           -18.604247
 ## 
 ## $MSE
-## [1] 5.13471e-05
+## [1] 8.0815e-14
 ## 
 ## $log.loss
-## [1] 0.3956525
+## [1] 6.929591e-06
 ## 
 ## $misclassification
 ## [1] 0
 ## 
 ## $total.iterations
-## [1] 1e+05
+## [1] 18
 ## 
 ## $gradient
-##                    Species
-## 1             8.099736e-16
-## Sepal.Width  -1.540809e-01
-## Petal.Length  3.641782e-01
-## Petal.Width   1.630507e-01</code></pre>
+##                   [,1]
+## intercept 1.240583e-06
+##           3.160471e-06
+##           9.143271e-06
+##           3.372886e-06</code></pre>
+<p>This package has been updated so that the source code is written in c++ for computational gain – which will be the default. We still have the option to use R if we like:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#logistic regression in R</span>
+<span class="kw">logisticr</span>(X, y_class, <span class="dt">lang =</span> <span class="st">&quot;r&quot;</span>)</code></pre></div>
+<pre><code>## $coefficients
+##                 [,1]
+## intercept   7.885352
+##             8.894847
+##            -7.548629
+##           -18.604247
+## 
+## $MSE
+## [1] 8.0815e-14
+## 
+## $log.loss
+## [1] 6.929591e-06
+## 
+## $misclassification
+## [1] 0
+## 
+## $total.iterations
+## [1] 18
+## 
+## $gradient
+##                      [,1]
+## intercept    1.240583e-06
+## Sepal.Width  3.160471e-06
+## Petal.Length 9.143271e-06
+## Petal.Width  3.372886e-06</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#time for R</span>
+<span class="kw">timeit</span>(<span class="kw">logisticr</span>(X, y_class, <span class="dt">lang =</span> <span class="st">&quot;r&quot;</span>))</code></pre></div>
+<pre><code>##    user  system elapsed 
+##   0.005   0.001   0.006</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#time for cpp</span>
+<span class="kw">timeit</span>(<span class="kw">logisticr</span>(X, y_class))</code></pre></div>
+<pre><code>##    user  system elapsed 
+##   0.001   0.000   0.000</code></pre>
 <p><strong>Ridge logistic regression using IRLS algorithm</strong>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#ridge logistic regression (IRLS)</span>
 <span class="kw">logisticr</span>(X, y_class, <span class="dt">lam =</span> <span class="fl">0.1</span>, <span class="dt">penalty =</span> <span class="st">&quot;ridge&quot;</span>)</code></pre></div>
 <pre><code>## $coefficients
-##             Species
+##                [,1]
 ## intercept  6.276283
 ##            1.540809
 ##           -3.641782
@@ -274,11 +309,11 @@ y_class =<span class="st"> </span><span class="kw">ifelse</span>(dplyr::<span cl
 ## [1] 11
 ## 
 ## $gradient
-##                   Species
-## 1            4.536556e-11
-## Sepal.Width  1.175443e-10
-## Petal.Length 1.671456e-10
-## Petal.Width  5.304082e-11</code></pre>
+##                   [,1]
+## intercept 4.536561e-11
+##           1.175446e-10
+##           1.671454e-10
+##           5.304043e-11</code></pre>
 <p>Note that the function will default to using the IRLS algorithm.</p>
 <p><strong>Ridge logistic regression using MM algorithm</strong>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#ridge logistic regression (MM)</span>
@@ -303,11 +338,11 @@ y_class =<span class="st"> </span><span class="kw">ifelse</span>(dplyr::<span cl
 ## [1] 5459
 ## 
 ## $gradient
-##                   Species
-## 1            1.831809e-06
-## Sepal.Width  5.390560e-06
-## Petal.Length 9.993386e-06
-## Petal.Width  3.516598e-06</code></pre>
+##                   [,1]
+## intercept 1.831808e-06
+##           5.390560e-06
+##           9.993386e-06
+##           3.516598e-06</code></pre>
 <p><strong>Bridge logistic regression (requires MM algorithm)</strong>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#bridge logistic regression</span>
 <span class="kw">logisticr</span>(X, y_class, <span class="dt">lam =</span> <span class="fl">0.1</span>, <span class="dt">alpha =</span> <span class="fl">1.5</span>, <span class="dt">penalty =</span> <span class="st">&quot;bridge&quot;</span>)</code></pre></div>
@@ -332,17 +367,23 @@ y_class =<span class="st"> </span><span class="kw">ifelse</span>(dplyr::<span cl
 ## [1] 12487
 ## 
 ## $gradient
-##                   Species
-## 1            1.816675e-06
-## Sepal.Width  5.358056e-06
-## Petal.Length 9.999843e-06
-## Petal.Width  3.516834e-06</code></pre>
+##                   [,1]
+## intercept 1.816675e-06
+##           5.358057e-06
+##           9.999843e-06
+##           3.516834e-06</code></pre>
 <p>Note that when using the bridge penalty, the function requires the MM algorithm.</p>
 <p>How fast is this function?</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">timeit</span>(<span class="kw">logisticr</span>(X, y_class, <span class="dt">lam =</span> <span class="fl">0.1</span>, <span class="dt">alpha =</span> <span class="fl">1.5</span>, <span class="dt">penalty =</span> <span class="st">&quot;bridge&quot;</span>))</code></pre></div>
-<pre><code>## [1] &quot;using MM algorithm...&quot;
-##    user  system elapsed 
-##   1.543   0.012   1.573</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#time for cpp</span>
+<span class="kw">timeit</span>(<span class="kw">logisticr</span>(X, y_class, <span class="dt">lam =</span> <span class="fl">0.1</span>, <span class="dt">alpha =</span> <span class="fl">1.5</span>, <span class="dt">penalty =</span> <span class="st">&quot;bridge&quot;</span>))</code></pre></div>
+<pre><code>## [1] &quot;using MM algorithm...&quot;</code></pre>
+<pre><code>##    user  system elapsed 
+##   0.128   0.000   0.129</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#time for R</span>
+<span class="kw">timeit</span>(<span class="kw">logisticr</span>(X, y_class, <span class="dt">lam =</span> <span class="fl">0.1</span>, <span class="dt">alpha =</span> <span class="fl">1.5</span>, <span class="dt">penalty =</span> <span class="st">&quot;bridge&quot;</span>, <span class="dt">lang =</span> <span class="st">&quot;r&quot;</span>))</code></pre></div>
+<pre><code>## [1] &quot;using MM algorithm...&quot;</code></pre>
+<pre><code>##    user  system elapsed 
+##   1.736   0.015   1.758</code></pre>
 </div>
 <div id="predict_logisticr" class="section level2">
 <h2><code>predict_logisticr()</code></h2>
