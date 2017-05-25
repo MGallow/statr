@@ -166,7 +166,7 @@ timeit(logisticr(X, y_class, lam = 0.1, alpha = 1.2, penalty = "bridge"))
     ## [1] "using MM algorithm..."
 
     ##    user  system elapsed 
-    ##   0.251   0.001   0.254
+    ##   0.250   0.001   0.253
 
 ``` r
 #predict using bridge logistic regression estimates
