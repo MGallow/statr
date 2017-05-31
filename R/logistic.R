@@ -15,7 +15,6 @@
 #' @param method optimization algorithm. Choose from 'IRLS' or 'MM'. Defaults to 'IRLS'
 #' @param tol tolerance - used to determine algorithm convergence. Defaults to 10^-5
 #' @param maxit maximum iterations. Defaults to 10^5
-#' @param lang language - choose from c('cpp', 'r'). Defaults to 'cpp'
 #' @return returns beta estimates (includes intercept), total iterations, and gradients.
 #' @export
 #' @examples
@@ -38,8 +37,8 @@
 
 
 logisticr = function(X, y, lam = 0, alpha = 1.5, penalty = "none", 
-    intercept = TRUE, method = "IRLS", tol = 10^(-5), maxit = 10^(5), 
-    vec = NULL, lang = "cpp") {
+    intercept = TRUE, method = "IRLS", tol = 1e-05, maxit = 1e+05, 
+    vec = NULL) {
     
     # checks
     n = dim(X)[1]
@@ -54,13 +53,11 @@ logisticr = function(X, y, lam = 0, alpha = 1.5, penalty = "none",
     }
     if ((alpha >= 2 | alpha <= 1)) 
         stop("alpha must be between 1 and 2!")
-    if (length(lam) > 1) 
-        stop("lam must be a scalar!")
-    if (lam < 0) 
+    if (all(lam >= 0) == FALSE) 
         stop("lam must be nonnegative!")
-    if ((lam > 0) & (penalty == "none")) 
+    if (!all(lam == 0) & (penalty == "none")) 
         stop("please specify penalty!")
-    if ((lam == 0) & (penalty != "none")) 
+    if (all(lam == 0) & (penalty != "none")) 
         print("No penalty used: lam = 0")
     if ((penalty == "bridge") & (method != "MM")) {
         print("using MM algorithm...")
@@ -83,55 +80,11 @@ logisticr = function(X, y, lam = 0, alpha = 1.5, penalty = "none",
     }
     if (method %in% c("IRLS", "MM") == FALSE) 
         stop("incorrect method!")
-    if (lang %in% c("cpp", "r") == FALSE) 
-        stop("incorrect language!")
     
     
-    # if IRLS algorithm...
-    if (method == "IRLS") {
-        
-        # if language cpp...
-        if (lang == "cpp") {
-            # execute IRLS script
-            logistic = IRLSc(X, y, lam, intercept, tol, maxit, 
-                vec_)
-            if (logistic$total.iterations == maxit) 
-                print("Algorithm did not converge...Try MM")
-        }
-        
-        # if language r...
-        if (lang == "r") {
-            # execute IRLS script
-            logistic = IRLS(X, y, lam, intercept, tol, maxit, 
-                vec_)
-            if (logistic$total.iterations == maxit) 
-                print("Algorithm did not converge...Try MM")
-        }
-    }
-    
-    # if MM algorithm...
-    if (method == "MM") {
-        
-        # change gamma parameter, if needed
-        gamma = ifelse(penalty == "bridge", 0, 1)
-        
-        if (lang == "cpp") {
-            # execute MM script
-            logistic = MMc(X, y, lam, alpha, gamma, intercept, 
-                tol, maxit, vec_)
-            if (logistic$total.iterations == maxit) 
-                print("Algorithm did not converge...Try IRLS")
-        }
-        
-        if (lang == "r") {
-            # execute MM script
-            logistic = MM(X, y, lam, alpha, gamma, intercept, 
-                tol, maxit, vec_)
-            if (logistic$total.iterations == maxit) 
-                print("Algorithm did not converge...Try IRLS")
-        }
-    }
-    
+    # execute logisticc
+    logistic = logisticc(X, y, lam, alpha, penalty, intercept, 
+        method, tol, maxit, vec_)
     
     # add intercept name, if needed
     betas = logistic$coefficients

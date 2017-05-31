@@ -17,7 +17,10 @@ Imports: Rcpp (>= 0.12.10),
     MASS,
     alr4,
     formatR,
-    devtools
+    devtools,
+    RcppParallel
 LinkingTo: Rcpp,
-    RcppArmadillo
+    RcppArmadillo,
+    RcppParallel
 Suggests: testthat
+SystemRequirements: GNU make

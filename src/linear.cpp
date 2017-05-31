@@ -5,6 +5,46 @@
 
 using namespace Rcpp;
 
+//' @title Gradient of Linear Regression (c++)
+//' @description Computes the gradient of linear regression (optional ridge regularization term). This function is to be used with the 'Linearr' function.
+//'
+//' @param beta estimates (includes intercept)
+//' @param X matrix or data frame
+//' @param y response vector of 0,1
+//' @param lam tuning parameter for ridge regularization term
+//' @param weights option vector of weights for weighted least squares
+//' @param vec vector to specify which coefficients will be penalized
+//' @return returns the gradient
+//' @examples
+//' gradient_linearc(betas, X, y, lam = 0.1)
+//'
+// [[Rcpp::export]]
+arma::colvec gradient_linearc(const arma::colvec& betas, const arma::mat& X, const arma::colvec& y, double lam = 0, const arma::colvec& weights = 0, bool intercept = true) {
+
+  // do not penalize intercept
+  arma::mat X_ = X;
+  int n = X_.n_rows, p = X_.n_cols;
+  arma::colvec vec = arma::ones<arma::colvec>(p);
+
+  // add intercept, if needed
+  if (intercept){
+    if (p != betas.n_cols){
+      arma::colvec X1 = arma::ones<arma::colvec>(n);
+      X_.insert_cols(0, X1);
+    }
+    vec.insert_rows(0, arma::zeros<arma::colvec>(1));
+  }
+
+  // gradient for beta
+  return -arma::trans(X_) * arma::diagmat(weights) * y + arma::trans(X_) * arma::diagmat(weights) * X_ * betas + lam * vec % betas;
+
+}
+
+
+
+//--------------------------------------------------------------------------------------------
+
+
 //' @title Linearc (c++)
 //' @description Computes the linear regression coefficient estimates (ridge-penalization and weights, optional)
 //' @param X matrix
@@ -34,16 +74,13 @@ List linearc(const arma::mat& X, const arma::colvec& y, double lam = 0, arma::co
     weights = arma::ones<arma::colvec>(n);
   }
   if (weights.n_rows != n){
-    Rcout << "weights are wrong length!\n";
-    return 0;
+    stop("weights are wrong length!");
   }
   if (lam < 0){
-    Rcout << "lam must be nonnegative!\n";
-    return 0;
+    stop("lam must be nonnegative!");
   }
   if (kernel & (lam == 0)){
-    Rcout << "must specify lam to use kernel!\n";
-    return 0;
+    stop("must specify lam to use kernel!");
   }
 
 

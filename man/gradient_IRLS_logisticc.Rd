@@ -7,7 +7,7 @@
 gradient_IRLS_logisticc(betas, X, y, lam = 0, vec = 0L)
 }
 \arguments{
-\item{betas}{beta estimates (includes intercept)}
+\item{betas}{estimates (includes intercept)}
 
 \item{X}{matrix or data frame}
 

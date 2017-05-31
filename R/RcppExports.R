@@ -16,7 +16,7 @@ logitc <- function(u) {
 #' @title Gradient of Logistic Regression (IRLS) (c++)
 #' @description Computes the gradient of logistic regression (optional ridge regularization term). We use this to determine if the KKT conditions are satisfied. This function is to be used with the 'IRLS' function.
 #'
-#' @param betas beta estimates (includes intercept)
+#' @param betas estimates (includes intercept)
 #' @param X matrix or data frame
 #' @param y response vector of 0,1
 #' @param lam tuning parameter for ridge regularization term
@@ -94,6 +94,25 @@ MMc <- function(X, y, lam = 0, alpha = 1.5, gamma = 1, intercept = TRUE,
         gamma, intercept, tol, maxit, vec)
 }
 
+#' @title Gradient of Linear Regression (c++)
+#' @description Computes the gradient of linear regression (optional ridge regularization term). This function is to be used with the 'Linearr' function.
+#'
+#' @param beta estimates (includes intercept)
+#' @param X matrix or data frame
+#' @param y response vector of 0,1
+#' @param lam tuning parameter for ridge regularization term
+#' @param weights option vector of weights for weighted least squares
+#' @param vec vector to specify which coefficients will be penalized
+#' @return returns the gradient
+#' @examples
+#' gradient_linearc(betas, X, y, lam = 0.1)
+#'
+gradient_linearc <- function(betas, X, y, lam = 0, weights = 0L, 
+    intercept = TRUE) {
+    .Call("statr_gradient_linearc", PACKAGE = "statr", betas, 
+        X, y, lam, weights, intercept)
+}
+
 #' @title Linearc (c++)
 #' @description Computes the linear regression coefficient estimates (ridge-penalization and weights, optional)
 #' @param X matrix
@@ -118,5 +137,45 @@ linearc <- function(X, y, lam = 0, weights = 0L, intercept = TRUE,
     kernel = FALSE) {
     .Call("statr_linearc", PACKAGE = "statr", X, y, lam, 
         weights, intercept, kernel)
+}
+
+#' @title Logistic Regression (c++)
+#' @description Computes the coefficient estimates for logistic regression. ridge regularization and bridge regularization optional.
+#'
+#' @param X matrix or data frame
+#' @param y matrix or vector of response values 0,1
+#' @param lam optional tuning parameter for ridge regularization term. Defaults to `lam = 0`
+#' @param alpha optional tuning parameter for bridge regularization term. Defaults to 'alpha = 1.5'
+#' @param penalty choose from c('none', 'ridge', 'bridge'). Defaults to 'none'
+#' @param vec optional vector to specify which coefficients will be penalized
+#' @param intercept Defaults to TRUE
+#' @param method optimization algorithm. Choose from 'IRLS' or 'MM'. Defaults to 'IRLS'
+#' @param tol tolerance - used to determine algorithm convergence. Defaults to 1e-5
+#' @param maxit maximum iterations. Defaults to 1e5
+#' @return returns beta estimates (includes intercept), total iterations, and gradients.
+#' @export
+#' @examples
+#' Logistic Regression
+#' library(dplyr)
+#' X = as.matrix(dplyr::select(iris, -Species))
+#' y = as.matrix(dplyr::select(iris, Species))
+#' y$Species = ifelse(y$Species == 'setosa', 1, 0)
+#' logisticr(X, y)
+#'
+#' ridge Logistic Regression with IRLS
+#' logisticc(X, y, lam = 0.1, penalty = 'ridge')
+#'
+#' ridge Logistic Regression with MM
+#' logisticc(X, y, lam = 0.1, penalty = 'ridge', method = 'MM')
+#'
+#' bridge Logistic Regression
+#' (Defaults to MM -- IRLS will return error)
+#' logisticc(X, y, lam = 0.1, alpha = 1.5, penalty = 'bridge')
+#'
+logisticc <- function(X, y, lam = 0, alpha = 1.5, penalty = "none", 
+    intercept = TRUE, method = "IRLS", tol = 1e-05, maxit = 1e+05, 
+    vec = 0L) {
+    .Call("statr_logisticc", PACKAGE = "statr", X, y, lam, 
+        alpha, penalty, intercept, method, tol, maxit, vec)
 }
 

@@ -28,7 +28,7 @@ The easiest way to install is from the development version from Github:
 devtools::install_github("MGallow/statr")
 ```
 
-If there are any issues/bugs, please let me know: [github](https://github.com/MGallow/statr/issues). You can also contact me via my [website](http://users.stat.umn.edu/~gall0441/).
+If there are any issues/bugs, please let me know: [github](https://github.com/MGallow/statr/issues). You can also contact me via my [website](http://users.stat.umn.edu/~gall0441/). Contributions are welcome!
 
 Usage
 -----
@@ -53,11 +53,11 @@ linearr(X, y, lam = 0.1)
 ```
 
     ## $coefficients
-    ##           Sepal.Length
-    ## intercept    1.8778524
-    ##              0.6462400
-    ##              0.7023063
-    ##             -0.5415988
+    ##                 [,1]
+    ## intercept  1.8778524
+    ##            0.6462400
+    ##            0.7023063
+    ##           -0.5415988
 
 ``` r
 #ridge logistic regression (IRLS)
@@ -166,7 +166,7 @@ timeit(logisticr(X, y_class, lam = 0.1, alpha = 1.2, penalty = "bridge"))
     ## [1] "using MM algorithm..."
 
     ##    user  system elapsed 
-    ##   0.250   0.001   0.253
+    ##   0.235   0.000   0.235
 
 ``` r
 #predict using bridge logistic regression estimates
@@ -174,16 +174,16 @@ predict_logisticr(fit, X[1:3,], y_class[1:3])
 ```
 
     ## $fitted.values
-    ##        [,1]
-    ## 1 0.9992467
-    ## 2 0.9989747
-    ## 3 0.9994881
+    ##           [,1]
+    ## [1,] 0.9992467
+    ## [2,] 0.9989747
+    ## [3,] 0.9994881
     ## 
     ## $class
-    ##   [,1]
-    ## 1    1
-    ## 2    1
-    ## 3    1
+    ##      [,1]
+    ## [1,]    1
+    ## [2,]    1
+    ## [3,]    1
     ## 
     ## $MSE
     ## [1] 6.269174e-07

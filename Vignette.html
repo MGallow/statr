@@ -12,7 +12,7 @@
 
 <meta name="author" content="Matt Galloway" />
 
-<meta name="date" content="2017-05-25" />
+<meta name="date" content="2017-05-30" />
 
 <title>statr</title>
 
@@ -70,7 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">statr</h1>
 <h4 class="author"><em>Matt Galloway</em></h4>
-<h4 class="date"><em>2017-05-25</em></h4>
+<h4 class="date"><em>2017-05-30</em></h4>
 
 
 <div id="TOC">
@@ -122,7 +122,7 @@ devtools::<span class="kw">install_github</span>(<span class="st">&quot;MGallow/
 <span class="co">#time lm()</span>
 <span class="kw">timeit</span>(<span class="kw">lm</span>(dist ~<span class="st"> </span>speed, <span class="dt">data =</span> cars))</code></pre></div>
 <pre><code>##    user  system elapsed 
-##   0.002   0.000   0.003</code></pre>
+##   0.002   0.000   0.001</code></pre>
 </div>
 <div id="scatter" class="section level2">
 <h2><code>scatter()</code></h2>
@@ -179,20 +179,20 @@ y =<span class="st"> </span>dplyr::<span class="kw">select</span>(iris, Sepal.Le
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#linear regression</span>
 <span class="kw">linearr</span>(X, y)</code></pre></div>
 <pre><code>## $coefficients
-##           Sepal.Length
-## intercept    1.8559975
-##              0.6508372
-##              0.7091320
-##             -0.5564827</code></pre>
+##                 [,1]
+## intercept  1.8559975
+##            0.6508372
+##            0.7091320
+##           -0.5564827</code></pre>
 <p>Next, we will try <strong>ridge regression</strong>. At the moment the only regularization penalty available in the <code>linearr</code> function is the ridge penalty. Therefore, we only need to specify our tuning parameter <code>lam</code>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#ridge regression (set lam = 0.1)</span>
 <span class="kw">linearr</span>(X, y, <span class="dt">lam =</span> <span class="fl">0.1</span>)</code></pre></div>
 <pre><code>## $coefficients
-##           Sepal.Length
-## intercept    1.8778524
-##              0.6462400
-##              0.7023063
-##             -0.5415988</code></pre>
+##                 [,1]
+## intercept  1.8778524
+##            0.6462400
+##            0.7023063
+##           -0.5415988</code></pre>
 </div>
 <div id="predict_linearr" class="section level2">
 <h2><code>predict_linearr()</code></h2>
@@ -203,10 +203,10 @@ fit =<span class="st"> </span><span class="kw">linearr</span>(X, y, <span class=
 <span class="co">#predict values for first three flowers in iris data set</span>
 <span class="kw">predict_linearr</span>(fit, X[<span class="dv">1</span>:<span class="dv">3</span>,], y[<span class="dv">1</span>:<span class="dv">3</span>,])</code></pre></div>
 <pre><code>## $fitted.values
-##   Sepal.Length
-## 1     5.014602
-## 2     4.691482
-## 3     4.750499
+##       [,1]
+## 1 5.014602
+## 2 4.691482
+## 3 4.750499
 ## 
 ## $RSS
 ## [1] 0.05332296
@@ -281,11 +281,11 @@ y_class =<span class="st"> </span><span class="kw">ifelse</span>(dplyr::<span cl
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#time for R</span>
 <span class="kw">timeit</span>(<span class="kw">logisticr</span>(X, y_class, <span class="dt">lang =</span> <span class="st">&quot;r&quot;</span>))</code></pre></div>
 <pre><code>##    user  system elapsed 
-##   0.005   0.001   0.006</code></pre>
+##   0.013   0.008   0.031</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#time for cpp</span>
 <span class="kw">timeit</span>(<span class="kw">logisticr</span>(X, y_class))</code></pre></div>
 <pre><code>##    user  system elapsed 
-##   0.001   0.000   0.000</code></pre>
+##   0.029   0.015   0.070</code></pre>
 <p><strong>Ridge logistic regression using IRLS algorithm</strong>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#ridge logistic regression (IRLS)</span>
 <span class="kw">logisticr</span>(X, y_class, <span class="dt">lam =</span> <span class="fl">0.1</span>, <span class="dt">penalty =</span> <span class="st">&quot;ridge&quot;</span>)</code></pre></div>
@@ -378,12 +378,12 @@ y_class =<span class="st"> </span><span class="kw">ifelse</span>(dplyr::<span cl
 <span class="kw">timeit</span>(<span class="kw">logisticr</span>(X, y_class, <span class="dt">lam =</span> <span class="fl">0.1</span>, <span class="dt">alpha =</span> <span class="fl">1.5</span>, <span class="dt">penalty =</span> <span class="st">&quot;bridge&quot;</span>))</code></pre></div>
 <pre><code>## [1] &quot;using MM algorithm...&quot;</code></pre>
 <pre><code>##    user  system elapsed 
-##   0.128   0.000   0.129</code></pre>
+##   0.134   0.000   0.135</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#time for R</span>
 <span class="kw">timeit</span>(<span class="kw">logisticr</span>(X, y_class, <span class="dt">lam =</span> <span class="fl">0.1</span>, <span class="dt">alpha =</span> <span class="fl">1.5</span>, <span class="dt">penalty =</span> <span class="st">&quot;bridge&quot;</span>, <span class="dt">lang =</span> <span class="st">&quot;r&quot;</span>))</code></pre></div>
 <pre><code>## [1] &quot;using MM algorithm...&quot;</code></pre>
 <pre><code>##    user  system elapsed 
-##   1.736   0.015   1.758</code></pre>
+##   1.703   0.013   1.721</code></pre>
 </div>
 <div id="predict_logisticr" class="section level2">
 <h2><code>predict_logisticr()</code></h2>
@@ -394,16 +394,16 @@ fit =<span class="st"> </span><span class="kw">logisticr</span>(X, y_class, <spa
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#predict using bridge logistic regression estimates</span>
 <span class="kw">predict_logisticr</span>(fit, X[<span class="dv">1</span>:<span class="dv">3</span>,], y_class[<span class="dv">1</span>:<span class="dv">3</span>])</code></pre></div>
 <pre><code>## $fitted.values
-##        [,1]
-## 1 0.9988274
-## 2 0.9978316
-## 3 0.9989236
+##           [,1]
+## [1,] 0.9988274
+## [2,] 0.9978316
+## [3,] 0.9989236
 ## 
 ## $class
-##   [,1]
-## 1    1
-## 2    1
-## 3    1
+##      [,1]
+## [1,]    1
+## [2,]    1
+## [3,]    1
 ## 
 ## $MSE
 ## [1] 2.411834e-06

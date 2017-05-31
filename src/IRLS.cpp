@@ -2,7 +2,7 @@
 
 #include <RcppArmadillo.h>
 #include <Rcpp.h>
-// #include "linear.cpp"
+#include "linear.h"
 
 using namespace Rcpp;
 
@@ -28,7 +28,7 @@ arma::colvec logitc(const arma::colvec& u) {
 //' @title Gradient of Logistic Regression (IRLS) (c++)
 //' @description Computes the gradient of logistic regression (optional ridge regularization term). We use this to determine if the KKT conditions are satisfied. This function is to be used with the 'IRLS' function.
 //'
-//' @param betas beta estimates (includes intercept)
+//' @param betas estimates (includes intercept)
 //' @param X matrix or data frame
 //' @param y response vector of 0,1
 //' @param lam tuning parameter for ridge regularization term
@@ -76,7 +76,6 @@ List IRLSc(const arma::mat& X, const arma::colvec& y, double lam = 0, bool inter
   arma::colvec grads = gradient_IRLS_logisticc(betas, X, y, lam, vec);
 
   // IRLS algorithm
-  List linearc(const arma::mat& X, const arma::colvec& y, double lam = 0, arma::colvec weights = 0, bool intercept = true, bool kernel = false);
   while ((iteration < maxit) & (arma::max(arma::abs(grads)) > tol)) {
     // update working data
     arma::mat Xb = X * betas;
@@ -93,6 +92,11 @@ List IRLSc(const arma::mat& X, const arma::colvec& y, double lam = 0, bool inter
     // calculate updated gradients
     grads = gradient_IRLS_logisticc(betas, X, y, lam, vec);
     iteration += 1;
+
+    // R_CheckUserInterrupt
+    if (iteration % 1000 == 0){
+      R_CheckUserInterrupt();
+    }
   }
 
   return List::create(Named("coefficients") = betas,

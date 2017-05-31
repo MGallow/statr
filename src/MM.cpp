@@ -1,9 +1,8 @@
-//// Matt Galloway
+// Matt Galloway
 
 #include <RcppArmadillo.h>
 #include <Rcpp.h>
-// #include "linear.cpp"
-// #include "IRLS.cpp"
+#include "IRLS.h"
 
 using namespace Rcpp;
 
@@ -26,7 +25,6 @@ using namespace Rcpp;
 arma::colvec gradient_MM_logisticc(const arma::colvec& betas, const arma::mat& X, const arma::colvec& y, double lam = 0, double alpha = 1.5, double gamma = 1, const arma::colvec& vec = 0) {
 
   // gradient for beta
-  arma::colvec logitc(const arma::colvec& u);
   return arma::trans(X) * (logitc(X * betas) - y) + lam * (gamma * (vec % betas) + (1 - gamma) * arma::pow(arma::abs(vec % betas), alpha - 1) % arma::sign(betas));
 
 }
@@ -74,13 +72,16 @@ List MMc(const arma::mat& X, const arma::colvec& y, double lam = 0, double alpha
     }
 
     // qrsolve
-    arma::colvec logitc(const arma::colvec& u);
     betas = arma::solve(Z + lam * arma::diagmat(gamma * (vec - d) + d), arma::trans(X) * (y - logitc(X * betas)) + Z * betas);
 
     // calculate updated gradients
     grads = gradient_MM_logisticc(betas, X, y, lam, alpha, gamma, vec);
     iteration += 1;
 
+    // R_CheckUserInterrupt
+    if (iteration % 1000 == 0){
+      R_CheckUserInterrupt();
+    }
   }
 
 
