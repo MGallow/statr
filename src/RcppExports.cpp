@@ -6,6 +6,39 @@
 
 using namespace Rcpp;
 
+// kfold
+arma::vec kfold(int n, int K);
+RcppExport SEXP statr_kfold(SEXP nSEXP, SEXP KSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< int >::type n(nSEXP);
+    Rcpp::traits::input_parameter< int >::type K(KSEXP);
+    rcpp_result_gen = Rcpp::wrap(kfold(n, K));
+    return rcpp_result_gen;
+END_RCPP
+}
+// CV_logisticc
+List CV_logisticc(const arma::mat& X, const arma::colvec& y, const arma::colvec& lam, const arma::colvec& alpha, std::string penalty, bool intercept, std::string method, double tol, double maxit, arma::colvec vec, int K);
+RcppExport SEXP statr_CV_logisticc(SEXP XSEXP, SEXP ySEXP, SEXP lamSEXP, SEXP alphaSEXP, SEXP penaltySEXP, SEXP interceptSEXP, SEXP methodSEXP, SEXP tolSEXP, SEXP maxitSEXP, SEXP vecSEXP, SEXP KSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::mat& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const arma::colvec& >::type y(ySEXP);
+    Rcpp::traits::input_parameter< const arma::colvec& >::type lam(lamSEXP);
+    Rcpp::traits::input_parameter< const arma::colvec& >::type alpha(alphaSEXP);
+    Rcpp::traits::input_parameter< std::string >::type penalty(penaltySEXP);
+    Rcpp::traits::input_parameter< bool >::type intercept(interceptSEXP);
+    Rcpp::traits::input_parameter< std::string >::type method(methodSEXP);
+    Rcpp::traits::input_parameter< double >::type tol(tolSEXP);
+    Rcpp::traits::input_parameter< double >::type maxit(maxitSEXP);
+    Rcpp::traits::input_parameter< arma::colvec >::type vec(vecSEXP);
+    Rcpp::traits::input_parameter< int >::type K(KSEXP);
+    rcpp_result_gen = Rcpp::wrap(CV_logisticc(X, y, lam, alpha, penalty, intercept, method, tol, maxit, vec, K));
+    return rcpp_result_gen;
+END_RCPP
+}
 // logitc
 arma::colvec logitc(const arma::colvec& u);
 RcppExport SEXP statr_logitc(SEXP uSEXP) {
@@ -46,42 +79,6 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< double >::type maxit(maxitSEXP);
     Rcpp::traits::input_parameter< const arma::colvec& >::type vec(vecSEXP);
     rcpp_result_gen = Rcpp::wrap(IRLSc(X, y, lam, intercept, tol, maxit, vec));
-    return rcpp_result_gen;
-END_RCPP
-}
-// gradient_MM_logisticc
-arma::colvec gradient_MM_logisticc(const arma::colvec& betas, const arma::mat& X, const arma::colvec& y, double lam, double alpha, double gamma, const arma::colvec& vec);
-RcppExport SEXP statr_gradient_MM_logisticc(SEXP betasSEXP, SEXP XSEXP, SEXP ySEXP, SEXP lamSEXP, SEXP alphaSEXP, SEXP gammaSEXP, SEXP vecSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::colvec& >::type betas(betasSEXP);
-    Rcpp::traits::input_parameter< const arma::mat& >::type X(XSEXP);
-    Rcpp::traits::input_parameter< const arma::colvec& >::type y(ySEXP);
-    Rcpp::traits::input_parameter< double >::type lam(lamSEXP);
-    Rcpp::traits::input_parameter< double >::type alpha(alphaSEXP);
-    Rcpp::traits::input_parameter< double >::type gamma(gammaSEXP);
-    Rcpp::traits::input_parameter< const arma::colvec& >::type vec(vecSEXP);
-    rcpp_result_gen = Rcpp::wrap(gradient_MM_logisticc(betas, X, y, lam, alpha, gamma, vec));
-    return rcpp_result_gen;
-END_RCPP
-}
-// MMc
-List MMc(const arma::mat& X, const arma::colvec& y, double lam, double alpha, double gamma, bool intercept, double tol, double maxit, const arma::colvec& vec);
-RcppExport SEXP statr_MMc(SEXP XSEXP, SEXP ySEXP, SEXP lamSEXP, SEXP alphaSEXP, SEXP gammaSEXP, SEXP interceptSEXP, SEXP tolSEXP, SEXP maxitSEXP, SEXP vecSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::mat& >::type X(XSEXP);
-    Rcpp::traits::input_parameter< const arma::colvec& >::type y(ySEXP);
-    Rcpp::traits::input_parameter< double >::type lam(lamSEXP);
-    Rcpp::traits::input_parameter< double >::type alpha(alphaSEXP);
-    Rcpp::traits::input_parameter< double >::type gamma(gammaSEXP);
-    Rcpp::traits::input_parameter< bool >::type intercept(interceptSEXP);
-    Rcpp::traits::input_parameter< double >::type tol(tolSEXP);
-    Rcpp::traits::input_parameter< double >::type maxit(maxitSEXP);
-    Rcpp::traits::input_parameter< const arma::colvec& >::type vec(vecSEXP);
-    rcpp_result_gen = Rcpp::wrap(MMc(X, y, lam, alpha, gamma, intercept, tol, maxit, vec));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -137,16 +134,54 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// gradient_MM_logisticc
+arma::colvec gradient_MM_logisticc(const arma::colvec& betas, const arma::mat& X, const arma::colvec& y, double lam, double alpha, double gamma, const arma::colvec& vec);
+RcppExport SEXP statr_gradient_MM_logisticc(SEXP betasSEXP, SEXP XSEXP, SEXP ySEXP, SEXP lamSEXP, SEXP alphaSEXP, SEXP gammaSEXP, SEXP vecSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::colvec& >::type betas(betasSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const arma::colvec& >::type y(ySEXP);
+    Rcpp::traits::input_parameter< double >::type lam(lamSEXP);
+    Rcpp::traits::input_parameter< double >::type alpha(alphaSEXP);
+    Rcpp::traits::input_parameter< double >::type gamma(gammaSEXP);
+    Rcpp::traits::input_parameter< const arma::colvec& >::type vec(vecSEXP);
+    rcpp_result_gen = Rcpp::wrap(gradient_MM_logisticc(betas, X, y, lam, alpha, gamma, vec));
+    return rcpp_result_gen;
+END_RCPP
+}
+// MMc
+List MMc(const arma::mat& X, const arma::colvec& y, double lam, double alpha, double gamma, bool intercept, double tol, double maxit, const arma::colvec& vec);
+RcppExport SEXP statr_MMc(SEXP XSEXP, SEXP ySEXP, SEXP lamSEXP, SEXP alphaSEXP, SEXP gammaSEXP, SEXP interceptSEXP, SEXP tolSEXP, SEXP maxitSEXP, SEXP vecSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::mat& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const arma::colvec& >::type y(ySEXP);
+    Rcpp::traits::input_parameter< double >::type lam(lamSEXP);
+    Rcpp::traits::input_parameter< double >::type alpha(alphaSEXP);
+    Rcpp::traits::input_parameter< double >::type gamma(gammaSEXP);
+    Rcpp::traits::input_parameter< bool >::type intercept(interceptSEXP);
+    Rcpp::traits::input_parameter< double >::type tol(tolSEXP);
+    Rcpp::traits::input_parameter< double >::type maxit(maxitSEXP);
+    Rcpp::traits::input_parameter< const arma::colvec& >::type vec(vecSEXP);
+    rcpp_result_gen = Rcpp::wrap(MMc(X, y, lam, alpha, gamma, intercept, tol, maxit, vec));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
+    {"statr_kfold", (DL_FUNC) &statr_kfold, 2},
+    {"statr_CV_logisticc", (DL_FUNC) &statr_CV_logisticc, 11},
     {"statr_logitc", (DL_FUNC) &statr_logitc, 1},
     {"statr_gradient_IRLS_logisticc", (DL_FUNC) &statr_gradient_IRLS_logisticc, 5},
     {"statr_IRLSc", (DL_FUNC) &statr_IRLSc, 7},
-    {"statr_gradient_MM_logisticc", (DL_FUNC) &statr_gradient_MM_logisticc, 7},
-    {"statr_MMc", (DL_FUNC) &statr_MMc, 9},
     {"statr_gradient_linearc", (DL_FUNC) &statr_gradient_linearc, 6},
     {"statr_linearc", (DL_FUNC) &statr_linearc, 6},
     {"statr_logisticc", (DL_FUNC) &statr_logisticc, 10},
+    {"statr_gradient_MM_logisticc", (DL_FUNC) &statr_gradient_MM_logisticc, 7},
+    {"statr_MMc", (DL_FUNC) &statr_MMc, 9},
     {NULL, NULL, 0}
 };
 

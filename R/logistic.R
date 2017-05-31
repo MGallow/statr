@@ -15,6 +15,7 @@
 #' @param method optimization algorithm. Choose from 'IRLS' or 'MM'. Defaults to 'IRLS'
 #' @param tol tolerance - used to determine algorithm convergence. Defaults to 10^-5
 #' @param maxit maximum iterations. Defaults to 10^5
+#' @param K specify number of folds for cross validation, if necessary
 #' @return returns beta estimates (includes intercept), total iterations, and gradients.
 #' @export
 #' @examples
@@ -38,7 +39,7 @@
 
 logisticr = function(X, y, lam = 0, alpha = 1.5, penalty = "none", 
     intercept = TRUE, method = "IRLS", tol = 1e-05, maxit = 1e+05, 
-    vec = NULL) {
+    vec = NULL, K = 3) {
     
     # checks
     n = dim(X)[1]
@@ -51,7 +52,7 @@ logisticr = function(X, y, lam = 0, alpha = 1.5, penalty = "none",
     if (is.null(vec)) {
         vec_ = rep(1, p)
     }
-    if ((alpha >= 2 | alpha <= 1)) 
+    if (all(alpha >= 2 | alpha <= 1)) 
         stop("alpha must be between 1 and 2!")
     if (all(lam >= 0) == FALSE) 
         stop("lam must be nonnegative!")
@@ -65,7 +66,7 @@ logisticr = function(X, y, lam = 0, alpha = 1.5, penalty = "none",
     }
     if (penalty %in% c("none", "ridge", "bridge") == FALSE) 
         stop("incorrect penalty!")
-    if ((penalty != "none") & (lam == 0)) 
+    if ((penalty != "none") & all(lam == 0)) 
         stop("please specify lam!")
     if (intercept == TRUE) {
         # if no first column of ones, then add it
@@ -82,9 +83,20 @@ logisticr = function(X, y, lam = 0, alpha = 1.5, penalty = "none",
         stop("incorrect method!")
     
     
+    # CV needed?
+    if (length(lam) > 1 | length(alpha > 1)) {
+        
+        # execute CV_logisticc
+        CV = CV_logisticc(X, y, lam, alpha, penalty, intercept, 
+            method, tol, maxit = 10000, vec_, K)
+        lam = CV$best.lam
+        alpha = CV$best.alpha
+    }
+    
     # execute logisticc
     logistic = logisticc(X, y, lam, alpha, penalty, intercept, 
         method, tol, maxit, vec_)
+    
     
     # add intercept name, if needed
     betas = logistic$coefficients
@@ -101,9 +113,16 @@ logisticr = function(X, y, lam = 0, alpha = 1.5, penalty = "none",
     # generate fitted values
     fit = predict_logisticr(logistic, as.matrix(X), y)
     
-    returns = list(coefficients = betas, MSE = fit$MSE, log.loss = fit$log.loss, 
-        misclassification = fit$misclassification, total.iterations = logistic$total.iterations, 
-        gradient = grads)
+    # misc
+    if (penalty != "bridge") {
+        alpha = NaN
+    }
+    parameters = matrix(c(lam, alpha), ncol = 2)
+    colnames(parameters) = c("lam", "alpha")
+    
+    returns = list(parameters = parameters, coefficients = betas, 
+        MSE = fit$MSE, log.loss = fit$log.loss, misclassification = fit$misclassification, 
+        total.iterations = logistic$total.iterations, gradient = grads)
     return(returns)
     
 }

@@ -6,7 +6,7 @@
 \usage{
 logisticr(X, y, lam = 0, alpha = 1.5, penalty = "none",
   intercept = TRUE, method = "IRLS", tol = 1e-05, maxit = 1e+05,
-  vec = NULL)
+  vec = NULL, K = 3)
 }
 \arguments{
 \item{X}{matrix or data frame}
@@ -28,6 +28,8 @@ logisticr(X, y, lam = 0, alpha = 1.5, penalty = "none",
 \item{maxit}{maximum iterations. Defaults to 10^5}
 
 \item{vec}{optional vector to specify which coefficients will be penalized}
+
+\item{K}{specify number of folds for cross validation, if necessary}
 }
 \value{
 returns beta estimates (includes intercept), total iterations, and gradients.
