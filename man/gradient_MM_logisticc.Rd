@@ -10,11 +10,11 @@ gradient_MM_logisticc(betas, X, y, lam = 0, alpha = 1.5, gamma = 1,
 \arguments{
 \item{betas}{beta estimates (includes intercept)}
 
-\item{X}{matrix or data frame}
+\item{X}{matrix}
 
 \item{y}{response vector of 0,1}
 
-\item{lam}{tuning parameter for ridge regularization term}
+\item{lam}{tuning parameter for ridge regularization term. Defaults to 'lam = 0'}
 
 \item{alpha}{optional tuning parameter for bridge regularization term. Defaults to 'alpha = 1.5'}
 
@@ -26,9 +26,9 @@ gradient_MM_logisticc(betas, X, y, lam = 0, alpha = 1.5, gamma = 1,
 returns the gradient
 }
 \description{
-Computes the gradient of logistic regression (optional ridge regularization term). We use this to determine if the KKT conditions are satisfied. This function is to be used with the 'MM' function.
+Computes the gradient of logistic regression (optional ridge and bridge regularization terms). We use this to determine if the KKT conditions are satisfied. This function is to be used with the 'MMc' function.
 }
 \examples{
-gradient_MM_logistic(betas, X, y, lam = 0.1, alpha = 1.5, penalty = 'bridge')
+gradient_MM_logistic(betas, X, y, lam = 0.1, alpha = 1.5, vec = c(0,1,1,1))
 
 }

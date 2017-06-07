@@ -7,16 +7,16 @@
 #'
 #' @param X matrix or data frame
 #' @param y matrix or vector of response values 0,1
-#' @param lam optional tuning parameter for ridge regularization term. Defaults to `lam = 0`
-#' @param alpha optional tuning parameter for bridge regularization term. Defaults to 'alpha = 1.5'
+#' @param lam optional tuning parameter(s) for ridge regularization term. If passing a list of values, the function will choose optimal value based on K-fold cross validation. Defaults to `lam = seq(0.01, 2, 0.01)`
+#' @param alpha optional tuning parameter for bridge regularization term. If passing a list of values, the function will choose the optimal value based on K-fold cross validation. Defaults to 'alpha = 1.5'
 #' @param penalty choose from c('none', 'ridge', 'bridge'). Defaults to 'none'
-#' @param vec optional vector to specify which coefficients will be penalized
 #' @param intercept Defaults to TRUE
 #' @param method optimization algorithm. Choose from 'IRLS' or 'MM'. Defaults to 'IRLS'
 #' @param tol tolerance - used to determine algorithm convergence. Defaults to 10^-5
 #' @param maxit maximum iterations. Defaults to 10^5
+#' @param vec optional vector to specify which coefficients will be penalized
 #' @param K specify number of folds for cross validation, if necessary
-#' @return returns beta estimates (includes intercept), total iterations, and gradients.
+#' @return returns selected tuning parameters, beta estimates (includes intercept), MSE, log loss, misclassification rate, total iterations, and gradients.
 #' @export
 #' @examples
 #' Logistic Regression
@@ -39,7 +39,7 @@
 
 logisticr = function(X, y, lam = 0, alpha = 1.5, penalty = "none", 
     intercept = TRUE, method = "IRLS", tol = 1e-05, maxit = 1e+05, 
-    vec = NULL, K = 3) {
+    vec = NULL, K = 5) {
     
     # checks
     n = dim(X)[1]
@@ -68,7 +68,9 @@ logisticr = function(X, y, lam = 0, alpha = 1.5, penalty = "none",
         stop("incorrect penalty!")
     if ((penalty != "none") & all(lam == 0)) 
         stop("please specify lam!")
-    if (intercept == TRUE) {
+    if (method %in% c("IRLS", "MM") == FALSE) 
+        stop("incorrect method!")
+    if (intercept) {
         # if no first column of ones, then add it
         if (all(X[, 1] != rep(1, n))) {
             X = cbind(1, X)
@@ -79,23 +81,21 @@ logisticr = function(X, y, lam = 0, alpha = 1.5, penalty = "none",
             vec_ = c(0, rep(1, p - 1))
         }
     }
-    if (method %in% c("IRLS", "MM") == FALSE) 
-        stop("incorrect method!")
     
     
     # CV needed?
-    if (length(lam) > 1 | length(alpha > 1)) {
+    if (length(lam) > 1 | length(alpha) > 1) {
         
         # execute CV_logisticc
-        CV = CV_logisticc(X, y, lam, alpha, penalty, intercept, 
-            method, tol, maxit = 10000, vec_, K)
+        CV = CV_logisticc(X, y, lam, alpha, penalty, intercept, method, 
+            tol, maxit = 10000, vec_, K)
         lam = CV$best.lam
         alpha = CV$best.alpha
     }
     
     # execute logisticc
-    logistic = logisticc(X, y, lam, alpha, penalty, intercept, 
-        method, tol, maxit, vec_)
+    logistic = logisticc(X, y, lam, alpha, penalty, intercept, method, 
+        tol, maxit, vec_)
     
     
     # add intercept name, if needed
@@ -114,6 +114,9 @@ logisticr = function(X, y, lam = 0, alpha = 1.5, penalty = "none",
     fit = predict_logisticr(logistic, as.matrix(X), y)
     
     # misc
+    if (penalty == "none") {
+        lam = NaN
+    }
     if (penalty != "bridge") {
         alpha = NaN
     }

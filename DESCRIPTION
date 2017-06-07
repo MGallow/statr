@@ -18,7 +18,8 @@ Imports: Rcpp (>= 0.12.10),
     alr4,
     formatR,
     devtools,
-    RcppParallel
+    RcppParallel,
+    gmodels
 LinkingTo: Rcpp,
     RcppArmadillo,
     RcppParallel

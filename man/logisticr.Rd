@@ -6,16 +6,16 @@
 \usage{
 logisticr(X, y, lam = 0, alpha = 1.5, penalty = "none",
   intercept = TRUE, method = "IRLS", tol = 1e-05, maxit = 1e+05,
-  vec = NULL, K = 3)
+  vec = NULL, K = 5)
 }
 \arguments{
 \item{X}{matrix or data frame}
 
 \item{y}{matrix or vector of response values 0,1}
 
-\item{lam}{optional tuning parameter for ridge regularization term. Defaults to `lam = 0`}
+\item{lam}{optional tuning parameter(s) for ridge regularization term. If passing a list of values, the function will choose optimal value based on K-fold cross validation. Defaults to `lam = seq(0.01, 2, 0.01)`}
 
-\item{alpha}{optional tuning parameter for bridge regularization term. Defaults to 'alpha = 1.5'}
+\item{alpha}{optional tuning parameter for bridge regularization term. If passing a list of values, the function will choose the optimal value based on K-fold cross validation. Defaults to 'alpha = 1.5'}
 
 \item{penalty}{choose from c('none', 'ridge', 'bridge'). Defaults to 'none'}
 
@@ -32,7 +32,7 @@ logisticr(X, y, lam = 0, alpha = 1.5, penalty = "none",
 \item{K}{specify number of folds for cross validation, if necessary}
 }
 \value{
-returns beta estimates (includes intercept), total iterations, and gradients.
+returns selected tuning parameters, beta estimates (includes intercept), MSE, log loss, misclassification rate, total iterations, and gradients.
 }
 \description{
 Computes the coefficient estimates for logistic regression. ridge regularization and bridge regularization optional.

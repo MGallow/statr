@@ -4,15 +4,17 @@
 \alias{IRLSc}
 \title{Iterative Re-Weighted Least Squares (c++)}
 \usage{
-IRLSc(X, y, lam = 0, intercept = TRUE, tol = 1e-05, maxit = 1e+05,
-  vec = 0L)
+IRLSc(X, y, lam = 0, penalty = "none", intercept = TRUE, tol = 1e-05,
+  maxit = 1e+05, vec = 0L)
 }
 \arguments{
-\item{X}{matrix or data frame}
+\item{X}{matrix}
 
 \item{y}{matrix or vector of response 0,1}
 
 \item{lam}{tuning parameter for regularization term}
+
+\item{penalty}{choose from c('none', 'ridge'). Defaults to 'none'}
 
 \item{intercept}{Defaults to TRUE}
 
@@ -28,9 +30,9 @@ IRLSc(X, y, lam = 0, intercept = TRUE, tol = 1e-05, maxit = 1e+05,
 returns beta estimates (includes intercept), total iterations, and gradients.
 }
 \description{
-Computes the logistic regression coefficient estimates using the iterative re-weighted least squares (IRLS) algorithm. This function is to be used with the 'logisticr' function.
+Computes the logistic regression coefficient estimates using the iterative re-weighted least squares (IRLS) algorithm. This function is to be used with the 'logisticc' function.
 }
 \examples{
-IRLSc(X, y, n.list = c(rep(1, n)), lam = 0.1, alpha = 1.5)
+IRLSc(X, y, lam = 0.1, penalty = 'ridge', vec = c(0,1,1,1))
 
 }

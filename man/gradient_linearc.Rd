@@ -7,7 +7,7 @@
 gradient_linearc(betas, X, y, lam = 0, weights = 0L, intercept = TRUE)
 }
 \arguments{
-\item{X}{matrix or data frame}
+\item{X}{matrix}
 
 \item{y}{response vector of 0,1}
 
@@ -15,17 +15,17 @@ gradient_linearc(betas, X, y, lam = 0, weights = 0L, intercept = TRUE)
 
 \item{weights}{option vector of weights for weighted least squares}
 
-\item{beta}{estimates (includes intercept)}
+\item{intercept}{add column of ones if not already present. Defaults to TRUE}
 
-\item{vec}{vector to specify which coefficients will be penalized}
+\item{beta}{estimates (includes intercept)}
 }
 \value{
 returns the gradient
 }
 \description{
-Computes the gradient of linear regression (optional ridge regularization term). This function is to be used with the 'Linearr' function.
+Computes the gradient of linear regression (optional ridge regularization term). This function is to be used with the 'SVDc' function.
 }
 \examples{
-gradient_linearc(betas, X, y, lam = 0.1)
+gradient_linearc(betas, X, y, lam = 0.1, weights = rep(1,150), intercept = TRUE)
 
 }

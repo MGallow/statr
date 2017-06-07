@@ -9,7 +9,7 @@ gradient_IRLS_logisticc(betas, X, y, lam = 0, vec = 0L)
 \arguments{
 \item{betas}{estimates (includes intercept)}
 
-\item{X}{matrix or data frame}
+\item{X}{matrix}
 
 \item{y}{response vector of 0,1}
 
@@ -21,9 +21,9 @@ gradient_IRLS_logisticc(betas, X, y, lam = 0, vec = 0L)
 returns the gradient
 }
 \description{
-Computes the gradient of logistic regression (optional ridge regularization term). We use this to determine if the KKT conditions are satisfied. This function is to be used with the 'IRLS' function.
+Computes the gradient of logistic regression (optional ridge regularization term). We use this to determine if the KKT conditions are satisfied. This function is to be used with the 'IRLSc' function.
 }
 \examples{
-gradient_IRLS_logistic(betas, X, y, lam = 0.1, penalty = 'ridge')
+gradient_IRLS_logistic(betas, X, y, lam = 0.1, vec = c(0,1,1,1))
 
 }

@@ -4,23 +4,39 @@
 \alias{linearr}
 \title{Linear}
 \usage{
-linearr(X, y, lam = 0, weights = NULL, intercept = TRUE, kernel = FALSE)
+linearr(X, y, lam = 0, alpha = 1.5, penalty = "none", weights = NULL,
+  intercept = TRUE, kernel = FALSE, method = "SVD", tol = 1e-05,
+  maxit = 1e+05, vec = NULL, K = 5)
 }
 \arguments{
 \item{X}{matrix or data frame}
 
 \item{y}{matrix or data frame of response values}
 
-\item{lam}{optional tuning parameter for ridge regularization term. Defaults to 'lam = 0'}
+\item{lam}{optional tuning parameter for ridge regularization term. If passing a list of values, the function will choose the optimal value based on K-fold cross validation. Defaults to 'lam = seq(0.01, 2, 0.01)'}
+
+\item{alpha}{optional tuning parameter for bridge regularization term. If passing a list of values, the function will choose the optimal value based on K-fold cross validation. Defaults to 'alpha = 1.5'}
+
+\item{penalty}{choose from c('none', 'ridge', 'bridge'). Defaults to 'none'}
 
 \item{weights}{optional vector of weights for weighted least squares}
 
 \item{intercept}{add column of ones if not already present. Defaults to TRUE}
 
-\item{kernel}{use linear kernel to compute ridge regression coefficeients. Defaults to TRUE when p >> n}
+\item{kernel}{use linear kernel to compute ridge regression coefficeients. Defaults to TRUE when p >> n (for 'SVD')}
+
+\item{method}{optimization algorithm. Choose from 'SVD' or 'MM'. Defaults to 'SVD'}
+
+\item{tol}{tolerance - used to determine algorithm convergence for 'MM'. Defaults to 10^-5}
+
+\item{maxit}{maximum iterations for 'MM'. Defaults to 10^5}
+
+\item{vec}{optional vector to specify which coefficients will be penalized}
+
+\item{K}{specify number of folds for cross validation, if necessary}
 }
 \value{
-returns the coefficient estimates
+returns the selected tuning parameters, coefficient estimates, MSE, and gradients
 }
 \description{
 Computes the linear regression coefficient estimates (ridge-penalization and weights, optional)
@@ -31,8 +47,8 @@ Weighted ridge regression
 library(dplyr)
 X = dplyr::select(iris, -c(Species, Sepal.Length))
 y = dplyr::select(iris, Sepal.Length)
-linearr(X, y, lam = 0.1, weights = rep(1:150))
+linearr(X, y, lam = 0.1, penalty = 'ridge', weights = rep(1:150))
 
 Kernelized ridge regression
-linearr(X, y, lam = 0.1, kernel = T)
+linearr(X, y, lam = 0.1, penalty = 'ridge', kernel = T)
 }

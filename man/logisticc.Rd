@@ -9,7 +9,7 @@ logisticc(X, y, lam = 0, alpha = 1.5, penalty = "none",
   vec = 0L)
 }
 \arguments{
-\item{X}{matrix or data frame}
+\item{X}{matrix}
 
 \item{y}{matrix or vector of response values 0,1}
 
@@ -40,17 +40,16 @@ Logistic Regression
 library(dplyr)
 X = as.matrix(dplyr::select(iris, -Species))
 y = as.matrix(dplyr::select(iris, Species))
-y$Species = ifelse(y$Species == 'setosa', 1, 0)
-logisticr(X, y)
+y = ifelse(y == 'setosa', 1, 0)
+logisticc(X, y, vec = c(0,1,1,1))
 
 ridge Logistic Regression with IRLS
-logisticc(X, y, lam = 0.1, penalty = 'ridge')
+logisticc(X, y, lam = 0.1, penalty = 'ridge', vec = c(0,1,1,1))
 
 ridge Logistic Regression with MM
-logisticc(X, y, lam = 0.1, penalty = 'ridge', method = 'MM')
+logisticc(X, y, lam = 0.1, penalty = 'ridge', method = 'MM', vec = c(0,1,1,1))
 
 bridge Logistic Regression
-(Defaults to MM -- IRLS will return error)
-logisticc(X, y, lam = 0.1, alpha = 1.5, penalty = 'bridge')
+logisticc(X, y, lam = 0.1, alpha = 1.5, penalty = 'bridge', method = 'MM', vec = c(0,1,1,1))
 
 }
