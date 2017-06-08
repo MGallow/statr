@@ -5,7 +5,7 @@
 \title{Logistic Majorize-Minimization function (c++)}
 \usage{
 MMc(X, y, lam = 0, alpha = 1.5, gamma = 1, intercept = TRUE,
-  tol = 1e-05, maxit = 1e+05, vec = 0L)
+  tol = 1e-05, maxit = 1e+05, vec = 0L, init = 0L)
 }
 \arguments{
 \item{X}{matrix}
@@ -25,6 +25,8 @@ MMc(X, y, lam = 0, alpha = 1.5, gamma = 1, intercept = TRUE,
 \item{maxit}{maximum iterations}
 
 \item{vec}{optional vector to specify which coefficients will be penalized}
+
+\item{init}{optional initialization for MM algorithm}
 }
 \value{
 returns beta estimates (includes intercept), total iterations, and gradients.

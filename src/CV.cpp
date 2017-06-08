@@ -5,6 +5,7 @@
 #include "logistic.h"
 #include "linear.h"
 #include "IRLS.h"
+#include "predict.h"
 
 using namespace Rcpp;
 
@@ -56,6 +57,8 @@ arma::vec kfold(int n, int K){
 //' @param tol tolerance - used to determine algorithm convergence. Defaults to 1e-5
 //' @param maxit maximum iterations. Defaults to 1e5
 //' @param vec optional vector to specify which coefficients will be penalized
+//' @param init optional initialization for MM algorithm
+//' @param criteria specify the criteria for cross validation. Choose from c("mse", "logloss", "misclass"). Defauls to "logloss"
 //' @param K specify number of folds in cross validation, if necessary
 //'
 //' @return returns best lambda, best alpha, and cross validation errors
@@ -64,7 +67,7 @@ arma::vec kfold(int n, int K){
 //' CV_logisticc(X, y, lam = seq(0.1, 2, 0.1), alpha = c(1.1, 1.9, 0.1), penalty = "bridge", method = "MM", vec = c(0,1,1,1))
 //'
 // [[Rcpp::export]]
-List CV_logisticc(const arma::mat& X, const arma::colvec& y, const arma::colvec& lam = 0, const arma::colvec& alpha = 0, std::string penalty = "none", bool intercept = true, std::string method = "IRLS", double tol = 1e-5, double maxit = 1e4, arma::colvec vec = 0, int K = 5) {
+List CV_logisticc(const arma::mat& X, const arma::colvec& y, const arma::colvec& lam = 0, const arma::colvec& alpha = 0, std::string penalty = "none", bool intercept = true, std::string method = "IRLS", double tol = 1e-5, double maxit = 1e4, arma::colvec vec = 0, arma::colvec init = 0, std::string criteria = "logloss", int K = 5) {
 
 
   // initialization
@@ -74,6 +77,17 @@ List CV_logisticc(const arma::mat& X, const arma::colvec& y, const arma::colvec&
 
   // designate folds and shuffle -- ensures randomized folds
   arma::vec folds = kfold(n, K);
+
+  // set criteria
+  if (criteria == "logloss"){
+    criteria = "log.loss";
+  }
+  else if (criteria == "mse"){
+    criteria = "MSE";
+  }
+  else {
+    criteria = "misclassification";
+  }
 
   // parse data into folds and perform CV
   for (int k = 0; k < K; k++){
@@ -89,6 +103,8 @@ List CV_logisticc(const arma::mat& X, const arma::colvec& y, const arma::colvec&
     arma::colvec y_test = y.rows(index_);
 
     // loop over all tuning parameters
+    int bp = X_train.n_cols;
+    arma::colvec betas = arma::ones<arma::colvec>(bp);
     CV_error = arma::zeros<arma::mat>(lam.n_rows, alpha.n_rows);
     for (int i = 0; i < lam.n_rows; i++){
       for (int j = 0; j < alpha.n_rows; j++){
@@ -98,14 +114,12 @@ List CV_logisticc(const arma::mat& X, const arma::colvec& y, const arma::colvec&
         double alpha_ = alpha[j];
 
         // generate new coefficients
-        List logistic = logisticc(X_train, y_train, lam_, alpha_, penalty, intercept, method, tol, maxit, vec);
-        arma::colvec betas = as<NumericVector>(logistic["coefficients"]);
+        List logistic = logisticc(X_train, y_train, lam_, alpha_, penalty, intercept, method, tol, maxit, vec, betas);
+        betas = as<NumericVector>(logistic["coefficients"]);
 
         // generate predictions
-        arma::colvec fitted = logitc(X_test * betas);
-
-        // errors
-        double error = arma::sum(arma::pow(fitted - y_test, 2));
+        List fit = predict_logisticc(betas, X_test, y_test);
+        double error = as<double>(fit[criteria]);
 
         // input error to CV_error
         CV_error(i, j) = error;
@@ -157,6 +171,7 @@ List CV_logisticc(const arma::mat& X, const arma::colvec& y, const arma::colvec&
 //' @param tol tolerance - used to determine algorithm convergence. Defaults to 1e-5
 //' @param maxit maximum iterations. Defaults to 1e5
 //' @param vec optional vector to specify which coefficients will be penalized
+//' @param init optional initialization for MM algorithm
 //' @param K specify number of folds in cross validation, if necessary
 //' @return returns best lambda, best alpha, cv.errors
 //' @export
@@ -164,7 +179,7 @@ List CV_logisticc(const arma::mat& X, const arma::colvec& y, const arma::colvec&
 //' CV_linearc(X, y, lam = seq(0.1, 2, 0.1), alpha = seq(1.1, 1.9, 0.1), penalty = "bridge", vec = c(0,1,1,1))
 //'
 // [[Rcpp::export]]
-List CV_linearc(const arma::mat& X, const arma::colvec& y, const arma::colvec& lam = 0, const arma::colvec& alpha = 0, std::string penalty = "none", arma::colvec weights = 0, bool intercept = true, bool kernel = false, std::string method = "SVD", double tol = 1e-5, double maxit = 1e4, arma::colvec vec = 0, int K = 5) {
+List CV_linearc(const arma::mat& X, const arma::colvec& y, const arma::colvec& lam = 0, const arma::colvec& alpha = 0, std::string penalty = "none", arma::colvec weights = 0, bool intercept = true, bool kernel = false, std::string method = "SVD", double tol = 1e-5, double maxit = 1e4, arma::colvec vec = 0, arma::colvec init = 0, int K = 5) {
 
 
   // initialization
@@ -192,6 +207,8 @@ List CV_linearc(const arma::mat& X, const arma::colvec& y, const arma::colvec& l
     arma::colvec weights_test = weights.rows(index_);
 
     // loop over all tuning parameters
+    int bp = X_train.n_cols;
+    arma::colvec betas = arma::ones<arma::colvec>(bp);
     CV_error = arma::zeros<arma::mat>(lam.n_rows, alpha.n_rows);
     for (int i = 0; i < lam.n_rows; i++){
       for (int j = 0; j < alpha.n_rows; j++){
@@ -201,14 +218,12 @@ List CV_linearc(const arma::mat& X, const arma::colvec& y, const arma::colvec& l
         double alpha_ = alpha[j];
 
         // generate new coefficients
-        List linear = linearc(X_train, y_train, lam_, alpha_, penalty, weights_train, intercept, kernel, method, tol, maxit, vec);
-        arma::colvec betas = as<NumericVector>(linear["coefficients"]);
+        List linear = linearc(X_train, y_train, lam_, alpha_, penalty, weights_train, intercept, kernel, method, tol, maxit, vec, betas);
+        betas = as<NumericVector>(linear["coefficients"]);
 
         // generate predictions
-        arma::colvec fitted = X_test * betas;
-
-        // errors
-        double error = arma::sum(arma::pow(fitted - y_test, 2));
+        List fit = predict_linearc(betas, X_test, y_test);
+        double error = as<double>(fit["MSE"]);
 
         // input error to CV_error
         CV_error(i, j) = error;

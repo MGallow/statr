@@ -67,11 +67,14 @@ arma::colvec gradient_IRLS_logisticc(const arma::colvec& betas, const arma::mat&
 //' IRLSc(X, y, lam = 0.1, penalty = "ridge", vec = c(0,1,1,1))
 //'
 // [[Rcpp::export]]
-List IRLSc(const arma::mat& X, const arma::colvec& y, double lam = 0, std::string penalty = "none", bool intercept = true, double tol = 1e-5, double maxit = 1e5, const arma::colvec& vec = 0) {
+List IRLSc(const arma::mat& X, const arma::colvec& y, double lam = 0, std::string penalty = "none", bool intercept = true, double tol = 1e-5, double maxit = 1e5, const arma::colvec& vec = 0, const arma::colvec& init = 0) {
 
   // initialize
   int n = X.n_rows, p = X.n_cols;
-  arma::colvec betas = 0.1*arma::ones<arma::colvec>(p)/n;
+  arma::colvec betas = init;
+  if (init.n_cols == 1){
+    betas = 0.1*arma::ones<arma::colvec>(p)/n;
+  }
   arma::colvec weights = arma::ones<arma::colvec>(n);
   int iteration = 1;
   arma::colvec grads = gradient_IRLS_logisticc(betas, X, y, lam, vec);
@@ -88,7 +91,7 @@ List IRLSc(const arma::mat& X, const arma::colvec& y, double lam = 0, std::strin
     bool kernel = false;
     double alpha = 0;
     std::string method = "SVD";
-    List lin = linearc(X, z, lam, alpha, penalty, weights, intercept, kernel, method, tol, maxit, vec);
+    List lin = linearc(X, z, lam, alpha, penalty, weights, intercept, kernel, method, tol, maxit, vec, betas);
     betas = as<NumericVector>(lin["coefficients"]);
 
 

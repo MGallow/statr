@@ -6,7 +6,7 @@
 \usage{
 CV_logisticc(X, y, lam = 0L, alpha = 0L, penalty = "none",
   intercept = TRUE, method = "IRLS", tol = 1e-05, maxit = 10000,
-  vec = 0L, K = 5L)
+  vec = 0L, init = 0L, criteria = "logloss", K = 5L)
 }
 \arguments{
 \item{X}{matrix}
@@ -29,15 +29,19 @@ CV_logisticc(X, y, lam = 0L, alpha = 0L, penalty = "none",
 
 \item{vec}{optional vector to specify which coefficients will be penalized}
 
+\item{init}{optional initialization for MM algorithm}
+
+\item{criteria}{specify the criteria for cross validation. Choose from c("mse", "logloss", "misclass"). Defauls to "logloss"}
+
 \item{K}{specify number of folds in cross validation, if necessary}
 }
 \value{
 returns best lambda, best alpha, and cross validation errors
 }
 \description{
-Computes the coefficient estimates for logistic regression. ridge regularization and bridge regularization optional. This function is to be used with the 'logisticc' function.
+Computes the coefficient estimates for logistic regression. ridge regularization and bridge regularization optional. This function is to be used with the "logisticc" function.
 }
 \examples{
-CV_logisticc(X, y, lam = seq(0.1, 2, 0.1), alpha = c(1.1, 1.9, 0.1), penalty = 'bridge', method = 'MM', vec = c(0,1,1,1))
+CV_logisticc(X, y, lam = seq(0.1, 2, 0.1), alpha = c(1.1, 1.9, 0.1), penalty = "bridge", method = "MM", vec = c(0,1,1,1))
 
 }

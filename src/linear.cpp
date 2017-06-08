@@ -24,6 +24,7 @@ using namespace Rcpp;
 //' @param tol tolerance - used to determine algorithm convergence for "MM". Defaults to 10^-5
 //' @param maxit maximum iterations for "MM". Defaults to 10^5
 //' @param vec optional vector to specify which coefficients will be penalized
+//' @param init optional initialization for MM algorithm
 //' @return returns the coefficient estimates
 //' @export
 //' @examples
@@ -37,7 +38,7 @@ using namespace Rcpp;
 //' linearc(X, y, lam = 0.1, penalty = "ridge", kernel = T, vec = c(0,1,1,1))
 //'
 // [[Rcpp::export]]
-List linearc(const arma::mat& X, const arma::colvec& y, double lam = 0, double alpha = 1.5, std::string penalty = "none", arma::colvec weights = 0, bool intercept = true, bool kernel = false, std::string method = "SVD", double tol = 1e-5, double maxit = 1e5, arma::colvec vec = 0) {
+List linearc(const arma::mat& X, const arma::colvec& y, double lam = 0, double alpha = 1.5, std::string penalty = "none", arma::colvec weights = 0, bool intercept = true, bool kernel = false, std::string method = "SVD", double tol = 1e-5, double maxit = 1e5, arma::colvec vec = 0, arma::colvec init = 0) {
 
   // checks
   int n = X.n_rows, p = X.n_cols;
@@ -55,6 +56,7 @@ List linearc(const arma::mat& X, const arma::colvec& y, double lam = 0, double a
   // if SVD...
   arma::colvec betas = arma::ones<arma::colvec>(p);
   arma::colvec grads = arma::ones<arma::colvec>(p);
+  int iterations = 1;
   if (method == "SVD"){
 
     // execute SVD script
@@ -76,7 +78,7 @@ List linearc(const arma::mat& X, const arma::colvec& y, double lam = 0, double a
     }
 
     // execute MM_linearc
-    List linear = MM_linearc(X, y, lam, alpha, gamma, weights, intercept, tol, maxit, vec);
+    List linear = MM_linearc(X, y, lam, alpha, gamma, weights, intercept, tol, maxit, vec, init);
 
     iterations = as<int>(linear["total.iterations"]);
     betas = as<NumericVector>(linear["coefficients"]);

@@ -74,17 +74,21 @@ arma::colvec gradient_MM_linearc(const arma::colvec& betas, const arma::mat& X, 
 //' @param tol tolerance - used to determine algorithm convergence
 //' @param maxit maximum iterations
 //' @param vec optional vector to specify which coefficients will be penalized
+//' @param init optional initialization for MM algorithm
 //' @return returns beta estimates (includes intercept), total iterations, and gradients.
 //' @examples
 //' MMc(X, y)
 //'
 // [[Rcpp::export]]
-List MMc(const arma::mat& X, const arma::colvec& y, double lam = 0, double alpha = 1.5, double gamma = 1, bool intercept = true, double tol = 1e-5, double maxit = 1e5, const arma::colvec& vec = 0) {
+List MMc(const arma::mat& X, const arma::colvec& y, double lam = 0, double alpha = 1.5, double gamma = 1, bool intercept = true, double tol = 1e-5, double maxit = 1e5, const arma::colvec& vec = 0, const arma::colvec& init = 0) {
 
   // initialize
   int n = X.n_rows, p = X.n_cols;
   double delta = 1e-5;
-  arma::colvec betas = 0.1*arma::ones<arma::colvec>(p)/n;
+  arma::colvec betas = init;
+  if (init.n_cols == 1){
+    betas = 0.1*arma::ones<arma::colvec>(p)/n;
+  }
   int iteration = 1;
   arma::colvec grads = gradient_MM_logisticc(betas, X, y, lam, alpha, gamma, vec);
   arma::mat Z = arma::trans(X) * X * (0.25 + delta);
@@ -137,16 +141,20 @@ List MMc(const arma::mat& X, const arma::colvec& y, double lam = 0, double alpha
 //' @param tol tolerance - used to determine algorithm convergence
 //' @param maxit maximum iterations
 //' @param vec optional vector to specify which coefficients will be penalized
+//' @param init optional initialization for MM algorithm
 //' @return returns beta estimates (includes intercept), total iterations, and gradients.
 //' @examples
 //' MM_linearc(X, y)
 //'
 // [[Rcpp::export]]
-List MM_linearc(const arma::mat& X, const arma::colvec& y, double lam = 0, double alpha = 1.5, double gamma = 1, arma::colvec weights = 0, bool intercept = true, double tol = 1e-5, double maxit = 1e5, const arma::colvec& vec = 0) {
+List MM_linearc(const arma::mat& X, const arma::colvec& y, double lam = 0, double alpha = 1.5, double gamma = 1, arma::colvec weights = 0, bool intercept = true, double tol = 1e-5, double maxit = 1e5, const arma::colvec& vec = 0, const arma::colvec& init = 0) {
 
   // initialize
   int n = X.n_rows, p = X.n_cols;
-  arma::colvec betas = 0.1*arma::ones<arma::colvec>(p)/n;
+  arma::colvec betas = init;
+  if (init.n_cols == 1){
+    betas = 0.1*arma::ones<arma::colvec>(p)/n;
+  }
   int iteration = 1;
   arma::colvec grads = gradient_MM_linearc(betas, X, y, lam, alpha, gamma, weights, vec);
   arma::mat XWX = arma::trans(X) * arma::diagmat(weights) * X;

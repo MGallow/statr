@@ -20,6 +20,7 @@ using namespace Rcpp;
 //' @param tol tolerance - used to determine algorithm convergence. Defaults to 1e-5
 //' @param maxit maximum iterations. Defaults to 1e5
 //' @param vec optional vector to specify which coefficients will be penalized
+//' @param init optional initialization for MM algorithm
 //' @return returns beta estimates (includes intercept), total iterations, and gradients.
 //' @export
 //' @examples
@@ -40,7 +41,7 @@ using namespace Rcpp;
 //' logisticc(X, y, lam = 0.1, alpha = 1.5, penalty = 'bridge', method = "MM", vec = c(0,1,1,1))
 //'
 // [[Rcpp::export]]
-List logisticc(const arma::mat& X, const arma::colvec& y, double lam = 0, double alpha = 1.5, std::string penalty = "none", bool intercept = true, std::string method = "IRLS", double tol = 1e-5, double maxit = 1e5, arma::colvec vec = 0) {
+List logisticc(const arma::mat& X, const arma::colvec& y, double lam = 0, double alpha = 1.5, std::string penalty = "none", bool intercept = true, std::string method = "IRLS", double tol = 1e-5, double maxit = 1e5, arma::colvec vec = 0, arma::colvec init = 0) {
 
   // checks
   int p = X.n_cols;
@@ -59,7 +60,7 @@ List logisticc(const arma::mat& X, const arma::colvec& y, double lam = 0, double
   if (method == "IRLS") {
 
     // execute IRLS script
-    List logistic = IRLSc(X, y, lam, penalty, intercept, tol, maxit, vec);
+    List logistic = IRLSc(X, y, lam, penalty, intercept, tol, maxit, vec, init);
 
     iterations = as<int>(logistic["total.iterations"]);
     betas = as<NumericVector>(logistic["coefficients"]);
@@ -79,7 +80,7 @@ List logisticc(const arma::mat& X, const arma::colvec& y, double lam = 0, double
     }
 
     // execute MM script
-    List logistic = MMc(X, y, lam, alpha, gamma, intercept, tol, maxit, vec);
+    List logistic = MMc(X, y, lam, alpha, gamma, intercept, tol, maxit, vec, init);
 
     iterations = as<int>(logistic["total.iterations"]);
     betas = as<NumericVector>(logistic["coefficients"]);

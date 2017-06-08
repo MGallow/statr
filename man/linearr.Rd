@@ -4,16 +4,16 @@
 \alias{linearr}
 \title{Linear}
 \usage{
-linearr(X, y, lam = 0, alpha = 1.5, penalty = "none", weights = NULL,
-  intercept = TRUE, kernel = FALSE, method = "SVD", tol = 1e-05,
-  maxit = 1e+05, vec = NULL, K = 5)
+linearr(X, y, lam = seq(0, 2, 0.01), alpha = 1.5, penalty = "none",
+  weights = NULL, intercept = TRUE, kernel = FALSE, method = "SVD",
+  tol = 1e-05, maxit = 1e+05, vec = NULL, init = 1, K = 5)
 }
 \arguments{
 \item{X}{matrix or data frame}
 
 \item{y}{matrix or data frame of response values}
 
-\item{lam}{optional tuning parameter for ridge regularization term. If passing a list of values, the function will choose the optimal value based on K-fold cross validation. Defaults to 'lam = seq(0.01, 2, 0.01)'}
+\item{lam}{optional tuning parameter for ridge regularization term. If passing a list of values, the function will choose the optimal value based on K-fold cross validation. Defaults to 'lam = seq(0, 2, 0.01)'}
 
 \item{alpha}{optional tuning parameter for bridge regularization term. If passing a list of values, the function will choose the optimal value based on K-fold cross validation. Defaults to 'alpha = 1.5'}
 
@@ -32,6 +32,8 @@ linearr(X, y, lam = 0, alpha = 1.5, penalty = "none", weights = NULL,
 \item{maxit}{maximum iterations for 'MM'. Defaults to 10^5}
 
 \item{vec}{optional vector to specify which coefficients will be penalized}
+
+\item{init}{optional initialization for MM algorithm}
 
 \item{K}{specify number of folds for cross validation, if necessary}
 }

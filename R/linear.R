@@ -6,7 +6,7 @@
 #'
 #' @param X matrix or data frame
 #' @param y matrix or data frame of response values
-#' @param lam optional tuning parameter for ridge regularization term. If passing a list of values, the function will choose the optimal value based on K-fold cross validation. Defaults to 'lam = seq(0.01, 2, 0.01)'
+#' @param lam optional tuning parameter for ridge regularization term. If passing a list of values, the function will choose the optimal value based on K-fold cross validation. Defaults to 'lam = seq(0, 2, 0.01)'
 #' @param alpha optional tuning parameter for bridge regularization term. If passing a list of values, the function will choose the optimal value based on K-fold cross validation. Defaults to 'alpha = 1.5'
 #' @param penalty choose from c('none', 'ridge', 'bridge'). Defaults to 'none'
 #' @param weights optional vector of weights for weighted least squares
@@ -16,6 +16,7 @@
 #' @param tol tolerance - used to determine algorithm convergence for 'MM'. Defaults to 10^-5
 #' @param maxit maximum iterations for 'MM'. Defaults to 10^5
 #' @param vec optional vector to specify which coefficients will be penalized
+#' @param init optional initialization for MM algorithm
 #' @param K specify number of folds for cross validation, if necessary
 #' @return returns the selected tuning parameters, coefficient estimates, MSE, and gradients
 #' @export
@@ -30,15 +31,20 @@
 #' Kernelized ridge regression
 #' linearr(X, y, lam = 0.1, penalty = 'ridge', kernel = T)
 
-linearr = function(X, y, lam = 0, alpha = 1.5, penalty = "none", 
-    weights = NULL, intercept = TRUE, kernel = FALSE, method = "SVD", 
-    tol = 1e-05, maxit = 1e+05, vec = NULL, K = 5) {
+linearr = function(X, y, lam = seq(0, 2, 0.01), alpha = 1.5, 
+    penalty = "none", weights = NULL, intercept = TRUE, kernel = FALSE, 
+    method = "SVD", tol = 1e-05, maxit = 1e+05, vec = NULL, 
+    init = 1, K = 5) {
     
     # checks
     n = dim(X)[1]
     p = dim(X)[2]
     X = as.matrix(X)
     y = as.matrix(y)
+    if (penalty == "none") {
+        lam = 0
+        alpha = 1.5
+    }
     if (is.null(weights)) {
         weights = rep(1, n)
     }
@@ -56,18 +62,17 @@ linearr = function(X, y, lam = 0, alpha = 1.5, penalty = "none",
         stop("must specify lam to use kernel!")
     if (kernel & (penalty == "bridge")) 
         stop("cannot use kernel with bridge penalty!")
-    if (!all(lam == 0) & (penalty == "none")) 
-        stop("please specify penalty!")
-    if (all(lam == 0) & (penalty != "none")) 
+    if (all(lam == 0) & (penalty != "none")) {
         print("No penalty used: lam = 0")
+        penalty = "none"
+    }
+    
     if ((penalty == "bridge") & (method != "MM")) {
         print("using MM algorithm...")
         method = "MM"
     }
     if (penalty %in% c("none", "ridge", "bridge") == FALSE) 
         stop("incorrect penalty!")
-    if ((penalty != "none") & all(lam == 0)) 
-        stop("please specify lam!")
     if (method %in% c("SVD", "MM") == FALSE) 
         stop("incorrect method!")
     if (intercept) {
@@ -81,21 +86,27 @@ linearr = function(X, y, lam = 0, alpha = 1.5, penalty = "none",
             vec_ = c(0, rep(1, p - 1))
         }
     }
+    if (length(init) > 1) {
+        if (p != length(init)) 
+            stop("initialization wrong dimension!")
+    }
     
     
     # CV needed?
-    if (length(lam) > 1 | length(alpha) > 1) {
+    if ((length(lam) > 1 | length(alpha) > 1) & (penalty != 
+        "none")) {
         
         # execute CV_logisticc
-        CV = CV_linearc(X, y, lam, alpha, penalty, weights, intercept, 
-            kernel, method, tol, maxit = 10000, vec_, K)
+        CV = CV_linearc(X, y, lam, alpha, penalty, weights, 
+            intercept, kernel, method, tol, maxit, vec_, init, 
+            K)
         lam = CV$best.lam
         alpha = CV$best.alpha
     }
     
     # execute linearc
     linear = linearc(X, y, lam, alpha, penalty, weights, intercept, 
-        kernel, method, tol, maxit, vec_)
+        kernel, method, tol, maxit, vec_, init)
     
     
     # add intercept name, if needed
@@ -111,7 +122,8 @@ linearr = function(X, y, lam = 0, alpha = 1.5, penalty = "none",
     }
     
     # generate fitted values
-    fit = predict_linearr(linear, as.matrix(X), y)
+    fit = predict_linearc(linear$coefficients, as.matrix(X), 
+        y)
     
     # misc
     if (penalty == "none") {

@@ -6,7 +6,7 @@
 \usage{
 CV_linearc(X, y, lam = 0L, alpha = 0L, penalty = "none", weights = 0L,
   intercept = TRUE, kernel = FALSE, method = "SVD", tol = 1e-05,
-  maxit = 10000, vec = 0L, K = 5L)
+  maxit = 10000, vec = 0L, init = 0L, K = 5L)
 }
 \arguments{
 \item{X}{matrix}
@@ -29,15 +29,17 @@ CV_linearc(X, y, lam = 0L, alpha = 0L, penalty = "none", weights = 0L,
 
 \item{vec}{optional vector to specify which coefficients will be penalized}
 
+\item{init}{optional initialization for MM algorithm}
+
 \item{K}{specify number of folds in cross validation, if necessary}
 }
 \value{
 returns best lambda, best alpha, cv.errors
 }
 \description{
-Computes the coefficient estimates for linear regression. ridge regularization and bridge regularization optional. This function is to be used with the 'linearc' function
+Computes the coefficient estimates for linear regression. ridge regularization and bridge regularization optional. This function is to be used with the "linearc" function
 }
 \examples{
-CV_linearc(X, y, lam = seq(0.1, 2, 0.1), alpha = seq(1.1, 1.9, 0.1), penalty = 'bridge', vec = c(0,1,1,1))
+CV_linearc(X, y, lam = seq(0.1, 2, 0.1), alpha = seq(1.1, 1.9, 0.1), penalty = "bridge", vec = c(0,1,1,1))
 
 }

@@ -6,7 +6,7 @@
 \usage{
 logisticc(X, y, lam = 0, alpha = 1.5, penalty = "none",
   intercept = TRUE, method = "IRLS", tol = 1e-05, maxit = 1e+05,
-  vec = 0L)
+  vec = 0L, init = 0L)
 }
 \arguments{
 \item{X}{matrix}
@@ -28,6 +28,8 @@ logisticc(X, y, lam = 0, alpha = 1.5, penalty = "none",
 \item{maxit}{maximum iterations. Defaults to 1e5}
 
 \item{vec}{optional vector to specify which coefficients will be penalized}
+
+\item{init}{optional initialization for MM algorithm}
 }
 \value{
 returns beta estimates (includes intercept), total iterations, and gradients.
@@ -50,6 +52,6 @@ ridge Logistic Regression with MM
 logisticc(X, y, lam = 0.1, penalty = 'ridge', method = 'MM', vec = c(0,1,1,1))
 
 bridge Logistic Regression
-logisticc(X, y, lam = 0.1, alpha = 1.5, penalty = 'bridge', method = 'MM', vec = c(0,1,1,1))
+logisticc(X, y, lam = 0.1, alpha = 1.5, penalty = 'bridge', method = "MM", vec = c(0,1,1,1))
 
 }

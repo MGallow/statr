@@ -17,7 +17,7 @@ SVDc(X, y, lam = 0, weights = 0L, intercept = TRUE, kernel = FALSE)
 
 \item{intercept}{add column of ones if not already present. Defaults to TRUE}
 
-\item{kernel}{use linear kernel to compute ridge regression coefficeients. Defaults to TRUE when p >> n (for 'SVD')}
+\item{kernel}{use linear kernel to compute ridge regression coefficeients. Defaults to TRUE when p >> n (for "SVD")}
 }
 \value{
 returns beta estimates (includes intercept) and gradients.
