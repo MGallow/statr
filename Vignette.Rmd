@@ -29,6 +29,7 @@ If there are any issues/bugs, please let me know: [github](https://github.com/MG
 * `tidy()` tidy's R package code and updates documentation
 * `timeit()` prints the computation time of a function
 * `scatter()` creates a scatterplot using ggplot
+* `diagnostic()` creates diagnostic plots using ggplot (residual and QQ)
 * `dsearch()` is a dichotomous search algorithm for minimizing a univariate function
 * `bsearch()` is a bi-section search algorithm for minimizing a univariate function
 * `linearr()` computes the linear regression coefficient estimates (ridge regularization and weights optional)
@@ -58,6 +59,17 @@ This function simply streamlines the process of creating a scatterplot with ggpl
 
 #create scatterplot
 scatter(cars, speed, dist)
+
+```
+
+## `diagnostic()`
+
+Similar to `scatter`, `diagnostic` creates diagnostic plots (residual and QQ) in ggplot:
+
+```{r message = FALSE}
+
+#create diagnostic plots
+diagnostic(cars, speed, dist)
 
 ```
 
@@ -140,23 +152,35 @@ linearr(X, y)
 
 ```
 
-Next, we will try **ridge regression**. At the moment the only regularization penalty available in the `linearr` function is the ridge penalty. Therefore, we only need to specify our tuning parameter `lam`:
+How fast is this function? For illustration purposes, we will compare the underlying c++ function `linearc` to the `lm.fit` built-in function in R.
+
+```{r message = FALSE}
+
+#benchmark both functions
+microbenchmark::microbenchmark(linearc(as.matrix(X), as.matrix(y), intercept = F), lm.fit(as.matrix(X), as.matrix(y)))
+
+
+```
+
+We can see that on average, our function edges out R's built-in function (though to be fair, `lm.fit` is performing a few other calculations).
+
+Next, we will try **ridge regression**. This function defaults to a sequence of `lam` values and will use cross validation to choose the optimal tuning parameter -- therefore, we only need specify the penalty as "ridge":
 
 ```{r message = FALSE}
 
 #ridge regression (set lam = 0.1)
-linearr(X, y, lam = 0.1)
+linearr(X, y, penalty = "ridge")
 
 ```
 
 ## `predict_linearr()`
 
-We will use our linear model fit to generate new predictions:
+We will use a linear model fit to generate new predictions. This time, let us specify the `lam` tuning parameter to `lam = 0.1`.
 
 ```{r message = FALSE}
 
 #ridge regression fit
-fit = linearr(X, y, lam = 0.1)
+fit = linearr(X, y, lam = 0.1, penalty = "ridge")
 
 #predict values for first three flowers in iris data set
 predict_linearr(fit, X[1:3,], y[1:3,])
@@ -183,34 +207,22 @@ logisticr(X, y_class)
 
 ```
 
-This package has been updated so that the source code is written in c++ for computational gain -- which will be the default. We still have the option to use R if we like:
-
-```{r message = FALSE}
-
-#logistic regression in R
-logisticr(X, y_class, lang = "r")
-
-#time for R
-timeit(logisticr(X, y_class, lang = "r"))
-
-#time for cpp
-timeit(logisticr(X, y_class))
-
-```
-
-
 **Ridge logistic regression using IRLS algorithm**:
+
+Again, this function defaults to a sequence of `lam` values and will use cross validation to choose the optimal tuning parameter -- therefore, we only need specify the penalty as "ridge":
 
 ```{r message = FALSE}
 
 #ridge logistic regression (IRLS)
-logisticr(X, y_class, lam = 0.1, penalty = "ridge")
+logisticr(X, y_class, penalty = "ridge")
 
 ```
 Note that the function will default to using the IRLS algorithm.
 
 
 **Ridge logistic regression using MM algorithm**:
+
+Note this time we specify the `lam` tuning parameter as 0.1 (optional).
 
 ```{r message = FALSE}
 
@@ -233,11 +245,9 @@ How fast is this function?
 
 ```{r message = FALSE}
 
-#time for cpp
+#timeit bridge penalized logistic regression
 timeit(logisticr(X, y_class, lam = 0.1, alpha = 1.5, penalty = "bridge"))
 
-#time for R
-timeit(logisticr(X, y_class, lam = 0.1, alpha = 1.5, penalty = "bridge", lang = "r"))
 
 ```
 

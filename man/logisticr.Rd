@@ -4,7 +4,7 @@
 \alias{logisticr}
 \title{Logistic Regression}
 \usage{
-logisticr(X, y, lam = seq(0, 2, 0.01), alpha = 1.5, penalty = "none",
+logisticr(X, y, lam = seq(0, 2, 0.1), alpha = 1.5, penalty = "none",
   intercept = TRUE, method = "IRLS", tol = 1e-05, maxit = 1e+05,
   vec = NULL, init = 1, criteria = "logloss", K = 5)
 }
@@ -13,7 +13,7 @@ logisticr(X, y, lam = seq(0, 2, 0.01), alpha = 1.5, penalty = "none",
 
 \item{y}{matrix or vector of response values 0,1}
 
-\item{lam}{optional tuning parameter(s) for ridge regularization term. If passing a list of values, the function will choose optimal value based on K-fold cross validation. Defaults to `lam = seq(0, 2, 0.01)`}
+\item{lam}{optional tuning parameter(s) for ridge regularization term. If passing a list of values, the function will choose optimal value based on K-fold cross validation. Defaults to `lam = seq(0, 2, 0.1)`}
 
 \item{alpha}{optional tuning parameter for bridge regularization term. If passing a list of values, the function will choose the optimal value based on K-fold cross validation. Defaults to 'alpha = 1.5'}
 

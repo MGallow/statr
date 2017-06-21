@@ -11,6 +11,7 @@ Overview
 -   `tidy()` tidy's R package code and updates documentation
 -   `timeit()` prints the computation time of a function
 -   `scatter()` creates a scatterplot using ggplot
+-   `diagnostic()` creates diagnostic plots using ggplot (residual and QQ)
 -   `dsearch()` is a dichotomous search algorithm for minimizing a univariate function
 -   `bsearch()` is a bi-section search algorithm for minimizing a univariate function
 -   `linearr()` computes the linear regression coefficient estimates (ridge regularization and weights optional)
@@ -48,53 +49,82 @@ scatter(iris, Sepal.Length, Sepal.Width)
 ![](README_files/figure-markdown_github/unnamed-chunk-2-1.png)
 
 ``` r
-#ridge regression
-linearr(X, y, lam = 0.1)
+#plot diagnostic plots
+diagnostic(iris, Sepal.Length, Sepal.Width)
 ```
 
-    ## $coefficients
-    ##                 [,1]
-    ## intercept  1.8778524
-    ##            0.6462400
-    ##            0.7023063
-    ##           -0.5415988
+![](README_files/figure-markdown_github/unnamed-chunk-2-2.png)
 
 ``` r
-#ridge logistic regression (IRLS)
-logisticr(X, y_class, lam = 0.1, penalty = "ridge")
+#ridge regression (use CV for optimal lambda)
+linearr(X, y, penalty = "ridge")
 ```
 
+    ## $parameters
+    ##      lam alpha
+    ## [1,] 0.2   NaN
+    ## 
     ## $coefficients
-    ##                [,1]
-    ## intercept  6.276283
-    ##            1.540809
-    ##           -3.641782
-    ##           -1.630507
+    ##                 [,1]
+    ## intercept  1.8991336
+    ##            0.6417452
+    ##            0.6957344
+    ##           -0.5272921
     ## 
     ## $MSE
-    ## [1] 5.13471e-05
+    ## [1] 0.09634343
+    ## 
+    ## $gradient
+    ##                    [,1]
+    ## intercept -2.273737e-13
+    ##           -5.109246e-13
+    ##           -1.755235e-12
+    ##           -3.128608e-13
+
+``` r
+#ridge logistic regression (IRLS) (use CV for optimal lambda)
+logisticr(X, y_class, penalty = "ridge")
+```
+
+    ## $parameters
+    ##      lam alpha
+    ## [1,]   0   NaN
+    ## 
+    ## $coefficients
+    ##                 [,1]
+    ## intercept   7.885352
+    ##             8.894847
+    ##            -7.548629
+    ##           -18.604247
+    ## 
+    ## $MSE
+    ## [1] 8.0815e-14
     ## 
     ## $log.loss
-    ## [1] 0.3956525
+    ## [1] 6.929591e-06
     ## 
     ## $misclassification
     ## [1] 0
     ## 
     ## $total.iterations
-    ## [1] 11
+    ## [1] 18
     ## 
     ## $gradient
     ##                   [,1]
-    ## intercept 4.536561e-11
-    ##           1.175446e-10
-    ##           1.671454e-10
-    ##           5.304043e-11
+    ## intercept 1.240583e-06
+    ##           3.160471e-06
+    ##           9.143271e-06
+    ##           3.372886e-06
 
 ``` r
 #ridge logistic regression (MM)
 logisticr(X, y_class, lam = 0.1, penalty = "ridge", method = "MM")
 ```
 
+    ## $parameters
+    ##      lam alpha
+    ## [1,] 0.1   NaN
+    ## 
     ## $coefficients
     ##                [,1]
     ## intercept  6.276226
@@ -132,6 +162,10 @@ fit = logisticr(X, y_class, lam = 0.1, alpha = 1.2, penalty = "bridge")
 fit
 ```
 
+    ## $parameters
+    ##      lam alpha
+    ## [1,] 0.1   1.2
+    ## 
     ## $coefficients
     ##                 [,1]
     ## intercept 13.0803079
@@ -166,7 +200,7 @@ timeit(logisticr(X, y_class, lam = 0.1, alpha = 1.2, penalty = "bridge"))
     ## [1] "using MM algorithm..."
 
     ##    user  system elapsed 
-    ##   0.235   0.000   0.235
+    ##   0.243   0.001   0.244
 
 ``` r
 #predict using bridge logistic regression estimates

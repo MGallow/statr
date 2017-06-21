@@ -15,21 +15,21 @@ linearc(X, y, lam = 0, alpha = 1.5, penalty = "none", weights = 0L,
 
 \item{lam}{optional tuning parameter for ridge regularization term. Defaults to 'lam = 0'}
 
-\item{alpha}{optional tuning parameter for bridge regularization term. Defaults to "alpha = 1.5"}
+\item{alpha}{optional tuning parameter for bridge regularization term. Defaults to 'alpha = 1.5'}
 
-\item{penalty}{choose from c("none", "ridge", "bridge"). Defaults to "none"}
+\item{penalty}{choose from c('none', 'ridge', 'bridge'). Defaults to 'none'}
 
 \item{weights}{optional vector of weights for weighted least squares}
 
 \item{intercept}{add column of ones if not already present. Defaults to TRUE}
 
-\item{kernel}{use linear kernel to compute ridge regression coefficeients. Defaults to TRUE when p >> n (for "SVD")}
+\item{kernel}{use linear kernel to compute ridge regression coefficeients. Defaults to TRUE when p >> n (for 'SVD')}
 
-\item{method}{optimization algorithm. Choose from "SVD" or "MM". Defaults to "SVD"}
+\item{method}{optimization algorithm. Choose from 'SVD' or 'MM'. Defaults to 'SVD'}
 
-\item{tol}{tolerance - used to determine algorithm convergence for "MM". Defaults to 10^-5}
+\item{tol}{tolerance - used to determine algorithm convergence for 'MM'. Defaults to 10^-5}
 
-\item{maxit}{maximum iterations for "MM". Defaults to 10^5}
+\item{maxit}{maximum iterations for 'MM'. Defaults to 10^5}
 
 \item{vec}{optional vector to specify which coefficients will be penalized}
 
@@ -46,9 +46,9 @@ Weighted ridge regression
 library(dplyr)
 X = dplyr::select(iris, -c(Species, Sepal.Length))
 y = dplyr::select(iris, Sepal.Length)
-linearc(X, y, lam = 0.1, penalty = "ridge", weights = rep(1:150), vec = c(0,1,1,1))
+linearc(X, y, lam = 0.1, penalty = 'ridge', weights = rep(1:150), vec = c(0,1,1,1))
 
 Kernelized ridge regression
-linearc(X, y, lam = 0.1, penalty = "ridge", kernel = T, vec = c(0,1,1,1))
+linearc(X, y, lam = 0.1, penalty = 'ridge', kernel = T, vec = c(0,1,1,1))
 
 }

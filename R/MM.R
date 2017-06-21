@@ -19,9 +19,8 @@ gradient_MM_logistic = function(betas, X, y, lam = 0, alpha = 1.5,
     gamma = 1, vec) {
     
     # gradient for beta
-    t(X) %*% (logitr(X %*% betas) - y) + lam * (gamma * vec * 
-        betas + (1 - gamma) * abs(vec * betas)^(alpha - 1) * 
-        sign(betas))
+    t(X) %*% (logitr(X %*% betas) - y) + lam * (gamma * vec * betas + 
+        (1 - gamma) * abs(vec * betas)^(alpha - 1) * sign(betas))
     
 }
 
@@ -48,8 +47,8 @@ gradient_MM_logistic = function(betas, X, y, lam = 0, alpha = 1.5,
 #' MM(X, y)
 
 
-# calculates the coefficient estimates for logistic
-# regression (MM)
+# calculates the coefficient estimates for logistic regression
+# (MM)
 MM = function(X, y, lam = 0, alpha = 1.5, gamma = 1, intercept = TRUE, 
     tol = 10^(-5), maxit = 1e+05, vec = NULL) {
     
@@ -61,8 +60,7 @@ MM = function(X, y, lam = 0, alpha = 1.5, gamma = 1, intercept = TRUE,
     delta = 10^(-5)
     betas = as.matrix(rep(0.1, p))/n
     iteration = 1
-    grads = gradient_MM_logistic(betas, X, y, lam, alpha, 
-        gamma, vec)
+    grads = gradient_MM_logistic(betas, X, y, lam, alpha, gamma, vec)
     Z = t(X) %*% X * (0.25 + delta)
     
     # MM algorithm
@@ -79,13 +77,12 @@ MM = function(X, y, lam = 0, alpha = 1.5, gamma = 1, intercept = TRUE,
         # qrsolve
         a = Z + lam * diag(gamma * (vec - d) + d)
         b = t(X) %*% (y - logitr(X %*% betas)) + Z %*% betas
-        betas = qr.solve(Z + lam * diag(gamma * (vec - d) + 
-            d), t(X) %*% (y - logitr(X %*% betas)) + Z %*% 
-            betas)
+        betas = qr.solve(Z + lam * diag(gamma * (vec - d) + d), t(X) %*% 
+            (y - logitr(X %*% betas)) + Z %*% betas)
         
         # calculate updated gradients
-        grads = gradient_MM_logistic(betas, X, y, lam, alpha, 
-            gamma, vec)
+        grads = gradient_MM_logistic(betas, X, y, lam, alpha, gamma, 
+            vec)
         iteration = iteration + 1
         
     }

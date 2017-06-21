@@ -16,6 +16,7 @@ Alternatively, check out the [vignette](https://htmlpreview.github.io/?https://g
 * `tidy()` tidy's R package code and updates documentation
 * `timeit()` prints the computation time of a function
 * `scatter()` creates a scatterplot using ggplot
+* `diagnostic()` creates diagnostic plots using ggplot (residual and QQ)
 * `dsearch()` is a dichotomous search algorithm for minimizing a univariate function
 * `bsearch()` is a bi-section search algorithm for minimizing a univariate function
 * `linearr()` computes the linear regression coefficient estimates (ridge regularization and weights optional)
@@ -49,11 +50,14 @@ y_class = ifelse(dplyr::select(iris, Species) == "setosa", 1, 0)
 #plot Sepal.Length v Sepal.Width
 scatter(iris, Sepal.Length, Sepal.Width)
 
-#ridge regression
-linearr(X, y, lam = 0.1)
+#plot diagnostic plots
+diagnostic(iris, Sepal.Length, Sepal.Width)
 
-#ridge logistic regression (IRLS)
-logisticr(X, y_class, lam = 0.1, penalty = "ridge")
+#ridge regression (use CV for optimal lambda)
+linearr(X, y, penalty = "ridge")
+
+#ridge logistic regression (IRLS) (use CV for optimal lambda)
+logisticr(X, y_class, penalty = "ridge")
 
 #ridge logistic regression (MM)
 logisticr(X, y_class, lam = 0.1, penalty = "ridge", method = "MM")

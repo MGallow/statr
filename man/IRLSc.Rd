@@ -33,6 +33,6 @@ returns beta estimates (includes intercept), total iterations, and gradients.
 Computes the logistic regression coefficient estimates using the iterative re-weighted least squares (IRLS) algorithm. This function is to be used with the 'logisticc' function.
 }
 \examples{
-IRLSc(X, y, lam = 0.1, penalty = "ridge", vec = c(0,1,1,1))
+IRLSc(X, y, lam = 0.1, penalty = 'ridge', vec = c(0,1,1,1))
 
 }

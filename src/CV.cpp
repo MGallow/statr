@@ -1,5 +1,6 @@
 // Matt Galloway
 
+#include <RcppParallel.h>
 #include <RcppArmadillo.h>
 #include <Rcpp.h>
 #include "logistic.h"
@@ -8,6 +9,7 @@
 #include "predict.h"
 
 using namespace Rcpp;
+using namespace RcppParallel;
 
 
 
@@ -42,6 +44,8 @@ arma::vec kfold(int n, int K){
 
 
 //--------------------------------------------------------------------------------------------
+
+
 
 
 //' @title CV Logisticc (c++)

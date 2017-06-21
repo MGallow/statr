@@ -21,7 +21,7 @@ Generates prediction for linear regression
 }
 \examples{
 
-fitted = linearr(X, y, penalty = "ridge")
+fitted = linearr(X, y, penalty = 'ridge')
 predict_linearr(fitted$coefficients, X)
 
 }

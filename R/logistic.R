@@ -7,7 +7,7 @@
 #'
 #' @param X matrix or data frame
 #' @param y matrix or vector of response values 0,1
-#' @param lam optional tuning parameter(s) for ridge regularization term. If passing a list of values, the function will choose optimal value based on K-fold cross validation. Defaults to `lam = seq(0, 2, 0.01)`
+#' @param lam optional tuning parameter(s) for ridge regularization term. If passing a list of values, the function will choose optimal value based on K-fold cross validation. Defaults to `lam = seq(0, 2, 0.1)`
 #' @param alpha optional tuning parameter for bridge regularization term. If passing a list of values, the function will choose the optimal value based on K-fold cross validation. Defaults to 'alpha = 1.5'
 #' @param penalty choose from c('none', 'ridge', 'bridge'). Defaults to 'none'
 #' @param intercept Defaults to TRUE
@@ -39,10 +39,9 @@
 #' logisticr(X, y, lam = 0.1, alpha = 1.5, penalty = 'bridge')
 
 
-logisticr = function(X, y, lam = seq(0, 2, 0.01), alpha = 1.5, 
-    penalty = "none", intercept = TRUE, method = "IRLS", tol = 1e-05, 
-    maxit = 1e+05, vec = NULL, init = 1, criteria = "logloss", 
-    K = 5) {
+logisticr = function(X, y, lam = seq(0, 2, 0.1), alpha = 1.5, penalty = "none", 
+    intercept = TRUE, method = "IRLS", tol = 1e-05, maxit = 1e+05, 
+    vec = NULL, init = 1, criteria = "logloss", K = 5) {
     
     # checks
     n = dim(X)[1]
@@ -95,19 +94,18 @@ logisticr = function(X, y, lam = seq(0, 2, 0.01), alpha = 1.5,
     
     
     # CV needed?
-    if ((length(lam) > 1 | length(alpha) > 1) & (penalty != 
-        "none")) {
+    if ((length(lam) > 1 | length(alpha) > 1) & (penalty != "none")) {
         
         # execute CV_logisticc
-        CV = CV_logisticc(X, y, lam, alpha, penalty, intercept, 
-            method, tol, maxit, vec_, init, criteria, K)
+        CV = CV_logisticc(X, y, lam, alpha, penalty, intercept, method, 
+            tol, maxit, vec_, init, criteria, K)
         lam = CV$best.lam
         alpha = CV$best.alpha
     }
     
     # execute logisticc
-    logistic = logisticc(X, y, lam, alpha, penalty, intercept, 
-        method, tol, maxit, vec_, init)
+    logistic = logisticc(X, y, lam, alpha, penalty, intercept, method, 
+        tol, maxit, vec_, init)
     
     
     # add intercept name, if needed
@@ -123,8 +121,7 @@ logisticr = function(X, y, lam = seq(0, 2, 0.01), alpha = 1.5,
     }
     
     # generate fitted values
-    fit = predict_logisticc(logistic$coefficients, as.matrix(X), 
-        y)
+    fit = predict_logisticc(logistic$coefficients, as.matrix(X), y)
     
     # misc
     if (penalty == "none") {

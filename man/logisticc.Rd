@@ -52,6 +52,6 @@ ridge Logistic Regression with MM
 logisticc(X, y, lam = 0.1, penalty = 'ridge', method = 'MM', vec = c(0,1,1,1))
 
 bridge Logistic Regression
-logisticc(X, y, lam = 0.1, alpha = 1.5, penalty = 'bridge', method = "MM", vec = c(0,1,1,1))
+logisticc(X, y, lam = 0.1, alpha = 1.5, penalty = 'bridge', method = 'MM', vec = c(0,1,1,1))
 
 }

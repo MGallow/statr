@@ -6,7 +6,7 @@
 #'
 #' @param X matrix or data frame
 #' @param y matrix or data frame of response values
-#' @param lam optional tuning parameter for ridge regularization term. If passing a list of values, the function will choose the optimal value based on K-fold cross validation. Defaults to 'lam = seq(0, 2, 0.01)'
+#' @param lam optional tuning parameter for ridge regularization term. If passing a list of values, the function will choose the optimal value based on K-fold cross validation. Defaults to 'lam = seq(0, 2, 0.1)'
 #' @param alpha optional tuning parameter for bridge regularization term. If passing a list of values, the function will choose the optimal value based on K-fold cross validation. Defaults to 'alpha = 1.5'
 #' @param penalty choose from c('none', 'ridge', 'bridge'). Defaults to 'none'
 #' @param weights optional vector of weights for weighted least squares
@@ -31,10 +31,9 @@
 #' Kernelized ridge regression
 #' linearr(X, y, lam = 0.1, penalty = 'ridge', kernel = T)
 
-linearr = function(X, y, lam = seq(0, 2, 0.01), alpha = 1.5, 
-    penalty = "none", weights = NULL, intercept = TRUE, kernel = FALSE, 
-    method = "SVD", tol = 1e-05, maxit = 1e+05, vec = NULL, 
-    init = 1, K = 5) {
+linearr = function(X, y, lam = seq(0, 2, 0.1), alpha = 1.5, penalty = "none", 
+    weights = NULL, intercept = TRUE, kernel = FALSE, method = "SVD", 
+    tol = 1e-05, maxit = 1e+05, vec = NULL, init = 1, K = 5) {
     
     # checks
     n = dim(X)[1]
@@ -93,13 +92,11 @@ linearr = function(X, y, lam = seq(0, 2, 0.01), alpha = 1.5,
     
     
     # CV needed?
-    if ((length(lam) > 1 | length(alpha) > 1) & (penalty != 
-        "none")) {
+    if ((length(lam) > 1 | length(alpha) > 1) & (penalty != "none")) {
         
         # execute CV_logisticc
-        CV = CV_linearc(X, y, lam, alpha, penalty, weights, 
-            intercept, kernel, method, tol, maxit, vec_, init, 
-            K)
+        CV = CV_linearc(X, y, lam, alpha, penalty, weights, intercept, 
+            kernel, method, tol, maxit, vec_, init, K)
         lam = CV$best.lam
         alpha = CV$best.alpha
     }
@@ -122,8 +119,7 @@ linearr = function(X, y, lam = seq(0, 2, 0.01), alpha = 1.5,
     }
     
     # generate fitted values
-    fit = predict_linearc(linear$coefficients, as.matrix(X), 
-        y)
+    fit = predict_linearc(linear$coefficients, as.matrix(X), y)
     
     # misc
     if (penalty == "none") {
