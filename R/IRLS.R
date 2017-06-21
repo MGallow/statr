@@ -36,7 +36,8 @@ logitr = function(u) {
 gradient_IRLS_logistic = function(betas, X, y, lam = 0, vec) {
     
     # gradient for beta
-    t(X) %*% (logitr(X %*% betas) - y) + lam * as.matrix(vec) * betas
+    t(X) %*% (logitr(X %*% betas) - y) + lam * as.matrix(vec) * 
+        betas
     
 }
 
@@ -61,10 +62,10 @@ gradient_IRLS_logistic = function(betas, X, y, lam = 0, vec) {
 #' IRLS(X, y, n.list = c(rep(1, n)), lam = 0.1, alpha = 1.5)
 
 
-# calculates the coefficient estimates for logistic regression
-# (IRLS)
-IRLS = function(X, y, lam = 0, intercept = TRUE, tol = 10^(-5), maxit = 1e+05, 
-    vec) {
+# calculates the coefficient estimates for logistic
+# regression (IRLS)
+IRLS = function(X, y, lam = 0, intercept = TRUE, tol = 10^(-5), 
+    maxit = 1e+05, vec) {
     
     # initialize
     n = dim(X)[1]

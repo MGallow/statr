@@ -11,7 +11,8 @@
 #' @examples
 #' multiplot(p1, p2, cols = 1)
 
-multiplot <- function(..., plotlist = NULL, file, cols = 1, layout = NULL) {
+multiplot <- function(..., plotlist = NULL, file, cols = 1, 
+    layout = NULL) {
     library(grid)
     
     # Make a list from the ... arguments and plotlist
@@ -21,10 +22,10 @@ multiplot <- function(..., plotlist = NULL, file, cols = 1, layout = NULL) {
     
     # If layout is NULL, then use 'cols' to determine layout
     if (is.null(layout)) {
-        # Make the panel ncol: Number of columns of plots nrow: Number of
-        # rows needed, calculated from # of cols
-        layout <- matrix(seq(1, cols * ceiling(numPlots/cols)), ncol = cols, 
-            nrow = ceiling(numPlots/cols))
+        # Make the panel ncol: Number of columns of plots nrow:
+        # Number of rows needed, calculated from # of cols
+        layout <- matrix(seq(1, cols * ceiling(numPlots/cols)), 
+            ncol = cols, nrow = ceiling(numPlots/cols))
     }
     
     if (numPlots == 1) {
@@ -33,12 +34,13 @@ multiplot <- function(..., plotlist = NULL, file, cols = 1, layout = NULL) {
     } else {
         # Set up the page
         grid.newpage()
-        pushViewport(viewport(layout = grid.layout(nrow(layout), ncol(layout))))
+        pushViewport(viewport(layout = grid.layout(nrow(layout), 
+            ncol(layout))))
         
         # Make each plot, in the correct location
         for (i in 1:numPlots) {
-            # Get the i,j matrix positions of the regions that contain this
-            # subplot
+            # Get the i,j matrix positions of the regions that contain
+            # this subplot
             matchidx <- as.data.frame(which(layout == i, arr.ind = TRUE))
             
             print(plots[[i]], vp = viewport(layout.pos.row = matchidx$row, 
@@ -117,8 +119,8 @@ diagnostic = function(data., x., y.) {
     int <- y[1] - slope * x[1]  # Compute the line intercept
     
     qqplot = ggplot(data.) + stat_qq(mapping = aes(sample = eval(y., 
-        data.))) + geom_abline(intercept = int, slope = slope, color = "red") + 
-        ggtitle("QQ Plot")
+        data.))) + geom_abline(intercept = int, slope = slope, 
+        color = "red") + ggtitle("QQ Plot")
     
     # output plots
     multiplot(residual_plot, qqplot, cols = 1)

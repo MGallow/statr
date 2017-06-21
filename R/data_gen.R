@@ -44,8 +44,9 @@ data_gen = function(n, p, theta, var = 0.5, reps = 200) {
     X1 = rep(1, n)
     X = t(rbind(X1, X_))
     
-    # generate matrix of random noise (epsilons)(n x replications)
-    # note that we generate for all replications at once
+    # generate matrix of random noise (epsilons)(n x
+    # replications) note that we generate for all replications
+    # at once
     Eps = matrix(rnorm(n * reps, 0, sqrt(var)), ncol = reps)
     
     # finally, generate y values
