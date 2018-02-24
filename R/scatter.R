@@ -11,19 +11,22 @@
 #' @examples
 #' multiplot(p1, p2, cols = 1)
 
-multiplot <- function(..., plotlist = NULL, file, cols = 1, 
-    layout = NULL) {
+multiplot <- function(..., plotlist = NULL, file, 
+    cols = 1, layout = NULL) {
     library(grid)
     
-    # Make a list from the ... arguments and plotlist
+    # Make a list from the ... arguments and
+    # plotlist
     plots <- c(list(...), plotlist)
     
     numPlots = length(plots)
     
-    # If layout is NULL, then use 'cols' to determine layout
+    # If layout is NULL, then use 'cols' to
+    # determine layout
     if (is.null(layout)) {
-        # Make the panel ncol: Number of columns of plots nrow:
-        # Number of rows needed, calculated from # of cols
+        # Make the panel ncol: Number of columns of
+        # plots nrow: Number of rows needed,
+        # calculated from # of cols
         layout <- matrix(seq(1, cols * ceiling(numPlots/cols)), 
             ncol = cols, nrow = ceiling(numPlots/cols))
     }
@@ -39,9 +42,10 @@ multiplot <- function(..., plotlist = NULL, file, cols = 1,
         
         # Make each plot, in the correct location
         for (i in 1:numPlots) {
-            # Get the i,j matrix positions of the regions that contain
-            # this subplot
-            matchidx <- as.data.frame(which(layout == i, arr.ind = TRUE))
+            # Get the i,j matrix positions of the regions
+            # that contain this subplot
+            matchidx <- as.data.frame(which(layout == 
+                i, arr.ind = TRUE))
             
             print(plots[[i]], vp = viewport(layout.pos.row = matchidx$row, 
                 layout.pos.col = matchidx$col))
@@ -75,9 +79,9 @@ scatter = function(data., x., y.) {
     y. = substitute(y.)
     
     # create scatterplot
-    ggplot(data.) + geom_point(mapping = aes(x = eval(x., data.), 
-        y = eval(y., data.))) + ggtitle("Scatterplot") + ylab(y.) + 
-        xlab(x.)
+    ggplot(data.) + geom_point(mapping = aes(x = eval(x., 
+        data.), y = eval(y., data.))) + ggtitle("Scatterplot") + 
+        ylab(y.) + xlab(x.)
     
 }
 
@@ -105,12 +109,14 @@ diagnostic = function(data., x., y.) {
     y. = substitute(y.)
     
     # create residual plot
-    fit = lm(eval(y., data.) ~ eval(x., data.), data.)
+    fit = lm(eval(y., data.) ~ eval(x., data.), 
+        data.)
     
     residual_plot = ggplot(data., mapping = aes(x = fit$fitted.values, 
-        y = fit$residuals)) + geom_abline(intercept = 0, slope = 0, 
-        color = "red") + geom_point() + ggtitle("Residual Plot") + 
-        ylab("residuals") + xlab("fitted values")
+        y = fit$residuals)) + geom_abline(intercept = 0, 
+        slope = 0, color = "red") + geom_point() + 
+        ggtitle("Residual Plot") + ylab("residuals") + 
+        xlab("fitted values")
     
     # create qq plot
     y <- quantile(eval(y., data.), c(0.25, 0.75))  # Find the 1st and 3rd quartiles
@@ -119,8 +125,8 @@ diagnostic = function(data., x., y.) {
     int <- y[1] - slope * x[1]  # Compute the line intercept
     
     qqplot = ggplot(data.) + stat_qq(mapping = aes(sample = eval(y., 
-        data.))) + geom_abline(intercept = int, slope = slope, 
-        color = "red") + ggtitle("QQ Plot")
+        data.))) + geom_abline(intercept = int, 
+        slope = slope, color = "red") + ggtitle("QQ Plot")
     
     # output plots
     multiplot(residual_plot, qqplot, cols = 1)

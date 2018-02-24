@@ -1,4 +1,34 @@
-## Matt Galloway Augmented from Adam Rothman's STAT 8054 code
+## Matt Galloway Augmented from Adam Rothman's
+## STAT 8054 code
+
+
+
+
+#' @title Derivative
+#' @description Takes the approximate derivative for a given function
+#'
+#' @param g the derivative of the function to minimize, where dg(u, ...) is the function evaluated at u.
+#' @param x value to evaluate the derivative at
+#' @param delta defaults to 10e-8
+#' @export
+#' @examples
+#' g = function(x){x^2}
+#' derivative(x, g)
+
+derivative = function(g, x, delta = 1e-07) {
+    
+    # define derivate
+    deriv = (g(x + delta) - g(x))/delta
+    
+    return(deriv)
+    
+}
+
+
+
+##--------------------------------------------
+
+
 
 
 #' @title Bisection search
@@ -31,13 +61,15 @@ bsearch = function(dg, a, b, L = 1e-07, quiet = FALSE) {
         # if gradient less than 0...
         if (dgm < 0) {
             
-            # function is decreasing at est ## new interval is [est, b]
+            # function is decreasing at est ## new
+            # interval is [est, b]
             a = est
             
             # if gradient great than 0...
         } else if (dgm > 0) {
             
-            # function is increasing at est ## new interval is [a, mm]
+            # function is increasing at est ## new
+            # interval is [a, mm]
             b = est
             
             # if gradient equal to 0...
@@ -82,7 +114,8 @@ bsearch = function(dg, a, b, L = 1e-07, quiet = FALSE) {
 
 
 
-dsearch = function(g, a, b, L = 1e-07, eps = (L/2.1), quiet = FALSE) {
+dsearch = function(g, a, b, L = 1e-07, eps = (L/2.1), 
+    quiet = FALSE) {
     
     # initial estimate
     est = mean(c(a, b))
@@ -117,7 +150,8 @@ dsearch = function(g, a, b, L = 1e-07, eps = (L/2.1), quiet = FALSE) {
             
         }
         
-        # create new interval and calculate new estimate
+        # create new interval and calculate new
+        # estimate
         if (!quiet) 
             cat("new interval is", a, b, "\n")
         est = mean(c(a, b))
