@@ -55,7 +55,7 @@ This function simply streamlines the process of creating a scatterplot with ggpl
 ```{r message = FALSE}
 
 #create scatterplot
-scatter(cars, speed, dist)
+cars %>% scatter(speed, dist)
 
 ```
 
@@ -66,7 +66,7 @@ Similar to `scatter`, `diagnostic` creates diagnostic plots (residual and QQ) in
 ```{r message = FALSE}
 
 #create diagnostic plots
-diagnostic(cars, speed, dist)
+cars %>% diagnostic(speed, dist)
 
 ```
 

@@ -39,14 +39,14 @@ y = dplyr::select(iris, Sepal.Length)
 y_class = ifelse(dplyr::select(iris, Species) == "setosa", 1, 0)
 
 #plot Sepal.Length v Sepal.Width
-scatter(iris, Sepal.Length, Sepal.Width)
+iris %>% scatter(Sepal.Length, Sepal.Width)
 ```
 
 ![](README_files/figure-markdown_github/unnamed-chunk-2-1.png)
 
 ``` r
 #plot diagnostic plots
-diagnostic(iris, Sepal.Length, Sepal.Width)
+iris %>% diagnostic(Sepal.Length, Sepal.Width)
 ```
 
 ![](README_files/figure-markdown_github/unnamed-chunk-2-2.png)
