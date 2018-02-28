@@ -20,8 +20,6 @@ Depends: Rcpp (>= 0.12.10),
     alr4,
     formatR,
     devtools,
-    RcppParallel,
-    gmodels,
     glasso,
     magrittr
 LinkingTo: Rcpp,

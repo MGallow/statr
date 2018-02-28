@@ -1,5 +1,5 @@
-## Matt Galloway Augmented from Adam Rothman's
-## STAT 8931 code
+## Matt Galloway Augmented from Adam Rothman's STAT
+## 8931 code
 
 
 #' @title Linear Discriminant Analysis
@@ -45,8 +45,8 @@ LDA = function(X, y, method = c("MLE", "diagonal",
         # center X's in category k
         X_k = X[indices, , drop = FALSE]
         mu.hats[[k]] = apply(X_k, 2, mean)
-        X_center = rbind(X_center, scale(X_k, 
-            center = mu.hats[[k]], scale = FALSE))
+        X_center = rbind(X_center, scale(X_k, center = mu.hats[[k]], 
+            scale = FALSE))
     }
     
     # if method is MLE
@@ -66,8 +66,8 @@ LDA = function(X, y, method = c("MLE", "diagonal",
         # if method is ridge
     } else {
         
-        # calculate sample covariance and precision
-        # from sigma_ridge function
+        # calculate sample covariance and precision from
+        # sigma_ridge function
         fit = CV_sigma_ridge(X = X_center, lam = lam)
         picked.ridge = fit$best.lam
         Sigma.inv.hat = fit$omega.hat
@@ -150,8 +150,8 @@ QDA = function(X, y, method = c("MLE", "diagonal",
             # if method is ridge
         } else {
             
-            # calculate sample covariance and precision
-            # from sigma_ridge function
+            # calculate sample covariance and precision from
+            # sigma_ridge function
             fit = CV_sigma_ridge(X = X_k, lam = lam)
             picked.ridge[k] = fit$best.lam
             Sigma.inv.hats[[k]] = fit$omega.hat
@@ -194,19 +194,18 @@ predict_QDA = function(fit, Xtest) {
         ## category k
         tec = scale(Xtest, center = fit$mu.hats[[k]], 
             scale = FALSE)
-        eout = eigen(fit$Sigma.inv.hats[[k]], 
-            symmetric = TRUE, only.values = TRUE)
+        eout = eigen(fit$Sigma.inv.hats[[k]], symmetric = TRUE, 
+            only.values = TRUE)
         ld = sum(log(eout$values))
         
         # score matrix
         score.mat[, k] = 0.5 * ld - 0.5 * diag(tec %*% 
-            fit$Sigma.inv.hats[[k]] %*% t(tec)) + 
-            log(fit$pi.hats[k])
+            fit$Sigma.inv.hats[[k]] %*% t(tec)) + log(fit$pi.hats[k])
         
     }
     
-    # determine the best category for each of the
-    # ntest cases
+    # determine the best category for each of the ntest
+    # cases
     pred.classes = apply(score.mat, 1, which.max)
     
     return(pred.classes)
