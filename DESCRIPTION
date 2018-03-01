@@ -20,6 +20,5 @@ Depends: Rcpp (>= 0.12.10),
     magrittr
 LinkingTo: Rcpp,
     RcppArmadillo,
-    RcppParallel
 Suggests: testthat
 SystemRequirements: GNU make
