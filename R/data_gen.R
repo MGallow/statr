@@ -21,43 +21,43 @@
 
 # we define the data generation function
 data_gen = function(n, p, theta, var = 0.5, reps = 200) {
-    
+
     # randomly generate betas
     betas = rnorm(p, 0, sqrt(1/p))
-    
+
     # generate sigma matrix
     Sigma = matrix(rep(0, (p - 1)^2), ncol = p - 1)
-    
+
     for (i in 1:(p - 1)) {
         for (j in 1:(p - 1)) {
-            
+
             Sigma[i, j] = theta^abs(i - j)
-            
+
         }
     }
-    
+
     # use Choleskys Decomp to generate X columns
     Z = matrix(rnorm(n * (p - 1)), ncol = n)
     L = t(chol(Sigma))
     X_ = L %*% Z
-    
+
     # generate full design matrix
     X1 = rep(1, n)
     X = t(rbind(X1, X_))
-    
+
     # generate matrix of random noise (epsilons)(n x
     # replications) note that we generate for all
     # replications at once
     Eps = matrix(rnorm(n * reps, 0, sqrt(var)), ncol = reps)
-    
+
     # finally, generate y values
     XB = X %*% matrix(betas)
     Y = as.numeric(XB) + Eps
-    
-    
+
+
     returns = list(Y = Y, X = X, betas = betas)
     return(returns)
-    
+
 }
 
 
@@ -77,35 +77,35 @@ data_gen = function(n, p, theta, var = 0.5, reps = 200) {
 
 # we define the tridiag function
 tridiag = function(p = 8, base = 0.7, n = 100, X = FALSE) {
-    
+
     # generate tapered matrices
     S = matrix(0, nrow = p, ncol = p)
-    
+
     for (i in 1:p) {
         for (j in 1:p) {
             S[i, j] = base^abs(i - j)
         }
     }
-    
+
     # create data, if specified
     if (X) {
-        
+
         # generate n by p matrix X with rows drawn iid
         # N_p(0, sigma)
         Z = matrix(rnorm(n * p), nrow = n, ncol = p)
         out = eigen(S, symmetric = TRUE)
-        S.sqrt = out$vectors %*% diag(out$values^0.5) %*% 
+        S.sqrt = out$vectors %*% diag(out$values^0.5) %*%
             t(out$vectors)
         X = Z %*% S.sqrt
-        
+
         return(X)
-        
+
     } else {
-        
+
         return(S)
-        
+
     }
-    
+
 }
 
 
@@ -119,6 +119,8 @@ tridiag = function(p = 8, base = 0.7, n = 100, X = FALSE) {
 #' @description Generate p-dimensional matrices so that its inverse is dense.
 #' @param p desired dimension
 #' @param base base multiplier
+#' @param n sample size
+#' @param X bool - generate X matrices or S sample covariance
 #' @export
 #' @examples
 #' dense(p = 10, base = 0.9)
@@ -126,33 +128,84 @@ tridiag = function(p = 8, base = 0.7, n = 100, X = FALSE) {
 
 # we define the dense function
 dense = function(p = 8, base = 0.9, n = 100, X = FALSE) {
-    
-    # generate tapered matrices
+
+    # generate matrix
     S = matrix(0, nrow = p, ncol = p)
-    
+
     for (i in 1:p) {
         for (j in 1:p) {
             S[i, j] = base^(i != j)
         }
     }
-    
+
     # create data, if specified
     if (X) {
-        
+
         # generate n by p matrix X with rows drawn iid
         # N_p(0, sigma)
         Z = matrix(rnorm(n * p), nrow = n, ncol = p)
         out = eigen(S, symmetric = TRUE)
-        S.sqrt = out$vectors %*% diag(out$values^0.5) %*% 
+        S.sqrt = out$vectors %*% diag(out$values^0.5) %*%
             t(out$vectors)
         X = Z %*% S.sqrt
-        
+
         return(X)
-        
+
     } else {
-        
+
         return(S)
-        
+
     }
-    
+
+}
+
+
+
+
+##-----------------------------------------------------
+
+
+
+#' @title Generate dense matrices (via spectral decomposition)
+#' @description Generate p-dimensional matrices so that its inverse is dense. The matrix will be generated so its first "num" eigen values are 1000 and the remaining are 1. The orthogonal basis is generated via QR decomposition of
+#' @param p desired dimension
+#' @param num number of "large" eigen values. Note num must be less than p
+#' @param n sample size
+#' @param X bool - generate X matrices or S sample covariance
+#' @export
+#' @examples
+#' denseQR(p = 10, num = 10)
+
+
+# we define the dense function
+denseQR = function(p = 8, num = 5, n = 100, X = FALSE) {
+
+  # generate eigen values
+  eigen = c(rep(1000, num), rep(1, p - num))
+
+  # randomly generate orthogonal basis (via QR)
+  Q = matrix(rnorm(p*p), nrow = p, ncol = p) %>% qr %>% qr.Q
+
+  # generate matrix
+  S = Q %*% diag(eigen) %*% t(Q)
+
+  # create data, if specified
+  if (X) {
+
+    # generate n by p matrix X with rows drawn iid
+    # N_p(0, sigma)
+    Z = matrix(rnorm(n * p), nrow = n, ncol = p)
+    out = eigen(S, symmetric = TRUE)
+    S.sqrt = out$vectors %*% diag(out$values^0.5) %*%
+      t(out$vectors)
+    X = Z %*% S.sqrt
+
+    return(X)
+
+  } else {
+
+    return(S)
+
+  }
+
 }
