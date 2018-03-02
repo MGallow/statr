@@ -10,6 +10,10 @@ dense(p = 8, base = 0.9, n = 100, X = FALSE)
 \item{p}{desired dimension}
 
 \item{base}{base multiplier}
+
+\item{n}{sample size}
+
+\item{X}{bool - generate X matrices or S sample covariance}
 }
 \description{
 Generate p-dimensional matrices so that its inverse is dense.

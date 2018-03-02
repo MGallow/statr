@@ -1,5 +1,5 @@
-## Matt Galloway Augmented from Adam Rothman's STAT
-## 8931 code
+## Matt Galloway Augmented from Adam Rothman's STAT 8931
+## code
 
 
 #' @title Linear Discriminant Analysis
@@ -12,8 +12,8 @@
 #' @examples LDA(X, y, method = 'ridge', lam = seq(0.1, 2, 0.1))
 
 # we define the LDA function
-LDA = function(X, y, method = c("MLE", "diagonal", 
-    "ridge"), lam = NULL) {
+LDA = function(X, y, method = c("MLE", "diagonal", "ridge"), 
+    lam = NULL) {
     
     # which method to use?
     method = match.arg(method)
@@ -78,8 +78,8 @@ LDA = function(X, y, method = c("MLE", "diagonal",
         Sigma.inv.hats[[k]] = Sigma.inv.hat
     }
     
-    return(list(pi.hats = pi.hats, mu.hats = mu.hats, 
-        Sigma.inv.hats = Sigma.inv.hats, picked.ridge = picked.ridge))
+    return(list(pi.hats = pi.hats, mu.hats = mu.hats, Sigma.inv.hats = Sigma.inv.hats, 
+        picked.ridge = picked.ridge))
 }
 
 
@@ -98,8 +98,8 @@ LDA = function(X, y, method = c("MLE", "diagonal",
 #' @examples QDA(X, y, method = 'ridge', lam = seq(0.1, 2, 0.1))
 
 # we define the QDA function
-QDA = function(X, y, method = c("MLE", "diagonal", 
-    "ridge"), lam = NULL) {
+QDA = function(X, y, method = c("MLE", "diagonal", "ridge"), 
+    lam = NULL) {
     
     # which method to use?
     method = match.arg(method)
@@ -119,8 +119,8 @@ QDA = function(X, y, method = c("MLE", "diagonal",
     # loop over all response categories
     for (k in 1:C) {
         
-        # indices for response category k indices for
-        # response category k
+        # indices for response category k indices for response
+        # category k
         indices = which(y == k)
         
         # sample size for response category k
@@ -160,8 +160,8 @@ QDA = function(X, y, method = c("MLE", "diagonal",
     }
     
     
-    return(list(pi.hats = pi.hats, mu.hats = mu.hats, 
-        Sigma.inv.hats = Sigma.inv.hats, picked.ridge = picked.ridge))
+    return(list(pi.hats = pi.hats, mu.hats = mu.hats, Sigma.inv.hats = Sigma.inv.hats, 
+        picked.ridge = picked.ridge))
 }
 
 
@@ -190,17 +190,15 @@ predict_QDA = function(fit, Xtest) {
     # loop over all response categories
     for (k in 1:C) {
         
-        ## compute all ntest discriminant scores for
-        ## category k
-        tec = scale(Xtest, center = fit$mu.hats[[k]], 
-            scale = FALSE)
+        ## compute all ntest discriminant scores for category k
+        tec = scale(Xtest, center = fit$mu.hats[[k]], scale = FALSE)
         eout = eigen(fit$Sigma.inv.hats[[k]], symmetric = TRUE, 
             only.values = TRUE)
         ld = sum(log(eout$values))
         
         # score matrix
-        score.mat[, k] = 0.5 * ld - 0.5 * diag(tec %*% 
-            fit$Sigma.inv.hats[[k]] %*% t(tec)) + log(fit$pi.hats[k])
+        score.mat[, k] = 0.5 * ld - 0.5 * diag(tec %*% fit$Sigma.inv.hats[[k]] %*% 
+            t(tec)) + log(fit$pi.hats[k])
         
     }
     

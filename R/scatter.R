@@ -20,12 +20,10 @@ multiplot <- function(..., plotlist = NULL, file, cols = 1,
     
     numPlots = length(plots)
     
-    # If layout is NULL, then use 'cols' to determine
-    # layout
+    # If layout is NULL, then use 'cols' to determine layout
     if (is.null(layout)) {
-        # Make the panel ncol: Number of columns of plots
-        # nrow: Number of rows needed, calculated from # of
-        # cols
+        # Make the panel ncol: Number of columns of plots nrow:
+        # Number of rows needed, calculated from # of cols
         layout <- matrix(seq(1, cols * ceiling(numPlots/cols)), 
             ncol = cols, nrow = ceiling(numPlots/cols))
     }
@@ -43,8 +41,8 @@ multiplot <- function(..., plotlist = NULL, file, cols = 1,
         for (i in 1:numPlots) {
             # Get the i,j matrix positions of the regions that
             # contain this subplot
-            matchidx <- as.data.frame(which(layout == 
-                i, arr.ind = TRUE))
+            matchidx <- as.data.frame(which(layout == i, 
+                arr.ind = TRUE))
             
             print(plots[[i]], vp = viewport(layout.pos.row = matchidx$row, 
                 layout.pos.col = matchidx$col))
@@ -112,9 +110,8 @@ diagnostic = function(data., x., y.) {
     
     residual_plot = ggplot(data., mapping = aes(x = fit$fitted.values, 
         y = fit$residuals)) + geom_abline(intercept = 0, 
-        slope = 0, color = "red") + geom_point() + 
-        ggtitle("Residual Plot") + ylab("residuals") + 
-        xlab("fitted values")
+        slope = 0, color = "red") + geom_point() + ggtitle("Residual Plot") + 
+        ylab("residuals") + xlab("fitted values")
     
     # create qq plot
     y <- quantile(eval(y., data.), c(0.25, 0.75))  # Find the 1st and 3rd quartiles
