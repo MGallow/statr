@@ -1,7 +1,7 @@
 statr
 ================
 
-Alternatively, check out the [vignette](https://htmlpreview.github.io/?https://github.com/MGallow/statr/blob/master/Vignette.html) or [manual](https://github.com/MGallow/statr/blob/master/statr.pdf).
+Alternatively, check out the [vignette](https://mgallow.github.io/statr/) or [manual](https://github.com/MGallow/statr/blob/master/statr.pdf).
 
 Overview
 --------

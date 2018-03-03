@@ -1,14 +1,21 @@
 ---
 title: "statr"
 author: "Matt Galloway"
-date: "`r Sys.Date()`"
+date: \today
 output:
-  rmarkdown::html_vignette:
-    toc: true
-vignette: >
-  %\VignetteIndexEntry{Vignette Title}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+  html_document:
+    toc: yes
+thanks: "**Contact**: gall0441@umn.edu."
+geometry: margin = 1in
+#fontfamily: mathpazo
+#fontsize: 12pt
+#spacing: double
+header-includes:
+   - \usepackage{bbm}
+   - \usepackage{multirow}
+   - \usepackage{graphicx}
+   - \usepackage{amsmath}
+   - \hypersetup{linkcolor=blue}
 ---
 
 # Installation
