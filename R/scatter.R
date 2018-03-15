@@ -8,6 +8,7 @@
 #' @param cols number of columns in layout
 #' @param layout a matrix specify the layout. If present, 'cols' is ignored
 #' @return plots
+#' @export
 #' @examples
 #' multiplot(p1, p2, cols = 1)
 
