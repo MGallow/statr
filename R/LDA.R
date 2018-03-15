@@ -1,5 +1,4 @@
-## Matt Galloway Augmented from Adam Rothman's STAT 8931
-## code
+## Matt Galloway Augmented from Adam Rothman's STAT 8931 code
 
 
 #' @title Linear Discriminant Analysis
@@ -12,8 +11,7 @@
 #' @examples LDA(X, y, method = 'ridge', lam = seq(0.1, 2, 0.1))
 
 # we define the LDA function
-LDA = function(X, y, method = c("MLE", "diagonal", "ridge"), 
-    lam = NULL) {
+LDA = function(X, y, method = c("MLE", "diagonal", "ridge"), lam = NULL) {
     
     # which method to use?
     method = match.arg(method)
@@ -66,8 +64,8 @@ LDA = function(X, y, method = c("MLE", "diagonal", "ridge"),
         # if method is ridge
     } else {
         
-        # calculate sample covariance and precision from
-        # sigma_ridge function
+        # calculate sample covariance and precision from sigma_ridge
+        # function
         fit = CV_sigma_ridge(X = X_center, lam = lam)
         picked.ridge = fit$best.lam
         Sigma.inv.hat = fit$omega.hat
@@ -98,8 +96,7 @@ LDA = function(X, y, method = c("MLE", "diagonal", "ridge"),
 #' @examples QDA(X, y, method = 'ridge', lam = seq(0.1, 2, 0.1))
 
 # we define the QDA function
-QDA = function(X, y, method = c("MLE", "diagonal", "ridge"), 
-    lam = NULL) {
+QDA = function(X, y, method = c("MLE", "diagonal", "ridge"), lam = NULL) {
     
     # which method to use?
     method = match.arg(method)
@@ -119,8 +116,8 @@ QDA = function(X, y, method = c("MLE", "diagonal", "ridge"),
     # loop over all response categories
     for (k in 1:C) {
         
-        # indices for response category k indices for response
-        # category k
+        # indices for response category k indices for response category
+        # k
         indices = which(y == k)
         
         # sample size for response category k
@@ -150,8 +147,8 @@ QDA = function(X, y, method = c("MLE", "diagonal", "ridge"),
             # if method is ridge
         } else {
             
-            # calculate sample covariance and precision from
-            # sigma_ridge function
+            # calculate sample covariance and precision from sigma_ridge
+            # function
             fit = CV_sigma_ridge(X = X_k, lam = lam)
             picked.ridge[k] = fit$best.lam
             Sigma.inv.hats[[k]] = fit$omega.hat
@@ -202,8 +199,7 @@ predict_QDA = function(fit, Xtest) {
         
     }
     
-    # determine the best category for each of the ntest
-    # cases
+    # determine the best category for each of the ntest cases
     pred.classes = apply(score.mat, 1, which.max)
     
     return(pred.classes)

@@ -4,12 +4,14 @@
 \alias{tridiag}
 \title{Generate tri-diagonal matrices}
 \usage{
-tridiag(p = 8, base = 0.7, n = 100, X = FALSE)
+tridiag(p = 8, base = 0.7, n = NULL)
 }
 \arguments{
 \item{p}{desired dimension}
 
 \item{base}{base multiplier}
+
+\item{n}{option to generate n observations from covariance matrix S}
 }
 \description{
 Generate p-dimensional matrices so that its inverse is tri-diagonal.

@@ -4,16 +4,14 @@
 \alias{dense}
 \title{Generate dense matrices}
 \usage{
-dense(p = 8, base = 0.9, n = 100, X = FALSE)
+dense(p = 8, base = 0.9, n = NULL)
 }
 \arguments{
 \item{p}{desired dimension}
 
 \item{base}{base multiplier}
 
-\item{n}{sample size}
-
-\item{X}{bool - generate X matrices or S sample covariance}
+\item{n}{option to generate n observations from covariance matrix S}
 }
 \description{
 Generate p-dimensional matrices so that its inverse is dense.
