@@ -195,3 +195,49 @@ denseQR = function(p = 8, num = 5, n = NULL) {
     }
 
 }
+
+
+
+
+
+##-----------------------------------------------------
+
+
+
+#' @title Generate compound symmetric matrices
+#' @description Generate a p-dimensional compound symmetric matrix.
+#' @param p desired dimension
+#' @param n option to generate n observations from covariance matrix S
+#' @export
+#' @examples
+#' X = compound(p = 10, n = 100)$X
+
+
+# we define the dense function
+denseQR = function(p = 8, n = NULL) {
+
+  # generate precision matrix
+  omega = matrix(0.9, nrow = p, ncol = p)
+  diag(omega) = 1
+
+  # generate covariance matrix
+  S = qr.solve(omega)
+
+  # create data, if specified
+  if (!is.null(n)) {
+
+    # generate n by p matrix X with rows drawn iid N_p(0, sigma)
+    Z = matrix(rnorm(n * p), nrow = n, ncol = p)
+    out = eigen(S, symmetric = TRUE)
+    S.sqrt = out$vectors %*% diag(out$values^0.5) %*% t(out$vectors)
+    X = Z %*% S.sqrt
+
+    return(list(S = S, X = X))
+
+  } else {
+
+    return(S)
+
+  }
+
+}
