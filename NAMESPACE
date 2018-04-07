@@ -3,6 +3,7 @@
 export(LDA)
 export(QDA)
 export(bsearch)
+export(compound)
 export(data_gen)
 export(dense)
 export(denseQR)
