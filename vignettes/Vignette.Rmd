@@ -22,7 +22,7 @@ If there are any issues/bugs, please let me know: [github](https://github.com/MG
 
 # Overview
 
-`statr` is a personal R package that I have created for organizational/convenience purposes. This project is purely experimental! A (possibly incomplete) list of functions contained in the package can be found below:
+`statr` is a personal R package that I have created for organizational/convenience purposes. This project is purely experimental!! A (possibly incomplete) list of functions contained in the package can be found below:
 
 * `tidy()` tidy's R package code and updates documentation
 * `timeit()` prints the computation time of a function
