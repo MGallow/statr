@@ -20,13 +20,14 @@ install:
 
 # Build and check package
 script:
+  - Rscript -e "pkgdown::build_site()"
   - R CMD build . --no-build-vignettes --no-manual
   - PKG_FILE_NAME=$(ls -1t *.tar.gz | head -n 1)
   - R CMD check "${PKG_FILE_NAME}" --no-build-vignettes --no-manual
 
 # build package site
-after_success:
-  - Rscript -e "pkgdown::build_site()"
+#after_success:
+#  - Rscript -e "pkgdown::build_site()"
 
 # deploy site to gh-pages branch
 deploy:
