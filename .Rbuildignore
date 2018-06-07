@@ -1,0 +1,10 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+^README\.Rmd$
+^README\.md$
+^\.travis\.yml$
+^docs$
+^README_files$
+^statr\.pdf$
+^_pkgdown\.yml$
+^pkgdown$
