@@ -20,18 +20,13 @@ install:
 
 # Build and check package
 script:
-  - R CMD build . --no-build-vignettes --no-manual
+  - travis_wait R CMD build . --no-manual
   - PKG_FILE_NAME=$(ls -1t *.tar.gz | head -n 1)
   - R CMD check "${PKG_FILE_NAME}" --no-build-vignettes --no-manual
 
 # build package site
 after_success:
-  - travis_wait Rscript -e "pkgdown::init_site()"
-  - travis_wait Rscript -e "pkgdown::build_home()"
-  - travis_wait Rscript -e "pkgdown::build_reference(lazy = FALSE)"
-  - travis_wait Rscript -e "pkgdown::build_articles(lazy = FALSE)"
-  - travis_wait Rscript -e "pkgdown::build_tutorials()"
-  - travis_wait Rscript -e "pkgdown::build_news()"
+  - travis_wait Rscript -e "pkgdown::build_site()"
 
 # deploy site to gh-pages branch
 deploy:
