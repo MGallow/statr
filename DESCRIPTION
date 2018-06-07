@@ -7,18 +7,21 @@ Authors@R: person("Matt", "Galloway", email = "gall0441@umn.edu",
 Description: This is a personal R package. It contains a number of various R functions for organization and convenience purposes.
 URL: https://github.com/MGallow/statr
 BugReports: https://github.com/MGallow/statr/issues
-License: MIT + file LICENSE
+License: GPL (>= 2)
 ByteCompile: TRUE
-NeedsCompilation: yes
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.0.1
-Depends: Rcpp (>= 0.12.10),
-    RcppArmadillo,
-    dplyr,
+Imports: dplyr,
+    ggplot2,
+    magrittr,
     formatR,
-    magrittr
-LinkingTo: Rcpp,
-    RcppArmadillo,
-Suggests: testthat
+    grid,
+    devtools,
+    ADMMsigma
+Suggests: testthat,
+    knitr,
+    rmarkdown,
+    pkgdown
 SystemRequirements: GNU make
+VignetteBuilder: knitr

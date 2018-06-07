@@ -6,9 +6,6 @@
 #' @param f the function to time
 #' @return returns the elapsed time
 #' @export
-#' @examples
-#' timeit(lm(dist ~ speed, cars))
-
 
 timeit = function(f) {
     

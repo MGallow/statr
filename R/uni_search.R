@@ -11,9 +11,6 @@
 #' @param x value to evaluate the derivative at
 #' @param delta defaults to 10e-8
 #' @export
-#' @examples
-#' g = function(x){x^2}
-#' derivative(x, g)
 
 derivative = function(g, x, delta = 1e-07) {
     
@@ -42,10 +39,6 @@ derivative = function(g, x, delta = 1e-07) {
 #' @param ... additional argument specifications for dg
 #' @return returns the midpoint of the final interval of uncertainty.
 #' @export
-#' @examples
-#' bsearch(dg, -10, 10, quiet = T)
-
-
 
 bsearch = function(dg, a, b, L = 1e-07, quiet = FALSE) {
     
@@ -68,8 +61,7 @@ bsearch = function(dg, a, b, L = 1e-07, quiet = FALSE) {
             # if gradient great than 0...
         } else if (dgm > 0) {
             
-            # function is increasing at est ## new interval is [a,
-            # mm]
+            # function is increasing at est ## new interval is [a, mm]
             b = est
             
             # if gradient equal to 0...
@@ -109,10 +101,6 @@ bsearch = function(dg, a, b, L = 1e-07, quiet = FALSE) {
 #' @param ... additional argument specifications for g
 #' @return returns the midpoint of the final interval of uncertainty.
 #' @export
-#' @examples
-#' dsearch(g, -10, 10, quiet = T)
-
-
 
 dsearch = function(g, a, b, L = 1e-07, eps = (L/2.1), quiet = FALSE) {
     

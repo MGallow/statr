@@ -7,9 +7,10 @@
 #'
 #' @param X n x p matrix where the ith row is the values of the predictor for the ith case
 #' @param y n entry response vector where the ith entry is the response category in {1, ..., C} for the ith case
+#' @param method estimation method
+#' @param lam optional tuning parameter specification
 #' @return returns a list with the parameter estimates
 #' @export
-#' @examples LDA(X, y, method = 'ridge', lam = seq(0.1, 2, 0.1))
 
 # we define the LDA function
 LDA = function(X, y, method = c("MLE", "diagonal", "ridge"), 
@@ -68,7 +69,9 @@ LDA = function(X, y, method = c("MLE", "diagonal", "ridge"),
         
         # calculate sample covariance and precision from
         # sigma_ridge function
-        fit = CV_sigma_ridge(X = X_center, lam = lam)
+        fit = RIDGEsigma(X = X_center, lam = lam)
+        fit$best.lam = fit$Lambda[2]
+        fit$omega.hat = fit$Omega
         picked.ridge = fit$best.lam
         Sigma.inv.hat = fit$omega.hat
     }
@@ -93,9 +96,10 @@ LDA = function(X, y, method = c("MLE", "diagonal", "ridge"),
 #'
 #' @param X n x p matrix where the ith row is the values of the predictor for the ith case
 #' @param y n entry response vector where the ith entry is the response category in {1, ..., C} for the ith case
+#' @param method estimation method
+#' @param lam optional tuning parameter specification
 #' @return returns a list with the parameter estimates
 #' @export
-#' @examples QDA(X, y, method = 'ridge', lam = seq(0.1, 2, 0.1))
 
 # we define the QDA function
 QDA = function(X, y, method = c("MLE", "diagonal", "ridge"), 
@@ -152,7 +156,9 @@ QDA = function(X, y, method = c("MLE", "diagonal", "ridge"),
             
             # calculate sample covariance and precision from
             # sigma_ridge function
-            fit = CV_sigma_ridge(X = X_k, lam = lam)
+            fit = RIDGEsigma(X = X_k, lam = lam)
+            fit$best.lam = fit$Lambda[2]
+            fit$omega.hat = fit$Omega
             picked.ridge[k] = fit$best.lam
             Sigma.inv.hats[[k]] = fit$omega.hat
             
@@ -177,7 +183,6 @@ QDA = function(X, y, method = c("MLE", "diagonal", "ridge"),
 #' @param Xtest this is a matrix with ntest rows and p column, each row is a test case
 #' @return returns a vector of ntest entries, where the ith entry is the estimated response category (some value in {1, ..., C}) for the ith test case.
 #' @export
-#' @examples predict_QDA(model, Xtest)
 
 # we define the predict_QDA function
 predict_QDA = function(fit, Xtest) {
@@ -202,8 +207,7 @@ predict_QDA = function(fit, Xtest) {
         
     }
     
-    # determine the best category for each of the ntest
-    # cases
+    # determine the best category for each of the ntest cases
     pred.classes = apply(score.mat, 1, which.max)
     
     return(pred.classes)

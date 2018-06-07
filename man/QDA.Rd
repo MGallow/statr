@@ -10,13 +10,14 @@ QDA(X, y, method = c("MLE", "diagonal", "ridge"), lam = NULL)
 \item{X}{n x p matrix where the ith row is the values of the predictor for the ith case}
 
 \item{y}{n entry response vector where the ith entry is the response category in {1, ..., C} for the ith case}
+
+\item{method}{estimation method}
+
+\item{lam}{optional tuning parameter specification}
 }
 \value{
 returns a list with the parameter estimates
 }
 \description{
 this function fit the QDA model
-}
-\examples{
-QDA(X, y, method = 'ridge', lam = seq(0.1, 2, 0.1))
 }

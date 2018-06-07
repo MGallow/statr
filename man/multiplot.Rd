@@ -4,10 +4,12 @@
 \alias{multiplot}
 \title{Multiple Plot}
 \usage{
-multiplot(..., plotlist = NULL, file, cols = 1, layout = NULL)
+multiplot(..., plotlist = NULL, cols = 1, layout = NULL)
 }
 \arguments{
 \item{...}{object can be passed in}
+
+\item{plotlist}{plotlist}
 
 \item{cols}{number of columns in layout}
 
@@ -18,7 +20,4 @@ plots
 }
 \description{
 Taken from: http://www.cookbook-r.com/Graphs/Multiple_graphs_on_one_page_(ggplot2)/
-}
-\examples{
-multiplot(p1, p2, cols = 1)
 }

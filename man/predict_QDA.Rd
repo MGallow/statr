@@ -17,6 +17,3 @@ returns a vector of ntest entries, where the ith entry is the estimated response
 \description{
 this function classifies test data using a fitted QDA model
 }
-\examples{
-predict_QDA(model, Xtest)
-}

@@ -9,6 +9,3 @@ tidy()
 \description{
 tidys package R code and updates package documentation. Directly uses Yihui Xie's 'formatR' package.
 }
-\examples{
-tidy()
-}

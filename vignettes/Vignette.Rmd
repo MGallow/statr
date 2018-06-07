@@ -1,21 +1,12 @@
 ---
-title: "statr"
+title: "Tutorial"
 author: "Matt Galloway"
-date: \today
-output:
-  html_document:
-    toc: yes
-thanks: "**Contact**: gall0441@umn.edu."
-geometry: margin = 1in
-#fontfamily: mathpazo
-#fontsize: 12pt
-#spacing: double
-header-includes:
-   - \usepackage{bbm}
-   - \usepackage{multirow}
-   - \usepackage{graphicx}
-   - \usepackage{amsmath}
-   - \hypersetup{linkcolor=blue}
+#date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Tutorial}
+  %\VignetteEngine{knitr::knitr}
+  %\usepackage[UTF-8]{inputenc}
 ---
 
 # Installation
@@ -49,6 +40,8 @@ As a simple example, we will time the `lm()` function with the `cars` data set:
 
 ```{r message = FALSE}
 library(statr)
+library(magrittr)
+library(ggplot2)
 
 #time lm()
 timeit(lm(dist ~ speed, data = cars))

@@ -13,10 +13,6 @@
 #' @param reps number of replications
 #' @return generated design matrix (X), response values (Y)(matrix if reps > 1), true beta values
 #' @export
-#' @examples
-#' data_gen(1000, 10, 0.5)
-
-
 
 # we define the data generation function
 data_gen = function(n, p, theta, var = 0.5, reps = 200) {
@@ -45,8 +41,8 @@ data_gen = function(n, p, theta, var = 0.5, reps = 200) {
     X = t(rbind(X1, X_))
     
     # generate matrix of random noise (epsilons)(n x
-    # replications) note that we generate for all
-    # replications at once
+    # replications) note that we generate for all replications
+    # at once
     Eps = matrix(rnorm(n * reps, 0, sqrt(var)), ncol = reps)
     
     # finally, generate y values
@@ -227,7 +223,7 @@ denseQR = function(p = 8, num = 5, n = NULL) {
 #' @param n option to generate n observations from covariance matrix S
 #' @export
 #' @examples
-#' X = compound(p = 10, n = 100)$X
+#' compound(p = 10, n = 100)
 
 
 # we define the dense function

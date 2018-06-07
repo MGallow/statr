@@ -15,5 +15,5 @@ compound(p = 8, n = NULL)
 Generate a p-dimensional compound symmetric matrix.
 }
 \examples{
-X = compound(p = 10, n = 100)$X
+compound(p = 10, n = 100)
 }

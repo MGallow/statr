@@ -27,6 +27,3 @@ returns the midpoint of the final interval of uncertainty.
 \description{
 Minimizes a univariate strictly quasiconvex function over the interval [a, b]. This is augmented code from Adam Rothman's STAT 8054 course (2017).
 }
-\examples{
-dsearch(g, -10, 10, quiet = T)
-}

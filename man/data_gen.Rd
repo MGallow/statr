@@ -25,6 +25,3 @@ True beta values are generated from p independent draws from N(0, 1/p) distribut
 
 Y is then generated using the X = (1, X_{-1}) and true beta values with an iid error term that follows distribution N(0, var). We can specify the desired number of replications (reps).
 }
-\examples{
-data_gen(1000, 10, 0.5)
-}

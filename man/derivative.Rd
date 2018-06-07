@@ -16,7 +16,3 @@ derivative(g, x, delta = 1e-07)
 \description{
 Takes the approximate derivative for a given function
 }
-\examples{
-g = function(x){x^2}
-derivative(x, g)
-}

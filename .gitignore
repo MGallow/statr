@@ -11,7 +11,6 @@ src/*.dll
 .Rdata
 .rdb
 .rdx
-.Rmd
-ADMMsigma.Rproj
-README.Rmd
-
+statr.Rproj
+inst/doc
+docs

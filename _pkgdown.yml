@@ -1,0 +1,52 @@
+pandoc: 1.19.2.1
+pkgdown: 1.0.0
+pkgdown_sha: ~
+
+title: statr
+url: https://mgallow.github.io/statr/
+template:
+  params:
+    bootswatch: flatly
+    #ganalytics:
+
+reference:
+  - title: Exported functions
+    contents:
+    - bsearch
+    - data_gen
+    - dense
+    - derivative
+    - diagnostic
+    - dsearch
+    - LDA
+    - multiplot
+    - predict_QDA
+    - QDA
+    - scatter
+    - tidy
+    - timeit
+    - tridiag
+    - compound
+    - denseQR
+
+navbar:
+  #type: inverse
+  title: "statr"
+  left:
+    - icon: fa-home fa-lg
+      href: index.html
+    - text: "Tutorial"
+      href: articles/Vignette.html
+    - text: "Functions"
+      href: reference/index.html
+
+  right:
+    - icon: fa-newspaper-o fa-lg
+      #text: "News"
+      href: news/index.html
+    - icon: fa-github fa-lg
+      #text: "Github"
+      href: https://github.com/MGallow/statr/
+    - icon: fa-user fa-lg
+      text: "MGallow"
+      href: https://mgallow.github.io/
