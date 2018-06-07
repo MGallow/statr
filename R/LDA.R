@@ -1,5 +1,4 @@
-## Matt Galloway Augmented from Adam Rothman's STAT 8931
-## code
+## Matt Galloway Augmented from Adam Rothman's STAT 8931 code
 
 
 #' @title Linear Discriminant Analysis
@@ -13,8 +12,7 @@
 #' @export
 
 # we define the LDA function
-LDA = function(X, y, method = c("MLE", "diagonal", "ridge"), 
-    lam = NULL) {
+LDA = function(X, y, method = c("MLE", "diagonal", "ridge"), lam = NULL) {
     
     # which method to use?
     method = match.arg(method)
@@ -46,8 +44,7 @@ LDA = function(X, y, method = c("MLE", "diagonal", "ridge"),
         # center X's in category k
         X_k = X[indices, , drop = FALSE]
         mu.hats[[k]] = apply(X_k, 2, mean)
-        X_center = rbind(X_center, scale(X_k, center = mu.hats[[k]], 
-            scale = FALSE))
+        X_center = rbind(X_center, scale(X_k, center = mu.hats[[k]], scale = FALSE))
     }
     
     # if method is MLE
@@ -67,8 +64,7 @@ LDA = function(X, y, method = c("MLE", "diagonal", "ridge"),
         # if method is ridge
     } else {
         
-        # calculate sample covariance and precision from
-        # sigma_ridge function
+        # calculate sample covariance and precision from sigma_ridge function
         fit = RIDGEsigma(X = X_center, lam = lam)
         fit$best.lam = fit$Lambda[2]
         fit$omega.hat = fit$Omega
@@ -81,8 +77,7 @@ LDA = function(X, y, method = c("MLE", "diagonal", "ridge"),
         Sigma.inv.hats[[k]] = Sigma.inv.hat
     }
     
-    return(list(pi.hats = pi.hats, mu.hats = mu.hats, Sigma.inv.hats = Sigma.inv.hats, 
-        picked.ridge = picked.ridge))
+    return(list(pi.hats = pi.hats, mu.hats = mu.hats, Sigma.inv.hats = Sigma.inv.hats, picked.ridge = picked.ridge))
 }
 
 
@@ -102,8 +97,7 @@ LDA = function(X, y, method = c("MLE", "diagonal", "ridge"),
 #' @export
 
 # we define the QDA function
-QDA = function(X, y, method = c("MLE", "diagonal", "ridge"), 
-    lam = NULL) {
+QDA = function(X, y, method = c("MLE", "diagonal", "ridge"), lam = NULL) {
     
     # which method to use?
     method = match.arg(method)
@@ -123,8 +117,7 @@ QDA = function(X, y, method = c("MLE", "diagonal", "ridge"),
     # loop over all response categories
     for (k in 1:C) {
         
-        # indices for response category k indices for response
-        # category k
+        # indices for response category k indices for response category k
         indices = which(y == k)
         
         # sample size for response category k
@@ -154,8 +147,7 @@ QDA = function(X, y, method = c("MLE", "diagonal", "ridge"),
             # if method is ridge
         } else {
             
-            # calculate sample covariance and precision from
-            # sigma_ridge function
+            # calculate sample covariance and precision from sigma_ridge function
             fit = RIDGEsigma(X = X_k, lam = lam)
             fit$best.lam = fit$Lambda[2]
             fit$omega.hat = fit$Omega
@@ -166,8 +158,7 @@ QDA = function(X, y, method = c("MLE", "diagonal", "ridge"),
     }
     
     
-    return(list(pi.hats = pi.hats, mu.hats = mu.hats, Sigma.inv.hats = Sigma.inv.hats, 
-        picked.ridge = picked.ridge))
+    return(list(pi.hats = pi.hats, mu.hats = mu.hats, Sigma.inv.hats = Sigma.inv.hats, picked.ridge = picked.ridge))
 }
 
 
@@ -197,13 +188,12 @@ predict_QDA = function(fit, Xtest) {
         
         ## compute all ntest discriminant scores for category k
         tec = scale(Xtest, center = fit$mu.hats[[k]], scale = FALSE)
-        eout = eigen(fit$Sigma.inv.hats[[k]], symmetric = TRUE, 
-            only.values = TRUE)
+        eout = eigen(fit$Sigma.inv.hats[[k]], symmetric = TRUE, only.values = TRUE)
         ld = sum(log(eout$values))
         
         # score matrix
-        score.mat[, k] = 0.5 * ld - 0.5 * diag(tec %*% fit$Sigma.inv.hats[[k]] %*% 
-            t(tec)) + log(fit$pi.hats[k])
+        score.mat[, k] = 0.5 * ld - 0.5 * diag(tec %*% fit$Sigma.inv.hats[[k]] %*% t(tec)) + 
+            log(fit$pi.hats[k])
         
     }
     

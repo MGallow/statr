@@ -1,5 +1,4 @@
-## Matt Galloway Augmented from Adam Rothman's STAT 8054
-## code
+## Matt Galloway Augmented from Adam Rothman's STAT 8054 code
 
 
 
@@ -54,8 +53,7 @@ bsearch = function(dg, a, b, L = 1e-07, quiet = FALSE) {
         # if gradient less than 0...
         if (dgm < 0) {
             
-            # function is decreasing at est ## new interval is [est,
-            # b]
+            # function is decreasing at est ## new interval is [est, b]
             a = est
             
             # if gradient great than 0...

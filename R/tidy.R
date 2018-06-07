@@ -10,5 +10,7 @@ tidy = function() {
     
     formatR::tidy_dir("R")
     devtools::document()
+    devtools::build(vignettes = FALSE)
+    devtools::reload()
     
 }

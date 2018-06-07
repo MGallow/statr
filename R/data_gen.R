@@ -40,9 +40,8 @@ data_gen = function(n, p, theta, var = 0.5, reps = 200) {
     X1 = rep(1, n)
     X = t(rbind(X1, X_))
     
-    # generate matrix of random noise (epsilons)(n x
-    # replications) note that we generate for all replications
-    # at once
+    # generate matrix of random noise (epsilons)(n x replications) note that we generate for
+    # all replications at once
     Eps = matrix(rnorm(n * reps, 0, sqrt(var)), ncol = reps)
     
     # finally, generate y values
@@ -89,12 +88,10 @@ tridiag = function(p = 8, base = 0.7, n = NULL) {
     # create data, if specified
     if (!is.null(n)) {
         
-        # generate n by p matrix X with rows drawn iid N_p(0,
-        # sigma)
+        # generate n by p matrix X with rows drawn iid N_p(0, sigma)
         Z = matrix(rnorm(n * p), nrow = n, ncol = p)
         out = eigen(S, symmetric = TRUE)
-        S.sqrt = out$vectors %*% diag(out$values^0.5) %*% 
-            t(out$vectors)
+        S.sqrt = out$vectors %*% diag(out$values^0.5) %*% t(out$vectors)
         X = Z %*% S.sqrt
         
         return(list(Omega = Omega, S = S, X = X))
@@ -137,12 +134,10 @@ dense = function(p = 8, base = 0.9, n = NULL) {
     # create data, if specified
     if (!is.null(n)) {
         
-        # generate n by p matrix X with rows drawn iid N_p(0,
-        # sigma)
+        # generate n by p matrix X with rows drawn iid N_p(0, sigma)
         Z = matrix(rnorm(n * p), nrow = n, ncol = p)
         out = eigen(S, symmetric = TRUE)
-        S.sqrt = out$vectors %*% diag(out$values^0.5) %*% 
-            t(out$vectors)
+        S.sqrt = out$vectors %*% diag(out$values^0.5) %*% t(out$vectors)
         X = Z %*% S.sqrt
         
         return(list(Omega = Omega, S = S, X = X))
@@ -179,8 +174,7 @@ denseQR = function(p = 8, num = 5, n = NULL) {
     eigen = c(rep(1000, num), rep(1, p - num))
     
     # randomly generate orthogonal basis (via QR)
-    Q = matrix(rnorm(p * p), nrow = p, ncol = p) %>% qr %>% 
-        qr.Q
+    Q = matrix(rnorm(p * p), nrow = p, ncol = p) %>% qr %>% qr.Q
     
     # generate matrix
     S = Q %*% diag(eigen) %*% t(Q)
@@ -191,12 +185,10 @@ denseQR = function(p = 8, num = 5, n = NULL) {
     # create data, if specified
     if (!is.null(n)) {
         
-        # generate n by p matrix X with rows drawn iid N_p(0,
-        # sigma)
+        # generate n by p matrix X with rows drawn iid N_p(0, sigma)
         Z = matrix(rnorm(n * p), nrow = n, ncol = p)
         out = eigen(S, symmetric = TRUE)
-        S.sqrt = out$vectors %*% diag(out$values^0.5) %*% 
-            t(out$vectors)
+        S.sqrt = out$vectors %*% diag(out$values^0.5) %*% t(out$vectors)
         X = Z %*% S.sqrt
         
         return(list(Omega = Omega, S = S, X = X))
@@ -239,12 +231,10 @@ compound = function(p = 8, n = NULL) {
     # create data, if specified
     if (!is.null(n)) {
         
-        # generate n by p matrix X with rows drawn iid N_p(0,
-        # sigma)
+        # generate n by p matrix X with rows drawn iid N_p(0, sigma)
         Z = matrix(rnorm(n * p), nrow = n, ncol = p)
         out = eigen(S, symmetric = TRUE)
-        S.sqrt = out$vectors %*% diag(out$values^0.5) %*% 
-            t(out$vectors)
+        S.sqrt = out$vectors %*% diag(out$values^0.5) %*% t(out$vectors)
         X = Z %*% S.sqrt
         
         return(list(Omega = Omega, S = S, X = X))
