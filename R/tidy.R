@@ -10,6 +10,10 @@ tidy = function() {
     
     formatR::tidy_dir("R")
     devtools::document()
+    
+    pkg = as.package(".")
+    system(paste0("R CMD Rd2pdf --force ", shQuote(pkg$path)))
+    
     devtools::build(vignettes = FALSE)
     devtools::reload()
     
