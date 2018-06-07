@@ -26,7 +26,12 @@ script:
 
 # build package site
 after_success:
-  - travis_wait Rscript -e "pkgdown::build_site()"
+  - travis_wait Rscript -e "pkgdown::init_site()"
+  - travis_wait Rscript -e "pkgdown::build_home()"
+  - travis_wait Rscript -e "pkgdown::build_reference(lazy = FALSE)"
+  - travis_wait Rscript -e "pkgdown::build_articles(lazy = FALSE)"
+  - travis_wait Rscript -e "pkgdown::build_tutorials()"
+  - travis_wait Rscript -e "pkgdown::build_news()"
 
 # deploy site to gh-pages branch
 deploy:
