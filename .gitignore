@@ -13,4 +13,4 @@ src/*.dll
 statr.Rproj
 inst/doc
 docs
-vignettes/Vignette_cache
+vignettes/Vignette_cache/html/__packages
