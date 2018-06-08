@@ -1,9 +1,0 @@
-pandoc: 2.2.1
-pkgdown: 1.0.0
-pkgdown_sha: ~
-articles:
-  Vignette: Vignette.html
-urls:
-  reference: https://mgallow.github.io/statr//reference
-  article: https://mgallow.github.io/statr//articles
-
