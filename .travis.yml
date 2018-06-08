@@ -16,7 +16,7 @@ cache: packages
 # - install package with dependencies
 install:
   - Rscript -e 'update.packages(ask = FALSE)'
-  - Rscript -e 'devtools::install(pkg = ".", dependencies = TRUE'
+  - Rscript -e 'devtools::install(pkg = ".", dependencies = TRUE)'
 
 # Build and check package then build site
 script:
