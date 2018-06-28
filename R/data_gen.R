@@ -8,50 +8,64 @@
 #'
 #' @param n desired sample size
 #' @param p desired dimension
-#' @param theta parameter used to generate covariance matrix
+#' @param r number of responses
+#' @param sparsity desired sparsity for beta
+#' @param Sigma covariance matrix structure used to generate Y | X
+#' @param s option to specify diagonal elements in Sigma
+#' @param SigmaX covariance matrix structure used to generate data X
+#' @param sx option to specify diagonal elements in SigmaX
 #' @param var variance of generated y values
 #' @param reps number of replications
+#' @param ... additional arguments to pass to data generating functions
 #' @return generated design matrix (X), response values (Y)(matrix if reps > 1), true beta values
 #' @export
 
 # we define the data generation function
-data_gen = function(n, p, theta, var = 0.5, reps = 200) {
-    
+data_gen = function(n, p, r = 1, sparsity = 0.5, Sigma = c("tridiag", "dense", "denseQR", "compound"), s = NULL, SigmaX = c("tridiag", "dense", "denseQR", "compound"), sx = NULL, ...) {
+
+    # checks
+    SigmaX = match.arg(SigmaX)
+    Sigma = match.arg(Sigma)
+
     # randomly generate betas
-    betas = rnorm(p, 0, sqrt(1/p))
-    
-    # generate sigma matrix
-    Sigma = matrix(rep(0, (p - 1)^2), ncol = p - 1)
-    
-    for (i in 1:(p - 1)) {
-        for (j in 1:(p - 1)) {
-            
-            Sigma[i, j] = theta^abs(i - j)
-            
-        }
+    betas = matrix(rnorm(p*r, 0, sqrt(1/p)), nrow = p, ncol = r)
+    betas = betas*matrix(rbinom(p*r, 1, prob = sparsity), nrow = p, ncol = r)
+
+    # generate data X
+    SigmaX = switch(SigmaX,
+      "tridiag" = tridiag(p = p, n = n, ...),
+      "dense" = dense(p = p, n = n, ...),
+      "denseQR" = denseQR(p = p, n = n, ...),
+      "compound" = compound(p = p, n = n))
+    X = SigmaX$X
+
+    SigmaX = SigmaX$S
+    if (!is.null(sx)){
+      diag(SigmaX) = sx
     }
-    
-    # use Choleskys Decomp to generate X columns
-    Z = matrix(rnorm(n * (p - 1)), ncol = n)
-    L = t(chol(Sigma))
-    X_ = L %*% Z
-    
-    # generate full design matrix
-    X1 = rep(1, n)
-    X = t(rbind(X1, X_))
-    
-    # generate matrix of random noise (epsilons)(n x replications)
-    # note that we generate for all replications at once
-    Eps = matrix(rnorm(n * reps, 0, sqrt(var)), ncol = reps)
-    
-    # finally, generate y values
-    XB = X %*% matrix(betas)
-    Y = as.numeric(XB) + Eps
-    
-    
-    returns = list(Y = Y, X = X, betas = betas)
+
+    # generate sigma matrix
+    Sigma = switch(Sigma,
+      "tridiag" = tridiag(p = r, n = n, ...),
+      "dense" = dense(p = r, n = n, ...),
+      "denseQR" = denseQR(p = r, n = n, ...),
+      "compound" = compound(p = r, n = n))
+
+    Sigma = Sigma$S
+    if (!is.null(s)){
+      diag(Sigma) = s
+    }
+
+    # create data
+    Z = matrix(rnorm(n*r), nrow = n, ncol = r)
+    out = eigen(Sigma, symmetric = TRUE)
+    Sigma.sqrt = out$vectors %*% diag(out$values^0.5) %*% t(out$vectors)
+    Y = X %*% betas + Z %*% Sigma.sqrt
+
+
+    returns = list(Y = Y, X = X, betas = betas, Sigma = Sigma, SigmaX = SigmaX)
     return(returns)
-    
+
 }
 
 
@@ -72,36 +86,36 @@ data_gen = function(n, p, theta, var = 0.5, reps = 200) {
 
 # we define the tridiag function
 tridiag = function(p = 8, base = 0.7, n = NULL) {
-    
+
     # generate tapered matrices
     S = matrix(0, nrow = p, ncol = p)
-    
+
     for (i in 1:p) {
         for (j in 1:p) {
             S[i, j] = base^abs(i - j)
         }
     }
-    
+
     # oracle
     Omega = qr.solve(S)
-    
+
     # create data, if specified
     if (!is.null(n)) {
-        
+
         # generate n by p matrix X with rows drawn iid N_p(0, sigma)
         Z = matrix(rnorm(n * p), nrow = n, ncol = p)
         out = eigen(S, symmetric = TRUE)
         S.sqrt = out$vectors %*% diag(out$values^0.5) %*% t(out$vectors)
         X = Z %*% S.sqrt
-        
+
         return(list(Omega = Omega, S = S, X = X))
-        
+
     } else {
-        
+
         return(list(Omega = Omega, S = S))
-        
+
     }
-    
+
 }
 
 
@@ -123,31 +137,31 @@ tridiag = function(p = 8, base = 0.7, n = NULL) {
 
 # we define the dense function
 dense = function(p = 8, base = 0.9, n = NULL) {
-    
+
     # generate matrix
     S = matrix(base, nrow = p, ncol = p)
     diag(S) = 1
-    
+
     # oracle
     Omega = qr.solve(S)
-    
+
     # create data, if specified
     if (!is.null(n)) {
-        
+
         # generate n by p matrix X with rows drawn iid N_p(0, sigma)
         Z = matrix(rnorm(n * p), nrow = n, ncol = p)
         out = eigen(S, symmetric = TRUE)
         S.sqrt = out$vectors %*% diag(out$values^0.5) %*% t(out$vectors)
         X = Z %*% S.sqrt
-        
+
         return(list(Omega = Omega, S = S, X = X))
-        
+
     } else {
-        
+
         return(list(Omega = Omega, S = S))
-        
+
     }
-    
+
 }
 
 
@@ -169,36 +183,36 @@ dense = function(p = 8, base = 0.9, n = NULL) {
 
 # we define the dense function
 denseQR = function(p = 8, num = 5, n = NULL) {
-    
+
     # generate eigen values
     eigen = c(rep(1000, num), rep(1, p - num))
-    
+
     # randomly generate orthogonal basis (via QR)
     Q = matrix(rnorm(p * p), nrow = p, ncol = p) %>% qr %>% qr.Q
-    
+
     # generate matrix
     S = Q %*% diag(eigen) %*% t(Q)
-    
+
     # oracle
     Omega = qr.solve(S)
-    
+
     # create data, if specified
     if (!is.null(n)) {
-        
+
         # generate n by p matrix X with rows drawn iid N_p(0, sigma)
         Z = matrix(rnorm(n * p), nrow = n, ncol = p)
         out = eigen(S, symmetric = TRUE)
         S.sqrt = out$vectors %*% diag(out$values^0.5) %*% t(out$vectors)
         X = Z %*% S.sqrt
-        
+
         return(list(Omega = Omega, S = S, X = X))
-        
+
     } else {
-        
+
         return(list(Omega = Omega, S = S))
-        
+
     }
-    
+
 }
 
 
@@ -220,29 +234,29 @@ denseQR = function(p = 8, num = 5, n = NULL) {
 
 # we define the dense function
 compound = function(p = 8, n = NULL) {
-    
+
     # generate precision matrix
     Omega = matrix(0.9, nrow = p, ncol = p)
     diag(Omega) = 1
-    
+
     # generate covariance matrix
     S = qr.solve(Omega)
-    
+
     # create data, if specified
     if (!is.null(n)) {
-        
+
         # generate n by p matrix X with rows drawn iid N_p(0, sigma)
         Z = matrix(rnorm(n * p), nrow = n, ncol = p)
         out = eigen(S, symmetric = TRUE)
         S.sqrt = out$vectors %*% diag(out$values^0.5) %*% t(out$vectors)
         X = Z %*% S.sqrt
-        
+
         return(list(Omega = Omega, S = S, X = X))
-        
+
     } else {
-        
+
         return(list(Omega = Omega, S = S))
-        
+
     }
-    
+
 }
