@@ -11,4 +11,5 @@
 #' @import grid
 #' @import devtools
 #' @import ADMMsigma
+#' @import glmnet
 NULL

@@ -4,24 +4,32 @@
 \alias{data_gen}
 \title{Normal Linear Data Generator}
 \usage{
-data_gen(n, p, theta, var = 0.5, reps = 200)
+data_gen(n, p, r = 1, sparsity = 0.5, Sigma = c("tridiag", "dense",
+  "denseQR", "compound"), s = NULL, SigmaX = c("tridiag", "dense",
+  "denseQR", "compound"), sx = NULL, ...)
 }
 \arguments{
 \item{n}{desired sample size}
 
 \item{p}{desired dimension}
 
-\item{theta}{parameter used to generate covariance matrix}
+\item{r}{number of responses}
 
-\item{var}{variance of generated y values}
+\item{sparsity}{desired sparsity for beta}
 
-\item{reps}{number of replications}
+\item{Sigma}{covariance matrix structure used to generate Y | X}
+
+\item{s}{option to specify diagonal elements in Sigma}
+
+\item{SigmaX}{covariance matrix structure used to generate data X}
+
+\item{sx}{option to specify diagonal elements in SigmaX}
+
+\item{...}{additional arguments to pass to data generating functions}
 }
 \value{
-generated design matrix (X), response values (Y)(matrix if reps > 1), true beta values
+Y, X, betas, Sigma, SigmaX
 }
 \description{
-True beta values are generated from p independent draws from N(0, 1/p) distribution. X_{-1} are n independent draws from (p - 1) multivariate normal N(0, Sigma) where Sigma has (j, k) entry theta^abs(j - k).
-
-Y is then generated using the X = (1, X_{-1}) and true beta values with an iid error term that follows distribution N(0, var). We can specify the desired number of replications (reps).
+True beta values are generated from p*r independent draws from N(0, 1/p) distribution. X are n independent draws from p multivariate normal N(0, SigmaX). Y is then generated using X and true beta values with an iid error term that follows r multivariate normal distribution N(, Sigma).
 }

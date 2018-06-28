@@ -18,7 +18,8 @@ Imports: dplyr,
     formatR,
     grid,
     devtools,
-    ADMMsigma
+    ADMMsigma,
+    glmnet
 Suggests: testthat,
     knitr,
     rmarkdown,
