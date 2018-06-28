@@ -34,8 +34,7 @@
   
 <meta property="og:title" content="Normal Linear Data Generator — data_gen" />
 
-<meta property="og:description" content="True beta values are generated from p independent draws from N(0, 1/p) distribution. X_-1 are n independent draws from (p - 1) multivariate normal N(0, Sigma) where Sigma has (j, k) entry theta^abs(j - k).
-Y is then generated using the X = (1, X_-1) and true beta values with an iid error term that follows distribution N(0, var). We can specify the desired number of replications (reps)." />
+<meta property="og:description" content="True beta values are generated from p*r independent draws from N(0, 1/p) distribution. X are n independent draws from p multivariate normal N(0, SigmaX). Y is then generated using X and true beta values with an iid error term that follows r multivariate normal distribution N(, Sigma)." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -123,12 +122,13 @@ Y is then generated using the X = (1, X_-1) and true beta values with an iid err
 
     <div class="ref-description">
     
-    <p>True beta values are generated from p independent draws from N(0, 1/p) distribution. X_-1 are n independent draws from (p - 1) multivariate normal N(0, Sigma) where Sigma has (j, k) entry theta^abs(j - k).</p>
-<p>Y is then generated using the X = (1, X_-1) and true beta values with an iid error term that follows distribution N(0, var). We can specify the desired number of replications (reps).</p>
+    <p>True beta values are generated from p*r independent draws from N(0, 1/p) distribution. X are n independent draws from p multivariate normal N(0, SigmaX). Y is then generated using X and true beta values with an iid error term that follows r multivariate normal distribution N(, Sigma).</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>data_gen</span>(<span class='no'>n</span>, <span class='no'>p</span>, <span class='no'>theta</span>, <span class='kw'>var</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>reps</span> <span class='kw'>=</span> <span class='fl'>200</span>)</pre>
+    <pre class="usage"><span class='fu'>data_gen</span>(<span class='no'>n</span>, <span class='no'>p</span>, <span class='kw'>r</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>sparsity</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>Sigma</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"tridiag"</span>, <span class='st'>"dense"</span>,
+  <span class='st'>"denseQR"</span>, <span class='st'>"compound"</span>), <span class='kw'>s</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>SigmaX</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"tridiag"</span>, <span class='st'>"dense"</span>,
+  <span class='st'>"denseQR"</span>, <span class='st'>"compound"</span>), <span class='kw'>sx</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -142,22 +142,38 @@ Y is then generated using the X = (1, X_-1) and true beta values with an iid err
       <td><p>desired dimension</p></td>
     </tr>
     <tr>
-      <th>theta</th>
-      <td><p>parameter used to generate covariance matrix</p></td>
+      <th>r</th>
+      <td><p>number of responses</p></td>
     </tr>
     <tr>
-      <th>var</th>
-      <td><p>variance of generated y values</p></td>
+      <th>sparsity</th>
+      <td><p>desired sparsity for beta</p></td>
     </tr>
     <tr>
-      <th>reps</th>
-      <td><p>number of replications</p></td>
+      <th>Sigma</th>
+      <td><p>covariance matrix structure used to generate Y | X</p></td>
+    </tr>
+    <tr>
+      <th>s</th>
+      <td><p>option to specify diagonal elements in Sigma</p></td>
+    </tr>
+    <tr>
+      <th>SigmaX</th>
+      <td><p>covariance matrix structure used to generate data X</p></td>
+    </tr>
+    <tr>
+      <th>sx</th>
+      <td><p>option to specify diagonal elements in SigmaX</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>additional arguments to pass to data generating functions</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>generated design matrix (X), response values (Y)(matrix if reps &gt; 1), true beta values</p>
+    <p>Y, X, betas, Sigma, SigmaX</p>
     
 
   </div>
