@@ -17,8 +17,9 @@
 #' @export
 
 # we define the data generation function
-data_gen = function(n, p, r = 1, sparsity = 0.5, Sigma = c("tridiag", "dense", "denseQR", "compound"), 
-    s = NULL, SigmaX = c("tridiag", "dense", "denseQR", "compound"), sx = NULL, ...) {
+data_gen = function(n, p, r = 1, sparsity = 0.5, Sigma = c("tridiag", 
+    "dense", "denseQR", "compound"), s = NULL, SigmaX = c("tridiag", 
+    "dense", "denseQR", "compound"), sx = NULL, ...) {
     
     # checks
     SigmaX = match.arg(SigmaX)
@@ -26,11 +27,13 @@ data_gen = function(n, p, r = 1, sparsity = 0.5, Sigma = c("tridiag", "dense", "
     
     # randomly generate betas
     betas = matrix(rnorm(p * r, 0, sqrt(1/p)), nrow = p, ncol = r)
-    betas = betas * matrix(rbinom(p * r, 1, prob = sparsity), nrow = p, ncol = r)
+    betas = betas * matrix(rbinom(p * r, 1, prob = sparsity), 
+        nrow = p, ncol = r)
     
     # generate data X
-    SigmaX = switch(SigmaX, tridiag = tridiag(p = p, n = n, ...), dense = dense(p = p, n = n, ...), 
-        denseQR = denseQR(p = p, n = n, ...), compound = compound(p = p, n = n))
+    SigmaX = switch(SigmaX, tridiag = tridiag(p = p, n = n, ...), 
+        dense = dense(p = p, n = n, ...), denseQR = denseQR(p = p, 
+            n = n, ...), compound = compound(p = p, n = n))
     X = SigmaX$X
     
     SigmaX = SigmaX$S
@@ -39,8 +42,9 @@ data_gen = function(n, p, r = 1, sparsity = 0.5, Sigma = c("tridiag", "dense", "
     }
     
     # generate sigma matrix
-    Sigma = switch(Sigma, tridiag = tridiag(p = r, n = n, ...), dense = dense(p = r, n = n, ...), 
-        denseQR = denseQR(p = r, n = n, ...), compound = compound(p = r, n = n))
+    Sigma = switch(Sigma, tridiag = tridiag(p = r, n = n, ...), 
+        dense = dense(p = r, n = n, ...), denseQR = denseQR(p = r, 
+            n = n, ...), compound = compound(p = r, n = n))
     
     Sigma = Sigma$S
     if (!is.null(s)) {
@@ -54,7 +58,8 @@ data_gen = function(n, p, r = 1, sparsity = 0.5, Sigma = c("tridiag", "dense", "
     Y = X %*% betas + Z %*% Sigma.sqrt
     
     
-    returns = list(Y = Y, X = X, betas = betas, Sigma = Sigma, SigmaX = SigmaX)
+    returns = list(Y = Y, X = X, betas = betas, Sigma = Sigma, 
+        SigmaX = SigmaX)
     return(returns)
     
 }
