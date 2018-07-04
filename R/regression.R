@@ -122,12 +122,12 @@ CVsplit = function(X, Y, split = 0.5) {
     leave.out = sample(nrow(X), floor(nrow(X) * split))
 
     # training sets
-    X.train = X[leave.out, ]
-    Y.train = Y[leave.out, ]
+    X.train = X[leave.out,, drop = FALSE]
+    Y.train = Y[leave.out,, drop = FALSE]
 
     # testing sets
-    X.test = X[-leave.out, ]
-    Y.test = Y[-leave.out, ]
+    X.test = X[-leave.out,, drop = FALSE]
+    Y.test = Y[-leave.out,, drop = FALSE]
 
     returns = list(X.train = X.train, Y.train = Y.train, X.test = X.test,
         Y.test = Y.test)
