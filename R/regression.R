@@ -29,7 +29,12 @@ RIDGE = function(X, Y, lam = NULL, intercept = FALSE, standardize = FALSE) {
     # calculate coefficients
     betas = glmnet::glmnet(x = X, y = Y, standardize = standardize, 
         intercept = intercept, family = family, alpha = 0, lambda = lam)
-    betas = as.matrix(do.call(cbind, coef(betas))[-1, ])
+    
+    if (ncol(Y) > 1) {
+        betas = as.matrix(do.call(cbind, coef(betas))[-1, ])
+    } else {
+        betas = as.matrix(coef(betas)[-1, ])
+    }
     
     returns = list(betas = betas, lam = lam)
     return(returns)
@@ -70,7 +75,12 @@ LASSO = function(X, Y, lam = NULL, intercept = FALSE, standardize = FALSE) {
     # calculate coefficients
     betas = glmnet::glmnet(x = X, y = Y, standardize = standardize, 
         intercept = intercept, family = family, alpha = 1, lambda = lam)
-    betas = as.matrix(do.call(cbind, coef(betas))[-1, ])
+    
+    if (ncol(Y) > 1) {
+        betas = as.matrix(do.call(cbind, coef(betas))[-1, ])
+    } else {
+        betas = as.matrix(coef(betas)[-1, ])
+    }
     
     returns = list(betas = betas, lam = lam)
     return(returns)
