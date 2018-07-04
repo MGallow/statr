@@ -4,10 +4,19 @@
     <loc>https://mgallow.github.io/statr//index.html</loc>
   </url>
   <url>
+    <loc>https://mgallow.github.io/statr//reference/CVsplit.html</loc>
+  </url>
+  <url>
+    <loc>https://mgallow.github.io/statr//reference/LASSO.html</loc>
+  </url>
+  <url>
     <loc>https://mgallow.github.io/statr//reference/LDA.html</loc>
   </url>
   <url>
     <loc>https://mgallow.github.io/statr//reference/QDA.html</loc>
+  </url>
+  <url>
+    <loc>https://mgallow.github.io/statr//reference/RIDGE.html</loc>
   </url>
   <url>
     <loc>https://mgallow.github.io/statr//reference/bsearch.html</loc>
@@ -32,6 +41,9 @@
   </url>
   <url>
     <loc>https://mgallow.github.io/statr//reference/dsearch.html</loc>
+  </url>
+  <url>
+    <loc>https://mgallow.github.io/statr//reference/fro.html</loc>
   </url>
   <url>
     <loc>https://mgallow.github.io/statr//reference/multiplot.html</loc>
