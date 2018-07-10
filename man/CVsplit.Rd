@@ -4,7 +4,7 @@
 \alias{CVsplit}
 \title{CV split}
 \usage{
-CVsplit(X, Y, split = 0.5)
+CVsplit(X, Y, split = 0.5, N = NULL)
 }
 \arguments{
 \item{X}{nxp data matrix. Each row corresponds to a single observation and each column contains n observations of a single feature/variable.}
@@ -12,6 +12,8 @@ CVsplit(X, Y, split = 0.5)
 \item{Y}{nxr response matrix. Each row corresponds to a single response and each column contains n response of a single feature/response.}
 
 \item{split}{fraction of objects devoted to training set}
+
+\item{N}{option to provide number of objects devoted to training set}
 }
 \value{
 X.train, Y.train, X.test, Y.test

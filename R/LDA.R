@@ -1,4 +1,5 @@
-## Matt Galloway Augmented from Adam Rothman's STAT 8931 code
+## Matt Galloway Augmented from Adam Rothman's STAT 8931
+## code
 
 
 #' @title Linear Discriminant Analysis
@@ -12,7 +13,8 @@
 #' @export
 
 # we define the LDA function
-LDA = function(X, y, method = c("MLE", "diagonal", "ridge"), lam = NULL) {
+LDA = function(X, y, method = c("MLE", "diagonal", "ridge"), 
+    lam = NULL) {
     
     # which method to use?
     method = match.arg(method)
@@ -65,8 +67,8 @@ LDA = function(X, y, method = c("MLE", "diagonal", "ridge"), lam = NULL) {
         # if method is ridge
     } else {
         
-        # calculate sample covariance and precision from sigma_ridge
-        # function
+        # calculate sample covariance and precision from
+        # sigma_ridge function
         fit = RIDGEsigma(X = X_center, lam = lam)
         fit$best.lam = fit$Lambda[2]
         fit$omega.hat = fit$Omega
@@ -100,7 +102,8 @@ LDA = function(X, y, method = c("MLE", "diagonal", "ridge"), lam = NULL) {
 #' @export
 
 # we define the QDA function
-QDA = function(X, y, method = c("MLE", "diagonal", "ridge"), lam = NULL) {
+QDA = function(X, y, method = c("MLE", "diagonal", "ridge"), 
+    lam = NULL) {
     
     # which method to use?
     method = match.arg(method)
@@ -151,8 +154,8 @@ QDA = function(X, y, method = c("MLE", "diagonal", "ridge"), lam = NULL) {
             # if method is ridge
         } else {
             
-            # calculate sample covariance and precision from sigma_ridge
-            # function
+            # calculate sample covariance and precision from
+            # sigma_ridge function
             fit = RIDGEsigma(X = X_k, lam = lam)
             fit$best.lam = fit$Lambda[2]
             fit$omega.hat = fit$Omega

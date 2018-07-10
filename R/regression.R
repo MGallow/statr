@@ -22,16 +22,18 @@ RIDGE = function(X, Y, lam = NULL, intercept = FALSE, standardize = FALSE) {
     
     # is lam specified?
     if (is.null(lam)) {
-        lam = glmnet::cv.glmnet(x = X, y = Y, alpha = 0, intercept = intercept, 
-            family = family, standardize = standardize)$lambda.min
+        lam = glmnet::cv.glmnet(x = X, y = Y, alpha = 0, 
+            intercept = intercept, family = family, standardize = standardize)$lambda.min
     }
     
     # calculate coefficients
     betas = glmnet::glmnet(x = X, y = Y, standardize = standardize, 
-        intercept = intercept, family = family, alpha = 0, lambda = lam)
+        intercept = intercept, family = family, alpha = 0, 
+        lambda = lam)
     
     if (ncol(Y) > 1) {
-        betas = as.matrix(do.call(cbind, coef(betas))[-1, ])
+        betas = as.matrix(do.call(cbind, coef(betas))[-1, 
+            ])
     } else {
         betas = as.matrix(coef(betas)[-1, ])
     }
@@ -68,16 +70,18 @@ LASSO = function(X, Y, lam = NULL, intercept = FALSE, standardize = FALSE) {
     
     # is lam specified?
     if (is.null(lam)) {
-        lam = glmnet::cv.glmnet(x = X, y = Y, alpha = 1, intercept = intercept, 
-            family = family, standardize = standardize)$lambda.min
+        lam = glmnet::cv.glmnet(x = X, y = Y, alpha = 1, 
+            intercept = intercept, family = family, standardize = standardize)$lambda.min
     }
     
     # calculate coefficients
     betas = glmnet::glmnet(x = X, y = Y, standardize = standardize, 
-        intercept = intercept, family = family, alpha = 1, lambda = lam)
+        intercept = intercept, family = family, alpha = 1, 
+        lambda = lam)
     
     if (ncol(Y) > 1) {
-        betas = as.matrix(do.call(cbind, coef(betas))[-1, ])
+        betas = as.matrix(do.call(cbind, coef(betas))[-1, 
+            ])
     } else {
         betas = as.matrix(coef(betas)[-1, ])
     }
@@ -117,11 +121,12 @@ fro = function(X) {
 #' @param X nxp data matrix. Each row corresponds to a single observation and each column contains n observations of a single feature/variable.
 #' @param Y nxr response matrix. Each row corresponds to a single response and each column contains n response of a single feature/response.
 #' @param split fraction of objects devoted to training set
+#' @param N option to provide number of objects devoted to training set
 #' @return X.train, Y.train, X.test, Y.test
 #' @export
 
 # we define the CVsplit function
-CVsplit = function(X, Y, split = 0.5) {
+CVsplit = function(X, Y, split = 0.5, N = NULL) {
     
     # checks
     if ((split <= 0) || (split >= 1)) {
@@ -129,7 +134,14 @@ CVsplit = function(X, Y, split = 0.5) {
     }
     
     # specify leave.out
-    leave.out = sample(nrow(X), floor(nrow(X) * split))
+    if (!is.null(N)) {
+        if (N > nrow(X)) {
+            stop("N cannot exceed number of observations in X!")
+        }
+        leave.out = sample(nrow(X), N)
+    } else {
+        leave.out = sample(nrow(X), floor(nrow(X) * split))
+    }
     
     # training sets
     X.train = X[leave.out, , drop = FALSE]
@@ -139,8 +151,8 @@ CVsplit = function(X, Y, split = 0.5) {
     X.test = X[-leave.out, , drop = FALSE]
     Y.test = Y[-leave.out, , drop = FALSE]
     
-    returns = list(X.train = X.train, Y.train = Y.train, X.test = X.test, 
-        Y.test = Y.test)
+    returns = list(X.train = X.train, Y.train = Y.train, 
+        X.test = X.test, Y.test = Y.test)
     return(returns)
     
 }
