@@ -13,6 +13,7 @@ vignette: >
 knitr::opts_chunk$set(echo = TRUE, tidy = TRUE)
 library(statr)
 library(magrittr)
+library(ggplot2)
 ```
 
 ## Installation
