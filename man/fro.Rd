@@ -2,7 +2,7 @@
 % Please edit documentation in R/regression.R
 \name{fro}
 \alias{fro}
-\title{Frobenius norm}
+\title{Mean Frobenius norm}
 \usage{
 fro(X)
 }
@@ -13,5 +13,5 @@ fro(X)
 norm
 }
 \description{
-calculates the frobenius norm of an object
+calculates the average squared value of an object. That is, all elements are squared, summed, and divided by the total number of elements
 }

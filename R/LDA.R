@@ -202,12 +202,13 @@ predict_QDA = function(fit, Xtest) {
         ld = sum(log(eout$values))
         
         # score matrix
-        score.mat[, k] = 0.5 * ld - 0.5 * diag(tec %*% fit$Sigma.inv.hats[[k]] %*% 
-            t(tec)) + log(fit$pi.hats[k])
+        score.mat[, k] = 0.5 * ld - 0.5 * diag(tec %*% 
+            fit$Sigma.inv.hats[[k]] %*% t(tec)) + log(fit$pi.hats[k])
         
     }
     
-    # determine the best category for each of the ntest cases
+    # determine the best category for each of the ntest
+    # cases
     pred.classes = apply(score.mat, 1, which.max)
     
     return(pred.classes)

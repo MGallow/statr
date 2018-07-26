@@ -12,35 +12,35 @@
 
 # we define the ridge regression function
 RIDGE = function(X, Y, lam = NULL, intercept = FALSE, standardize = FALSE) {
-
+    
     # which family?
     if (ncol(Y) > 1) {
         family = "mgaussian"
     } else {
         family = "gaussian"
     }
-
+    
     # is lam specified?
     if (is.null(lam)) {
-        lam = glmnet::cv.glmnet(x = X, y = Y, alpha = 0,
+        lam = glmnet::cv.glmnet(x = X, y = Y, alpha = 0, 
             intercept = intercept, family = family, standardize = standardize)$lambda.min
     }
-
+    
     # calculate coefficients
-    betas = glmnet::glmnet(x = X, y = Y, standardize = standardize,
-        intercept = intercept, family = family, alpha = 0,
+    betas = glmnet::glmnet(x = X, y = Y, standardize = standardize, 
+        intercept = intercept, family = family, alpha = 0, 
         lambda = lam)
-
+    
     if (ncol(Y) > 1) {
-        betas = as.matrix(do.call(cbind, coef(betas))[-1,
+        betas = as.matrix(do.call(cbind, coef(betas))[-1, 
             ])
     } else {
         betas = as.matrix(coef(betas)[-1, ])
     }
-
+    
     returns = list(betas = betas, lam = lam)
     return(returns)
-
+    
 }
 
 
@@ -60,35 +60,35 @@ RIDGE = function(X, Y, lam = NULL, intercept = FALSE, standardize = FALSE) {
 
 # we define the ridge regression function
 LASSO = function(X, Y, lam = NULL, intercept = FALSE, standardize = FALSE) {
-
+    
     # which family?
     if (ncol(Y) > 1) {
         family = "mgaussian"
     } else {
         family = "gaussian"
     }
-
+    
     # is lam specified?
     if (is.null(lam)) {
-        lam = glmnet::cv.glmnet(x = X, y = Y, alpha = 1,
+        lam = glmnet::cv.glmnet(x = X, y = Y, alpha = 1, 
             intercept = intercept, family = family, standardize = standardize)$lambda.min
     }
-
+    
     # calculate coefficients
-    betas = glmnet::glmnet(x = X, y = Y, standardize = standardize,
-        intercept = intercept, family = family, alpha = 1,
+    betas = glmnet::glmnet(x = X, y = Y, standardize = standardize, 
+        intercept = intercept, family = family, alpha = 1, 
         lambda = lam)
-
+    
     if (ncol(Y) > 1) {
-        betas = as.matrix(do.call(cbind, coef(betas))[-1,
+        betas = as.matrix(do.call(cbind, coef(betas))[-1, 
             ])
     } else {
         betas = as.matrix(coef(betas)[-1, ])
     }
-
+    
     returns = list(betas = betas, lam = lam)
     return(returns)
-
+    
 }
 
 
@@ -105,9 +105,9 @@ LASSO = function(X, Y, lam = NULL, intercept = FALSE, standardize = FALSE) {
 
 # we define the frobenius norm function
 fro = function(X) {
-
+    
     mean(X^2)
-
+    
 }
 
 
@@ -127,12 +127,12 @@ fro = function(X) {
 
 # we define the CVsplit function
 CVsplit = function(X, Y, split = 0.5, N = NULL) {
-
+    
     # checks
     if ((split <= 0) || (split >= 1)) {
         stop("split must be contained in c(0, 1)!")
     }
-
+    
     # specify leave.out
     if (!is.null(N)) {
         if (N > nrow(X)) {
@@ -142,19 +142,19 @@ CVsplit = function(X, Y, split = 0.5, N = NULL) {
     } else {
         leave.out = sample(nrow(X), floor(nrow(X) * split))
     }
-
+    
     # training sets
     X.train = X[leave.out, , drop = FALSE]
     Y.train = Y[leave.out, , drop = FALSE]
-
+    
     # testing sets
     X.test = X[-leave.out, , drop = FALSE]
     Y.test = Y[-leave.out, , drop = FALSE]
-
-    returns = list(X.train = X.train, Y.train = Y.train,
+    
+    returns = list(X.train = X.train, Y.train = Y.train, 
         X.test = X.test, Y.test = Y.test)
     return(returns)
-
+    
 }
 
 

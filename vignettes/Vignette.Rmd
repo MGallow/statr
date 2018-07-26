@@ -9,7 +9,7 @@ vignette: >
   %\usepackage[UTF-8]{inputenc}
 ---
 
-# Installation
+## Installation
 
 The easiest way to install is from the development version from Github:
 
@@ -20,46 +20,28 @@ devtools::install_github("MGallow/statr")
 
 If there are any issues/bugs, please let me know: [github](https://github.com/MGallow/statr/issues). You can also contact me via my [website](http://users.stat.umn.edu/~gall0441/).
 
-# Overview
+## Overview
 
 `statr` is a personal R package that I have created for organizational/convenience purposes. This project is purely experimental!!! A (possibly incomplete) list of functions contained in the package can be found below:
 
 * `tidy()` tidy's R package code and updates documentation
-* `timeit()` prints the computation time of a function
-* `scatter()` creates a scatterplot using ggplot
+* `CVsplit()` splits data objects into training and testing sets
+* `data_gen()` generates data for linear regression settings
+* `dense()` generates dense matrices
+* `denseQR()` generates dense matrices via spectral decomposition
+* `tridiag()` generates tri-diagonal matrices
+* `derivative()` approximates the derivative for a given function
 * `diagnostic()` creates diagnostic plots using ggplot (residual and QQ)
 * `dsearch()` is a dichotomous search algorithm for minimizing a univariate function
 * `bsearch()` is a bi-section search algorithm for minimizing a univariate function
+* `LASSO()` calculates lasso regression coefficient with optimal tuning
+* `RIDGE()` calculates ridge regression coefficient with optimal tuning
+* `scatter()` creates a scatterplot using ggplot
 
 
-# Functions
+## Functions
 
-## `timeit()`
-
-As a simple example, we will time the `lm()` function with the `cars` data set:
-
-```{r message = FALSE}
-library(statr)
-library(magrittr)
-library(ggplot2)
-
-#time lm()
-timeit(lm(dist ~ speed, data = cars))
-
-```
-
-## `scatter()`
-
-This function simply streamlines the process of creating a scatterplot with ggplot:
-
-```{r message = FALSE}
-
-#create scatterplot
-cars %>% scatter(speed, dist)
-
-```
-
-## `diagnostic()`
+### `diagnostic()`
 
 Similar to `scatter`, `diagnostic` creates diagnostic plots (residual and QQ) in ggplot:
 
@@ -71,7 +53,7 @@ cars %>% diagnostic(speed, dist)
 ```
 
 
-## `dsearch()`
+### `dsearch()`
 
 `dsearch` is a dichotomous search algorithm that will minimize *univariate strictly pseudoconvex* functions. Let us consider the quadratic function centered at 0:
 
@@ -99,7 +81,7 @@ dsearch(g, -10, 10)
 We can see that `dsearch` confirms the minimum occurs at the suggested point.
 
 
-## `bsearch()`
+### `bsearch()`
 
 `bsearch` is a bisection search algorithm that works very similarly to `dsearch`. The difference being that `bsearch` will find the *root* of the function -- that is, when the function is equal to zero. Therefore, if we want to again minimize the quadratic function, we need to input the *derivative* of the quadratic function to find its minimum (recall that local minima and maxima occur when the derivative/gradient is equal to zero).
 
@@ -125,4 +107,13 @@ bsearch(dg, -10, 10)
 ```
 We can see that `bsearch` confirms the minimum occurs at $x = 0$.
 
+### `scatter()`
 
+This function simply streamlines the process of creating a scatterplot with ggplot:
+
+```{r message = FALSE}
+
+#create scatterplot
+cars %>% scatter(speed, dist)
+
+```

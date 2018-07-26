@@ -18,7 +18,8 @@ multiplot <- function(..., plotlist = NULL, cols = 1, layout = NULL) {
     
     numPlots = length(plots)
     
-    # If layout is NULL, then use 'cols' to determine layout
+    # If layout is NULL, then use 'cols' to determine
+    # layout
     if (is.null(layout)) {
         # Make the panel ncol: Number of columns of plots nrow:
         # Number of rows needed, calculated from # of cols

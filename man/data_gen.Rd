@@ -2,7 +2,7 @@
 % Please edit documentation in R/data_gen.R
 \name{data_gen}
 \alias{data_gen}
-\title{Normal Linear Data Generator}
+\title{Normal regression data generator}
 \usage{
 data_gen(n, p, r = 1, sparsity = 0.5, Sigma = c("tridiag", "dense",
   "denseQR", "compound"), s = NULL, SigmaX = c("tridiag", "dense",
@@ -31,5 +31,12 @@ data_gen(n, p, r = 1, sparsity = 0.5, Sigma = c("tridiag", "dense",
 Y, X, betas, Sigma, SigmaX
 }
 \description{
-True beta values are generated from p*r independent draws from N(0, 1/p) distribution. X are n independent draws from p multivariate normal N(0, SigmaX). Y is then generated using X and true beta values with an iid error term that follows r multivariate normal distribution N(, Sigma).
+True beta values are generated from p*r independent draws from N(0, 1/p) distribution. X are n independent draws from p multivariate normal N(0, SigmaX). Y is then generated using X and true beta values with an iid error term that follows r multivariate normal distribution N(0, Sigma).
+}
+\examples{
+# generate 100 observations with predictor dimension equal to 10 and response dimension equal to 5
+data = data_gen(n = 100, p = 10, r = 5)
+}
+\author{
+Matt Galloway \email{gall0441@umn.edu}
 }

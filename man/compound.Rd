@@ -11,9 +11,13 @@ compound(p = 8, n = NULL)
 
 \item{n}{option to generate n observations from covariance matrix S}
 }
+\value{
+Omega, S
+}
 \description{
 Generate a p-dimensional compound symmetric matrix.
 }
 \examples{
-compound(p = 10, n = 100)
+# generate compound symmetric matrix with p = 5
+compound(p = 5)
 }
