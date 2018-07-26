@@ -4,6 +4,8 @@
 #' @importFrom stats qnorm
 #' @importFrom stats quantile
 #' @importFrom stats rnorm
+#' @importFrom stats rbinom
+#' @importFrom stats coef
 #' @import dplyr
 #' @import ggplot2
 #' @import magrittr

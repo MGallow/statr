@@ -4,7 +4,7 @@
 \alias{RIDGE}
 \title{Ridge regression}
 \usage{
-RIDGE(X, Y, lam = NULL, intercept = FALSE, standardize = FALSE)
+RIDGE(X, Y, lam = NULL, intercept = FALSE, standardize = FALSE, ...)
 }
 \arguments{
 \item{X}{nxp data matrix. Each row corresponds to a single observation and each column contains n observations of a single feature/variable.}
@@ -12,6 +12,12 @@ RIDGE(X, Y, lam = NULL, intercept = FALSE, standardize = FALSE)
 \item{Y}{nxr response matrix. Each row corresponds to a single response and each column contains n response of a single feature/response.}
 
 \item{lam}{tuning parameter}
+
+\item{intercept}{option to include intercept, defaults to FALSE}
+
+\item{standardize}{option to standardize the data, defaults to FALSE}
+
+\item{...}{other options to pass to glmnet}
 }
 \value{
 betas, lam

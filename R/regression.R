@@ -7,11 +7,15 @@
 #' @param X nxp data matrix. Each row corresponds to a single observation and each column contains n observations of a single feature/variable.
 #' @param Y nxr response matrix. Each row corresponds to a single response and each column contains n response of a single feature/response.
 #' @param lam tuning parameter
+#' @param intercept option to include intercept, defaults to FALSE
+#' @param standardize option to standardize the data, defaults to FALSE
+#' @param ... other options to pass to glmnet
 #' @return betas, lam
 #' @export
 
 # we define the ridge regression function
-RIDGE = function(X, Y, lam = NULL, intercept = FALSE, standardize = FALSE) {
+RIDGE = function(X, Y, lam = NULL, intercept = FALSE, standardize = FALSE, 
+    ...) {
     
     # which family?
     if (ncol(Y) > 1) {
@@ -23,19 +27,24 @@ RIDGE = function(X, Y, lam = NULL, intercept = FALSE, standardize = FALSE) {
     # is lam specified?
     if (is.null(lam)) {
         lam = glmnet::cv.glmnet(x = X, y = Y, alpha = 0, 
-            intercept = intercept, family = family, standardize = standardize)$lambda.min
+            intercept = intercept, family = family, standardize = standardize, 
+            ...)$lambda.min
     }
     
     # calculate coefficients
     betas = glmnet::glmnet(x = X, y = Y, standardize = standardize, 
         intercept = intercept, family = family, alpha = 0, 
-        lambda = lam)
+        lambda = lam, ...)
     
     if (ncol(Y) > 1) {
-        betas = as.matrix(do.call(cbind, coef(betas))[-1, 
-            ])
+        betas = do.call(cbind, coef(betas))
     } else {
-        betas = as.matrix(coef(betas)[-1, ])
+        betas = coef(betas)
+    }
+    if (intercept) {
+        betas = as.matrix(betas)
+    } else {
+        betas = as.matrix(betas[-1, ])
     }
     
     returns = list(betas = betas, lam = lam)
@@ -55,11 +64,15 @@ RIDGE = function(X, Y, lam = NULL, intercept = FALSE, standardize = FALSE) {
 #' @param X nxp data matrix. Each row corresponds to a single observation and each column contains n observations of a single feature/variable.
 #' @param Y nxr response matrix. Each row corresponds to a single response and each column contains n response of a single feature/response.
 #' @param lam tuning parameter
+#' @param intercept option to include intercept, defaults to FALSE
+#' @param standardize option to standardize the data, defaults to FALSE
+#' @param ... other options to pass to glmnet
 #' @return betas, lam
 #' @export
 
 # we define the ridge regression function
-LASSO = function(X, Y, lam = NULL, intercept = FALSE, standardize = FALSE) {
+LASSO = function(X, Y, lam = NULL, intercept = FALSE, standardize = FALSE, 
+    ...) {
     
     # which family?
     if (ncol(Y) > 1) {
@@ -71,19 +84,24 @@ LASSO = function(X, Y, lam = NULL, intercept = FALSE, standardize = FALSE) {
     # is lam specified?
     if (is.null(lam)) {
         lam = glmnet::cv.glmnet(x = X, y = Y, alpha = 1, 
-            intercept = intercept, family = family, standardize = standardize)$lambda.min
+            intercept = intercept, family = family, standardize = standardize, 
+            ...)$lambda.min
     }
     
     # calculate coefficients
     betas = glmnet::glmnet(x = X, y = Y, standardize = standardize, 
         intercept = intercept, family = family, alpha = 1, 
-        lambda = lam)
+        lambda = lam, ...)
     
     if (ncol(Y) > 1) {
-        betas = as.matrix(do.call(cbind, coef(betas))[-1, 
-            ])
+        betas = do.call(cbind, coef(betas))
     } else {
-        betas = as.matrix(coef(betas)[-1, ])
+        betas = coef(betas)
+    }
+    if (intercept) {
+        betas = as.matrix(betas)
+    } else {
+        betas = as.matrix(betas[-1, ])
     }
     
     returns = list(betas = betas, lam = lam)
