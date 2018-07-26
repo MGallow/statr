@@ -126,7 +126,7 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>RIDGE</span>(<span class='no'>X</span>, <span class='no'>Y</span>, <span class='kw'>lam</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>intercept</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>standardize</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>RIDGE</span>(<span class='no'>X</span>, <span class='no'>Y</span>, <span class='kw'>lam</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>intercept</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>standardize</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -142,6 +142,18 @@
     <tr>
       <th>lam</th>
       <td><p>tuning parameter</p></td>
+    </tr>
+    <tr>
+      <th>intercept</th>
+      <td><p>option to include intercept, defaults to FALSE</p></td>
+    </tr>
+    <tr>
+      <th>standardize</th>
+      <td><p>option to standardize the data, defaults to FALSE</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>other options to pass to glmnet</p></td>
     </tr>
     </table>
     

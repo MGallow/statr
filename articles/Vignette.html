@@ -92,108 +92,114 @@
 
     
     
-<div id="installation" class="section level1">
-<h1 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h1>
+<div id="installation" class="section level2">
+<h2 class="hasAnchor">
+<a href="#installation" class="anchor"></a>Installation</h2>
 <p>The easiest way to install is from the development version from Github:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co"># install.packages("devtools")</span></a>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co"># install.packages('devtools')</span></a>
 <a class="sourceLine" id="cb1-2" data-line-number="2">devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"MGallow/statr"</span>)</a></code></pre></div>
 <p>If there are any issues/bugs, please let me know: <a href="https://github.com/MGallow/statr/issues">github</a>. You can also contact me via my <a href="http://users.stat.umn.edu/~gall0441/">website</a>.</p>
 </div>
-<div id="overview" class="section level1">
-<h1 class="hasAnchor">
-<a href="#overview" class="anchor"></a>Overview</h1>
+<div id="overview" class="section level2">
+<h2 class="hasAnchor">
+<a href="#overview" class="anchor"></a>Overview</h2>
 <p><code>statr</code> is a personal R package that I have created for organizational/convenience purposes. This project is purely experimental!!! A (possibly incomplete) list of functions contained in the package can be found below:</p>
 <ul>
 <li>
 <code><a href="../reference/tidy.html">tidy()</a></code> tidy’s R package code and updates documentation</li>
 <li>
-<code><a href="../reference/timeit.html">timeit()</a></code> prints the computation time of a function</li>
+<code><a href="../reference/CVsplit.html">CVsplit()</a></code> splits data objects into training and testing sets</li>
 <li>
-<code><a href="../reference/scatter.html">scatter()</a></code> creates a scatterplot using ggplot</li>
+<code><a href="../reference/data_gen.html">data_gen()</a></code> generates data for linear regression settings</li>
+<li>
+<code><a href="../reference/dense.html">dense()</a></code> generates dense matrices</li>
+<li>
+<code><a href="../reference/denseQR.html">denseQR()</a></code> generates dense matrices via spectral decomposition</li>
+<li>
+<code><a href="../reference/tridiag.html">tridiag()</a></code> generates tri-diagonal matrices</li>
+<li>
+<code><a href="../reference/derivative.html">derivative()</a></code> approximates the derivative for a given function</li>
 <li>
 <code><a href="../reference/diagnostic.html">diagnostic()</a></code> creates diagnostic plots using ggplot (residual and QQ)</li>
 <li>
 <code><a href="../reference/dsearch.html">dsearch()</a></code> is a dichotomous search algorithm for minimizing a univariate function</li>
 <li>
 <code><a href="../reference/bsearch.html">bsearch()</a></code> is a bi-section search algorithm for minimizing a univariate function</li>
+<li>
+<code><a href="../reference/LASSO.html">LASSO()</a></code> calculates lasso regression coefficient with optimal tuning</li>
+<li>
+<code><a href="../reference/RIDGE.html">RIDGE()</a></code> calculates ridge regression coefficient with optimal tuning</li>
+<li>
+<code><a href="../reference/scatter.html">scatter()</a></code> creates a scatterplot using ggplot</li>
 </ul>
 </div>
-<div id="functions" class="section level1">
-<h1 class="hasAnchor">
-<a href="#functions" class="anchor"></a>Functions</h1>
-<div id="timeit" class="section level2">
+<div id="functions" class="section level2">
 <h2 class="hasAnchor">
-<a href="#timeit" class="anchor"></a><code><a href="../reference/timeit.html">timeit()</a></code>
-</h2>
-<p>As a simple example, we will time the <code>lm()</code> function with the <code>cars</code> data set:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">library</span>(statr)</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="kw">library</span>(magrittr)</a>
-<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="kw">library</span>(ggplot2)</a>
-<a class="sourceLine" id="cb2-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="co">#time lm()</span></a>
-<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="kw"><a href="../reference/timeit.html">timeit</a></span>(<span class="kw">lm</span>(dist <span class="op">~</span><span class="st"> </span>speed, <span class="dt">data =</span> cars))</a></code></pre></div>
-<pre><code>##    user  system elapsed 
-##   0.004   0.000   0.004</code></pre>
-</div>
-<div id="scatter" class="section level2">
-<h2 class="hasAnchor">
-<a href="#scatter" class="anchor"></a><code><a href="../reference/scatter.html">scatter()</a></code>
-</h2>
-<p>This function simply streamlines the process of creating a scatterplot with ggplot:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="co">#create scatterplot</span></a>
-<a class="sourceLine" id="cb4-2" data-line-number="2">cars <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/scatter.html">scatter</a></span>(speed, dist)</a></code></pre></div>
-<p><img src="Vignette_files/figure-html/unnamed-chunk-3-1.png" width="700"></p>
-</div>
-<div id="diagnostic" class="section level2">
-<h2 class="hasAnchor">
+<a href="#functions" class="anchor"></a>Functions</h2>
+<div id="diagnostic" class="section level3">
+<h3 class="hasAnchor">
 <a href="#diagnostic" class="anchor"></a><code><a href="../reference/diagnostic.html">diagnostic()</a></code>
-</h2>
+</h3>
 <p>Similar to <code>scatter</code>, <code>diagnostic</code> creates diagnostic plots (residual and QQ) in ggplot:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="co">#create diagnostic plots</span></a>
-<a class="sourceLine" id="cb5-2" data-line-number="2">cars <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/diagnostic.html">diagnostic</a></span>(speed, dist)</a></code></pre></div>
-<p><img src="Vignette_files/figure-html/unnamed-chunk-4-1.png" width="700"></p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="co"># create diagnostic plots</span></a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">cars <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/diagnostic.html">diagnostic</a></span>(speed, dist)</a></code></pre></div>
+<p><img src="Vignette_files/figure-html/unnamed-chunk-2-1.png" width="700"></p>
 </div>
-<div id="dsearch" class="section level2">
-<h2 class="hasAnchor">
+<div id="dsearch" class="section level3">
+<h3 class="hasAnchor">
 <a href="#dsearch" class="anchor"></a><code><a href="../reference/dsearch.html">dsearch()</a></code>
-</h2>
+</h3>
 <p><code>dsearch</code> is a dichotomous search algorithm that will minimize <em>univariate strictly pseudoconvex</em> functions. Let us consider the quadratic function centered at 0:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="co">#quadratic</span></a>
-<a class="sourceLine" id="cb6-2" data-line-number="2">x =<span class="st"> </span><span class="kw">seq</span>(<span class="op">-</span><span class="dv">5</span>, <span class="dv">5</span>, <span class="fl">0.1</span>)</a>
-<a class="sourceLine" id="cb6-3" data-line-number="3">y =<span class="st"> </span>x<span class="op">^</span><span class="dv">2</span></a>
-<a class="sourceLine" id="cb6-4" data-line-number="4">data =<span class="st"> </span><span class="kw">data.frame</span>(x, y)</a>
-<a class="sourceLine" id="cb6-5" data-line-number="5"><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(data) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_path">geom_line</a></span>(<span class="dt">mapping =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(x, y, <span class="dt">color =</span> <span class="st">"red"</span>), <span class="dt">show.legend =</span> <span class="ot">FALSE</span>) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/labs">ggtitle</a></span>(<span class="st">"y = x^2"</span>)</a></code></pre></div>
-<p><img src="Vignette_files/figure-html/unnamed-chunk-5-1.png" width="700"></p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="co"># quadratic</span></a>
+<a class="sourceLine" id="cb3-2" data-line-number="2">x =<span class="st"> </span><span class="kw">seq</span>(<span class="op">-</span><span class="dv">5</span>, <span class="dv">5</span>, <span class="fl">0.1</span>)</a>
+<a class="sourceLine" id="cb3-3" data-line-number="3">y =<span class="st"> </span>x<span class="op">^</span><span class="dv">2</span></a>
+<a class="sourceLine" id="cb3-4" data-line-number="4">data =<span class="st"> </span><span class="kw">data.frame</span>(x, y)</a>
+<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="kw">ggplot</span>(data) <span class="op">+</span><span class="st"> </span><span class="kw">geom_line</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(x, y, <span class="dt">color =</span> <span class="st">"red"</span>), <span class="dt">show.legend =</span> <span class="ot">FALSE</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="st">    </span><span class="kw">ggtitle</span>(<span class="st">"y = x^2"</span>)</a></code></pre></div>
+<p><img src="Vignette_files/figure-html/unnamed-chunk-3-1.png" width="700"></p>
 <p>The minimum of this function clearly occurs at <span class="math inline">\(x = 0\)</span> but we will confirm that with the <code>dsearch</code> function.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="co">#first we define the quadratic function</span></a>
-<a class="sourceLine" id="cb7-2" data-line-number="2">g =<span class="st"> </span><span class="cf">function</span>(x){x<span class="op">^</span><span class="dv">2</span>}</a>
-<a class="sourceLine" id="cb7-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="co">#dsearch</span></a>
-<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="kw"><a href="../reference/dsearch.html">dsearch</a></span>(g, <span class="dv">-10</span>, <span class="dv">10</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="co"># first we define the quadratic function</span></a>
+<a class="sourceLine" id="cb4-2" data-line-number="2">g =<span class="st"> </span><span class="cf">function</span>(x) {</a>
+<a class="sourceLine" id="cb4-3" data-line-number="3">    x<span class="op">^</span><span class="dv">2</span></a>
+<a class="sourceLine" id="cb4-4" data-line-number="4">}</a>
+<a class="sourceLine" id="cb4-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb4-6" data-line-number="6"><span class="co"># dsearch</span></a>
+<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="kw"><a href="../reference/dsearch.html">dsearch</a></span>(g, <span class="dv">-10</span>, <span class="dv">10</span>)</a></code></pre></div>
 <pre><code>## new interval is -4.761905e-08 4.761905e-08</code></pre>
 <pre><code>## [1] 0</code></pre>
 <p>We can see that <code>dsearch</code> confirms the minimum occurs at the suggested point.</p>
 </div>
-<div id="bsearch" class="section level2">
-<h2 class="hasAnchor">
+<div id="bsearch" class="section level3">
+<h3 class="hasAnchor">
 <a href="#bsearch" class="anchor"></a><code><a href="../reference/bsearch.html">bsearch()</a></code>
-</h2>
+</h3>
 <p><code>bsearch</code> is a bisection search algorithm that works very similarly to <code>dsearch</code>. The difference being that <code>bsearch</code> will find the <em>root</em> of the function – that is, when the function is equal to zero. Therefore, if we want to again minimize the quadratic function, we need to input the <em>derivative</em> of the quadratic function to find its minimum (recall that local minima and maxima occur when the derivative/gradient is equal to zero).</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="co">#derivative of quadratic</span></a>
-<a class="sourceLine" id="cb10-2" data-line-number="2">x =<span class="st"> </span><span class="kw">seq</span>(<span class="op">-</span><span class="dv">5</span>, <span class="dv">5</span>, <span class="fl">0.1</span>)</a>
-<a class="sourceLine" id="cb10-3" data-line-number="3">dy =<span class="st"> </span><span class="dv">2</span><span class="op">*</span>x</a>
-<a class="sourceLine" id="cb10-4" data-line-number="4">data =<span class="st"> </span><span class="kw">data.frame</span>(x, dy)</a>
-<a class="sourceLine" id="cb10-5" data-line-number="5"><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(data) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_path">geom_line</a></span>(<span class="dt">mapping =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(x, dy, <span class="dt">color =</span> <span class="st">"red"</span>), <span class="dt">show.legend =</span> <span class="ot">FALSE</span>) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/labs">ggtitle</a></span>(<span class="st">"dy = 2x"</span>)</a></code></pre></div>
-<p><img src="Vignette_files/figure-html/unnamed-chunk-7-1.png" width="700"></p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="co">#define the derivative of quadratic</span></a>
-<a class="sourceLine" id="cb11-2" data-line-number="2">dg =<span class="st"> </span><span class="cf">function</span>(x){<span class="dv">2</span><span class="op">*</span>x}</a>
-<a class="sourceLine" id="cb11-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb11-4" data-line-number="4"><span class="co">#bsearch</span></a>
-<a class="sourceLine" id="cb11-5" data-line-number="5"><span class="kw"><a href="../reference/bsearch.html">bsearch</a></span>(dg, <span class="dv">-10</span>, <span class="dv">10</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="co"># derivative of quadratic</span></a>
+<a class="sourceLine" id="cb7-2" data-line-number="2">x =<span class="st"> </span><span class="kw">seq</span>(<span class="op">-</span><span class="dv">5</span>, <span class="dv">5</span>, <span class="fl">0.1</span>)</a>
+<a class="sourceLine" id="cb7-3" data-line-number="3">dy =<span class="st"> </span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span>x</a>
+<a class="sourceLine" id="cb7-4" data-line-number="4">data =<span class="st"> </span><span class="kw">data.frame</span>(x, dy)</a>
+<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="kw">ggplot</span>(data) <span class="op">+</span><span class="st"> </span><span class="kw">geom_line</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(x, dy, <span class="dt">color =</span> <span class="st">"red"</span>), <span class="dt">show.legend =</span> <span class="ot">FALSE</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="st">    </span><span class="kw">ggtitle</span>(<span class="st">"dy = 2x"</span>)</a></code></pre></div>
+<p><img src="Vignette_files/figure-html/unnamed-chunk-5-1.png" width="700"></p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="co"># define the derivative of quadratic</span></a>
+<a class="sourceLine" id="cb8-2" data-line-number="2">dg =<span class="st"> </span><span class="cf">function</span>(x) {</a>
+<a class="sourceLine" id="cb8-3" data-line-number="3">    <span class="dv">2</span> <span class="op">*</span><span class="st"> </span>x</a>
+<a class="sourceLine" id="cb8-4" data-line-number="4">}</a>
+<a class="sourceLine" id="cb8-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb8-6" data-line-number="6"><span class="co"># bsearch</span></a>
+<a class="sourceLine" id="cb8-7" data-line-number="7"><span class="kw"><a href="../reference/bsearch.html">bsearch</a></span>(dg, <span class="dv">-10</span>, <span class="dv">10</span>)</a></code></pre></div>
 <pre><code>## new interval is 0 0</code></pre>
 <pre><code>## [1] 0</code></pre>
 <p>We can see that <code>bsearch</code> confirms the minimum occurs at <span class="math inline">\(x = 0\)</span>.</p>
+</div>
+<div id="scatter" class="section level3">
+<h3 class="hasAnchor">
+<a href="#scatter" class="anchor"></a><code><a href="../reference/scatter.html">scatter()</a></code>
+</h3>
+<p>This function simply streamlines the process of creating a scatterplot with ggplot:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="co"># create scatterplot</span></a>
+<a class="sourceLine" id="cb11-2" data-line-number="2">cars <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/scatter.html">scatter</a></span>(speed, dist)</a></code></pre></div>
+<p><img src="Vignette_files/figure-html/unnamed-chunk-7-1.png" width="700"></p>
 </div>
 </div>
   </div>
@@ -205,15 +211,7 @@
       <ul class="nav nav-pills nav-stacked">
 <li><a href="#installation">Installation</a></li>
       <li><a href="#overview">Overview</a></li>
-      <li>
-<a href="#functions">Functions</a><ul class="nav nav-pills nav-stacked">
-<li><a href="#timeit"><code><a href="--/reference/timeit-html">timeit()</a></code></a></li>
-      <li><a href="#scatter"><code><a href="--/reference/scatter-html">scatter()</a></code></a></li>
-      <li><a href="#diagnostic"><code><a href="--/reference/diagnostic-html">diagnostic()</a></code></a></li>
-      <li><a href="#dsearch"><code><a href="--/reference/dsearch-html">dsearch()</a></code></a></li>
-      <li><a href="#bsearch"><code><a href="--/reference/bsearch-html">bsearch()</a></code></a></li>
-      </ul>
-</li>
+      <li><a href="#functions">Functions</a></li>
       </ul>
 </div>
       </div>

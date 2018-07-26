@@ -93,15 +93,29 @@
 <li>
 <code><a href="reference/tidy.html">tidy()</a></code> tidy’s R package code and updates documentation</li>
 <li>
-<code><a href="reference/timeit.html">timeit()</a></code> prints the computation time of a function</li>
+<code><a href="reference/CVsplit.html">CVsplit()</a></code> splits data objects into training and testing sets</li>
 <li>
-<code><a href="reference/scatter.html">scatter()</a></code> creates a scatterplot using ggplot</li>
+<code><a href="reference/data_gen.html">data_gen()</a></code> generates data for linear regression settings</li>
+<li>
+<code><a href="reference/dense.html">dense()</a></code> generates dense matrices</li>
+<li>
+<code><a href="reference/denseQR.html">denseQR()</a></code> generates dense matrices via spectral decomposition</li>
+<li>
+<code><a href="reference/tridiag.html">tridiag()</a></code> generates tri-diagonal matrices</li>
+<li>
+<code><a href="reference/derivative.html">derivative()</a></code> approximates the derivative for a given function</li>
 <li>
 <code><a href="reference/diagnostic.html">diagnostic()</a></code> creates diagnostic plots using ggplot (residual and QQ)</li>
 <li>
 <code><a href="reference/dsearch.html">dsearch()</a></code> is a dichotomous search algorithm for minimizing a univariate function</li>
 <li>
 <code><a href="reference/bsearch.html">bsearch()</a></code> is a bi-section search algorithm for minimizing a univariate function</li>
+<li>
+<code><a href="reference/LASSO.html">LASSO()</a></code> calculates lasso regression coefficient with optimal tuning</li>
+<li>
+<code><a href="reference/RIDGE.html">RIDGE()</a></code> calculates ridge regression coefficient with optimal tuning</li>
+<li>
+<code><a href="reference/scatter.html">scatter()</a></code> creates a scatterplot using ggplot</li>
 </ul>
 <p>See <a href="https://mgallow.github.io/statr/">vignette</a> or <a href="https://github.com/MGallow/statr/blob/master/statr.pdf">manual</a>.</p>
 </div>
@@ -119,17 +133,88 @@
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">library</span>(statr)</a>
 <a class="sourceLine" id="cb2-2" data-line-number="2"><span class="kw">library</span>(magrittr)</a>
 <a class="sourceLine" id="cb2-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co">#we will use the iris data set</span></a>
-<a class="sourceLine" id="cb2-5" data-line-number="5">X =<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(iris, <span class="op">-</span><span class="kw">c</span>(Species, Sepal.Length))</a>
-<a class="sourceLine" id="cb2-6" data-line-number="6">y =<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(iris, Sepal.Length)</a>
+<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co"># we will use the iris data set</span></a>
+<a class="sourceLine" id="cb2-5" data-line-number="5">X =<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(iris, <span class="op">-</span><span class="kw">c</span>(Species, Sepal.Length)) <span class="op">%&gt;%</span><span class="st"> </span>as.matrix</a>
+<a class="sourceLine" id="cb2-6" data-line-number="6">y =<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(iris, Sepal.Length) <span class="op">%&gt;%</span><span class="st"> </span>as.matrix</a>
 <a class="sourceLine" id="cb2-7" data-line-number="7">y_class =<span class="st"> </span><span class="kw">ifelse</span>(dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(iris, Species) <span class="op">==</span><span class="st"> "setosa"</span>, <span class="dv">1</span>, <span class="dv">0</span>)</a>
 <a class="sourceLine" id="cb2-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb2-9" data-line-number="9"><span class="co">#plot Sepal.Length v Sepal.Width</span></a>
-<a class="sourceLine" id="cb2-10" data-line-number="10">iris <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="reference/scatter.html">scatter</a></span>(Sepal.Length, Sepal.Width)</a></code></pre></div>
+<a class="sourceLine" id="cb2-9" data-line-number="9"><span class="co"># let us split the data for testing and training</span></a>
+<a class="sourceLine" id="cb2-10" data-line-number="10">CV =<span class="st"> </span><span class="kw"><a href="reference/CVsplit.html">CVsplit</a></span>(X, y)</a>
+<a class="sourceLine" id="cb2-11" data-line-number="11"></a>
+<a class="sourceLine" id="cb2-12" data-line-number="12"><span class="co"># we can do some exploratory analysis</span></a>
+<a class="sourceLine" id="cb2-13" data-line-number="13"><span class="co"># plot Sepal.Length v Sepal.Width</span></a>
+<a class="sourceLine" id="cb2-14" data-line-number="14">iris <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="reference/scatter.html">scatter</a></span>(Sepal.Length, Sepal.Width)</a></code></pre></div>
 <p><img src="index_files/figure-html/unnamed-chunk-2-1.png" width="700"></p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="co">#plot diagnostic plots</span></a>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="co"># plot diagnostic plots</span></a>
 <a class="sourceLine" id="cb3-2" data-line-number="2">iris <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="reference/diagnostic.html">diagnostic</a></span>(Sepal.Length, Sepal.Width)</a></code></pre></div>
 <p><img src="index_files/figure-html/unnamed-chunk-2-2.png" width="700"></p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="co"># use the training data to fit ridge regression</span></a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="kw"><a href="reference/RIDGE.html">RIDGE</a></span>(CV<span class="op">$</span>X.train, CV<span class="op">$</span>Y.train)</a></code></pre></div>
+<pre><code>## $betas
+##                     [,1]
+## Sepal.Width  0.005620669
+## Petal.Length 0.007442309
+## Petal.Width  0.002472294
+## 
+## $lam
+## [1] 2584.278</code></pre>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="co"># or lasso regression</span></a>
+<a class="sourceLine" id="cb6-2" data-line-number="2">statr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/statr/topics/LASSO">LASSO</a></span>(CV<span class="op">$</span>X.train, CV<span class="op">$</span>Y.train)</a></code></pre></div>
+<pre><code>## $betas
+##                   [,1]
+## Sepal.Width  0.0000000
+## Petal.Length 0.3234403
+## Petal.Width  0.0000000
+## 
+## $lam
+## [1] 18.23157</code></pre>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="co"># we can also generate our own data</span></a>
+<a class="sourceLine" id="cb8-2" data-line-number="2">data =<span class="st"> </span><span class="kw"><a href="reference/data_gen.html">data_gen</a></span>(<span class="dt">p =</span> <span class="dv">10</span>, <span class="dt">r =</span> <span class="dv">5</span>, <span class="dt">n =</span> <span class="dv">100</span>)</a>
+<a class="sourceLine" id="cb8-3" data-line-number="3">CV =<span class="st"> </span><span class="kw"><a href="reference/CVsplit.html">CVsplit</a></span>(data<span class="op">$</span>X, data<span class="op">$</span>Y)</a>
+<a class="sourceLine" id="cb8-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb8-5" data-line-number="5"><span class="co"># and again fit a ridge regression</span></a>
+<a class="sourceLine" id="cb8-6" data-line-number="6">statr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/statr/topics/RIDGE">RIDGE</a></span>(CV<span class="op">$</span>X.train, CV<span class="op">$</span>Y.train)</a></code></pre></div>
+<pre><code>## $betas
+##              s0          s0           s0          s0          s0
+## V1   0.77619689  0.32884111 -0.126507107  0.01596722 -0.05670844
+## V2  -0.01439418  0.04564571  0.089448793 -0.08579281  0.13708957
+## V3   0.01268113  0.20640759  0.213166137 -0.12024347 -0.09388864
+## V4  -0.03261295  0.11982686  0.411742662  0.03196814 -0.08945352
+## V5   0.05129667 -0.09476382  0.343063640  0.24451435 -0.13134119
+## V6   0.06697614  0.03754578  0.204350822  0.25353192  0.07039443
+## V7  -0.23740861 -0.03386081  0.096812528  0.04658776  0.17480947
+## V8  -0.18084991 -0.08875259  0.006943115 -0.09556854 -0.19327562
+## V9   0.02420790  0.04258616 -0.276798485 -0.11168795 -0.44108914
+## V10 -0.10103022 -0.14400505 -0.440632440 -0.01353731 -0.42875660
+## 
+## $lam
+## [1] 0.3114447</code></pre>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="co"># we can also generate random matrices with may be useful</span></a>
+<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="co"># for other applications</span></a>
+<a class="sourceLine" id="cb10-3" data-line-number="3"><span class="co"># tridiagonal matrices</span></a>
+<a class="sourceLine" id="cb10-4" data-line-number="4"><span class="kw"><a href="reference/tridiag.html">tridiag</a></span>(<span class="dt">p =</span> <span class="dv">5</span>)<span class="op">$</span>Omega <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dv">5</span>)</a></code></pre></div>
+<pre><code>##          [,1]     [,2]     [,3]     [,4]     [,5]
+## [1,]  1.96078 -1.37255  0.00000  0.00000  0.00000
+## [2,] -1.37255  2.92157 -1.37255  0.00000  0.00000
+## [3,]  0.00000 -1.37255  2.92157 -1.37255  0.00000
+## [4,]  0.00000  0.00000 -1.37255  2.92157 -1.37255
+## [5,]  0.00000  0.00000  0.00000 -1.37255  1.96078</code></pre>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="co"># dense matrices</span></a>
+<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="kw"><a href="reference/dense.html">dense</a></span>(<span class="dt">p =</span> <span class="dv">5</span>)<span class="op">$</span>Omega <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dv">5</span>)</a></code></pre></div>
+<pre><code>##          [,1]     [,2]     [,3]     [,4]     [,5]
+## [1,]  8.04348 -1.95652 -1.95652 -1.95652 -1.95652
+## [2,] -1.95652  8.04348 -1.95652 -1.95652 -1.95652
+## [3,] -1.95652 -1.95652  8.04348 -1.95652 -1.95652
+## [4,] -1.95652 -1.95652 -1.95652  8.04348 -1.95652
+## [5,] -1.95652 -1.95652 -1.95652 -1.95652  8.04348</code></pre>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="co"># compound symmetric matrices</span></a>
+<a class="sourceLine" id="cb14-2" data-line-number="2"><span class="kw"><a href="reference/compound.html">compound</a></span>(<span class="dt">p =</span> <span class="dv">5</span>)<span class="op">$</span>Omega <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dv">5</span>)</a></code></pre></div>
+<pre><code>##      [,1] [,2] [,3] [,4] [,5]
+## [1,]  1.0  0.9  0.9  0.9  0.9
+## [2,]  0.9  1.0  0.9  0.9  0.9
+## [3,]  0.9  0.9  1.0  0.9  0.9
+## [4,]  0.9  0.9  0.9  1.0  0.9
+## [5,]  0.9  0.9  0.9  0.9  1.0</code></pre>
 </div>
   </div>
 
