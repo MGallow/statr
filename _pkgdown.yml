@@ -9,25 +9,25 @@ template:
     bootswatch: flatly
     #ganalytics:
 
-reference:
-  - title: Exported functions
-    contents:
-    - bsearch
-    - data_gen
-    - dense
-    - derivative
-    - diagnostic
-    - dsearch
-    - LDA
-    - multiplot
-    - predict_QDA
-    - QDA
-    - scatter
-    - tidy
-    - timeit
-    - tridiag
-    - compound
-    - denseQR
+#reference:
+#  - title: Exported functions
+#    contents:
+#    - bsearch
+#    - data_gen
+#    - dense
+#    - derivative
+#    - diagnostic
+#    - dsearch
+#    - LDA
+#    - multiplot
+#    - predict_QDA
+#    - QDA
+#    - scatter
+#    - tidy
+#    - timeit
+#   - tridiag
+#    - compound
+#   - denseQR
 
 navbar:
   #type: inverse
